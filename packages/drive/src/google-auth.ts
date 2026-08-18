@@ -1,3 +1,4 @@
+import type { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 
 const REQUIRED_GOOGLE_ENV = [
@@ -13,7 +14,7 @@ export class GoogleAuthConfigurationError extends Error {
   }
 }
 
-export function createGoogleAuthFromEnv(env: NodeJS.ProcessEnv = process.env) {
+export function createGoogleAuthFromEnv(env: NodeJS.ProcessEnv = process.env): OAuth2Client {
   const missing = REQUIRED_GOOGLE_ENV.filter(name => !env[name]?.trim());
   if (missing.length > 0) throw new GoogleAuthConfigurationError([...missing]);
 
