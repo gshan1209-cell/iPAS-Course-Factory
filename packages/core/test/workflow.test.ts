@@ -40,6 +40,36 @@ describe('workflow state machine', () => {
     expect(canTransition('SLIDES_REVIEW', 'PUBLISHED')).toBe(false);
   });
 
+  it('blocks domain transitions into gated states until the matching gate is approved', () => {
+    const slidesReview = unit('SLIDES_REVIEW');
+    expect(() => transitionUnit(slidesReview, 'SLIDES_APPROVED', ctx()))
+      .toThrow(IllegalTransitionError);
+
+    const slidesGateApproved: UnitManifest = {
+      ...slidesReview,
+      gates: {
+        ...slidesReview.gates,
+        slides: {
+          gateType: 'SLIDES',
+          status: 'APPROVED',
+          approvedBy: 'human-reviewer',
+          approvedAt: '2026-08-18T07:12:00.000Z',
+          evidence: ['review:slides']
+        }
+      }
+    };
+    expect(transitionUnit(slidesGateApproved, 'SLIDES_APPROVED', ctx()).status)
+      .toBe('SLIDES_APPROVED');
+
+    const voiceReview = unit('VOICE_REVIEW');
+    expect(() => transitionUnit(voiceReview, 'VOICE_APPROVED', ctx()))
+      .toThrow(IllegalTransitionError);
+
+    const finalReview = unit('FINAL_REVIEW');
+    expect(() => transitionUnit(finalReview, 'PUBLISHED', ctx()))
+      .toThrow(IllegalTransitionError);
+  });
+
   it('treats transition to the current state as idempotent', () => {
     const current = unit('CONTENT_READY');
     expect(canTransition('CONTENT_READY', 'CONTENT_READY')).toBe(true);
