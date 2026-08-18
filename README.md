@@ -8,7 +8,7 @@
 - Phase 1 Control Plane 功能已實作，正在完成 dependency-backed test / typecheck / build 驗證
 - Dashboard 屬於 Phase 2，尚未納入本階段
 
-> 在 `pnpm test`、`pnpm typecheck`、`pnpm build` 全部於可安裝依賴的環境通過前，不把 Phase 1 標記為 Production Ready。
+> 在 `pnpm build`、`pnpm test`、`pnpm typecheck` 全部於可安裝依賴的環境通過前，不把 Phase 1 標記為 Production Ready。
 
 ## Architecture
 
@@ -60,11 +60,14 @@ COURSE_FACTORY_ACTOR=
 驗證：
 
 ```bash
+pnpm build
+pnpm test:acceptance
 pnpm test
 pnpm typecheck
-pnpm build
 pnpm --filter @ipas-course-factory/cli start -- status M1-02
 ```
+
+`test` / `test:acceptance` / `typecheck` 會先執行 workspace build，確保各 package 指向 `dist` 的 `exports/types` 在 clean clone 也已存在。
 
 M1-01 / M1-02 已作為 reference fixtures 註冊，但因沒有 Control Plane 可驗證的 NotebookLM Slides、Voice、Video output 與人工核准 evidence，兩者都維持在 `CONTENT_READY`，Human Gates 保持 `PENDING`。
 

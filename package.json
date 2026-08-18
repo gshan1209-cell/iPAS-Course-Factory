@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
-    "test": "vitest run",
-    "test:acceptance": "vitest run tests/phase1.acceptance.test.ts",
-    "typecheck": "pnpm -r typecheck"
+    "test": "pnpm build && vitest run",
+    "test:acceptance": "pnpm build && vitest run tests/phase1.acceptance.test.ts",
+    "typecheck": "pnpm build && pnpm -r typecheck"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

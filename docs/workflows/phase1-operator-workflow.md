@@ -9,10 +9,13 @@
 ```bash
 pnpm install
 cp .env.example .env
+pnpm build
+pnpm test:acceptance
 pnpm test
 pnpm typecheck
-pnpm build
 ```
+
+`test` / `test:acceptance` / `typecheck` 都會先 build workspace；因此每條命令可在 clean clone 獨立執行，不依賴前一條命令殘留的 `dist`。
 
 必要的外部 adapter 設定：
 

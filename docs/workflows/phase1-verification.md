@@ -6,12 +6,14 @@ PR 只有在以下命令於**可安裝完整依賴的環境**全部通過後，�
 
 ```bash
 pnpm install
+pnpm build
 pnpm test:acceptance
 pnpm test
 pnpm typecheck
-pnpm build
 pnpm --filter @ipas-course-factory/cli start -- status M1-02
 ```
+
+`test` / `test:acceptance` / `typecheck` 會自行先執行 build，避免 clean clone 因 workspace package `exports/types` 指向尚未生成的 `dist` 而失敗。
 
 若設定 disposable integration Drive root，再執行：
 
@@ -45,10 +47,10 @@ Integration test 必須在 teardown 將 disposable test root 移到 Trash。
 ## Required Exit Evidence
 
 最終 review 應至少附：
+- `pnpm build` PASS
 - `pnpm test:acceptance` PASS
 - `pnpm test` PASS
 - `pnpm typecheck` PASS
-- `pnpm build` PASS
 - M1-01 / M1-02 canonical manifest validation PASS
 - guarded Drive integration result（若 credentials configured）
 - final PR diff review
