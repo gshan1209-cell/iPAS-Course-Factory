@@ -12,3 +12,7 @@ export interface DrivePort {
   createFolder(parentId: string, name: string): Promise<DriveNode>;
   getNode(id: string): Promise<DriveNode | null>;
 }
+
+export interface SourceFilePort {
+  readTextFile(fileId: string): Promise<{ mimeType: string; text: string }>;
+}
