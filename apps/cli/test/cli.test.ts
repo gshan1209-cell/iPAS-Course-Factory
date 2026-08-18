@@ -40,7 +40,7 @@ function fakeContainer(): CliContainer & { units: Map<string, UnitManifest> } {
       async saveUnit(unit) { units.set(unit.unitId, structuredClone(unit)); },
       async loadCourse() { return { schemaVersion: 1, courseId: 'ipas-ai-planner', name: 'iPAS', provider: 'iPAS', authority: 'iPAS', levels: ['intermediate'], status: 'ACTIVE', driveRootFolderId: 'course-root' }; },
       async findSubject(level, subjectId) { const value = subjects.get(`${level}:${subjectId}`); if (!value) throw new Error('missing subject'); return { catalogKey: 'intermediate-M1', subject: structuredClone(value) }; },
-      async saveSubject(catalogKey, value) { subjects.set(`${value.level}:${value.subjectId}`, structuredClone(value)); },
+      async saveSubject(_catalogKey, value) { subjects.set(`${value.level}:${value.subjectId}`, structuredClone(value)); },
       async listSources() { return [guide]; },
       async loadSourceMapping() { return mapping; }
     },
@@ -92,5 +92,56 @@ describe('course-factory CLI', () => {
     await runCli(['artifact', 'register', 'M1-02', 'slides', '--url', 'https://example.com/slides'], c);
     expect(c.units.get('M1-02')?.artifacts.slides.items.find(item => item.kind === 'SLIDES_OUTPUT')?.url).toBe('https://example.com/slides');
     expect(c.units.get('M1-02')?.gates.slides?.status).not.toBe('APPROVED');
+  });
+
+  it('reruns QA from a recovered CONTENT_QA state', async () => {
+    const c = fakeContainer();
+    c.units.set('M1-02', seededUnit('CONTENT_QA'));
+
+    const output = await runCli(['qa', 'run', 'M1-02'], c);
+
+    expect(output).toContain('QA PASSED');
+    expect(c.units.get('M1-02')?.status).toBe('NOTEBOOKLM_PENDING');
+  });
+
+  it('requires REVISION_REQUIRED and the history-derived recovery state', async () => {
+    const c = fakeContainer();
+    const failed = seededUnit('QA_FAILED');
+    failed.qa = {
+      status: 'FAILED',
+      findings: [{ code: 'TEST_FAILURE', severity: 'ERROR', message: 'fixture failure' }]
+    };
+    failed.history = [{
+      timestamp: '2026-08-18T08:59:00.000Z',
+      actor: 'qa-bot',
+      action: 'workflow.transition',
+      previous: 'CONTENT_QA',
+      next: 'QA_FAILED',
+      evidence: ['qa:TEST_FAILURE', 'fixture failure']
+    }];
+    c.units.set('M1-02', failed);
+
+    await expect(runCli([
+      'transition', 'M1-02', 'PUBLISHED', '--evidence', 'attempted bypass'
+    ], c)).rejects.toThrow();
+    expect(c.units.get('M1-02')?.status).toBe('QA_FAILED');
+
+    await runCli([
+      'transition', 'M1-02', 'REVISION_REQUIRED', '--evidence', 'failure reviewed'
+    ], c);
+    expect(c.units.get('M1-02')?.status).toBe('REVISION_REQUIRED');
+
+    await expect(runCli([
+      'transition', 'M1-02', 'BRIEF_READY', '--evidence', 'wrong recovery target'
+    ], c)).rejects.toThrow();
+    expect(c.units.get('M1-02')?.status).toBe('REVISION_REQUIRED');
+
+    await runCli([
+      'transition', 'M1-02', 'CONTENT_QA', '--evidence', 'correction applied'
+    ], c);
+    expect(c.units.get('M1-02')?.status).toBe('CONTENT_QA');
+
+    await runCli(['qa', 'run', 'M1-02'], c);
+    expect(c.units.get('M1-02')?.status).toBe('NOTEBOOKLM_PENDING');
   });
 });
