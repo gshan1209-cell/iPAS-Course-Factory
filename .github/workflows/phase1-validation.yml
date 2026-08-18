@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -37,6 +37,19 @@ jobs:
 
       - name: Install dependencies and generate lockfile
         run: pnpm install --no-frozen-lockfile
+
+      - name: Persist generated lockfile
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if [ -z "$(git status --porcelain -- pnpm-lock.yaml)" ]; then
+            echo "pnpm-lock.yaml is already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pnpm-lock.yaml
+          git commit -m "chore: add pnpm lockfile"
+          git push origin "HEAD:${{ github.head_ref }}"
 
       - name: Upload generated lockfile
         if: always()
