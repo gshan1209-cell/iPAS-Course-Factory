@@ -15,6 +15,8 @@ const statuses = new Set<UnitStatus>([
   'VIDEO_PENDING', 'FINAL_REVIEW', 'PUBLISHED', 'BLOCKED', 'QA_FAILED', 'REVISION_REQUIRED'
 ]);
 
+const exceptionStates = new Set<UnitStatus>(['BLOCKED', 'QA_FAILED', 'REVISION_REQUIRED']);
+
 export async function executeTransition(
   unitId: string,
   target: UnitStatus,
@@ -38,7 +40,7 @@ export async function executeTransition(
     actor: container.actor,
     now: container.now(),
     evidence: [evidence],
-    reason: ['BLOCKED', 'QA_FAILED', 'REVISION_REQUIRED'].includes(target) ? evidence : undefined
+    reason: exceptionStates.has(target) || exceptionStates.has(unit.status) ? evidence : undefined
   });
   await container.store.saveUnit(unit);
   return `${unitId} | ${unit.status}`;

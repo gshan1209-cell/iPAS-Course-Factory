@@ -20,6 +20,12 @@ function stateAtOrAfter(status: UnitManifest['status'], threshold: UnitManifest[
   return current >= 0 && required >= 0 && current >= required;
 }
 
+function stateBefore(status: UnitManifest['status'], threshold: UnitManifest['status']): boolean {
+  const current = NORMAL_ORDER.indexOf(status);
+  const required = NORMAL_ORDER.indexOf(threshold);
+  return current >= 0 && required >= 0 && current < required;
+}
+
 function hasOutput(unit: UnitManifest, groupKey: string, kind: string): boolean {
   const item = unit.artifacts[groupKey]?.items.find(candidate => candidate.kind === kind);
   return Boolean(item && (item.driveFileId || item.url));
@@ -38,6 +44,13 @@ export function runManifestQa(context: UnitQaContext): QaFinding[] {
 
   for (const config of Object.values(gateConfig)) {
     const gate = context.unit.gates[config.gateKey];
+    if (gate?.status === 'APPROVED' && stateBefore(context.unit.status, config.requiredFrom)) {
+      findings.push({
+        code: 'GATE_APPROVAL_PREMATURE', severity: 'ERROR',
+        message: `Approved ${config.gateType} gate is inconsistent with earlier state ${context.unit.status}.`
+      });
+    }
+
     if (gate?.status === 'APPROVED' && !hasOutput(context.unit, config.outputGroup, config.outputKind)) {
       findings.push({
         code: 'GATE_OUTPUT_MISSING', severity: 'ERROR',

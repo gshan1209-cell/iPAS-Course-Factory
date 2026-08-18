@@ -51,6 +51,15 @@ describe('structured QA codes', () => {
     expect(codes(unit, [guide])).toContain('GATE_OUTPUT_MISSING');
   });
 
+  it('reports GATE_APPROVAL_PREMATURE when a gate is approved before its review transition', () => {
+    const unit = makeUnit();
+    unit.status = 'NOTEBOOKLM_PENDING';
+    unit.gates.slides = { gateType: 'SLIDES', status: 'APPROVED', approvedBy: 'Sean', approvedAt: '2026-08-18T08:00:00.000Z', evidence: ['review'] };
+    const output = unit.artifacts.slides.items.find(item => item.kind === 'SLIDES_OUTPUT')!;
+    output.status = 'READY'; output.url = 'https://example.com/slides';
+    expect(codes(unit, [guide])).toContain('GATE_APPROVAL_PREMATURE');
+  });
+
   it('reports CONTENT_LINEAGE_MISSING and CONTENT_CHECKLIST_INCOMPLETE for a generated teaching artifact', () => {
     const unit = makeUnit();
     const item = unit.artifacts.handout.items[0]!;

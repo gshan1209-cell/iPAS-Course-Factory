@@ -20,6 +20,7 @@ export const NORMAL_NEXT = {
 
 const EXCEPTION_STATES = new Set<UnitStatus>(['BLOCKED', 'QA_FAILED', 'REVISION_REQUIRED']);
 const NORMAL_STATES = new Set<UnitStatus>(Object.keys(NORMAL_NEXT) as UnitStatus[]);
+const ALL_STATES = new Set<UnitStatus>([...NORMAL_STATES, ...EXCEPTION_STATES]);
 
 export class IllegalTransitionError extends Error {
   constructor(public readonly from: UnitStatus, public readonly to: UnitStatus) {
@@ -28,13 +29,46 @@ export class IllegalTransitionError extends Error {
   }
 }
 
-export function canTransition(from: UnitStatus, to: UnitStatus, reason?: string): boolean {
+function isUnitStatus(value: string | null): value is UnitStatus {
+  return value !== null && ALL_STATES.has(value as UnitStatus);
+}
+
+function recoveryOrigin(unit: UnitManifest): UnitStatus | undefined {
+  let cursor: UnitStatus = unit.status;
+  for (let index = unit.history.length - 1; index >= 0; index -= 1) {
+    const entry = unit.history[index]!;
+    if (entry.action !== 'workflow.transition' || entry.next !== cursor) continue;
+    if (!isUnitStatus(entry.previous)) return undefined;
+    if (!EXCEPTION_STATES.has(entry.previous)) return entry.previous;
+    cursor = entry.previous;
+  }
+  return undefined;
+}
+
+export function recoveryTargetFor(unit: UnitManifest): UnitStatus | undefined {
+  if (unit.status !== 'REVISION_REQUIRED') return undefined;
+  const origin = recoveryOrigin(unit);
+  if (origin === 'CONTENT_GENERATING') return 'BRIEF_READY';
+  return origin;
+}
+
+export function canTransition(
+  from: UnitStatus,
+  to: UnitStatus,
+  reason?: string,
+  recoveryTarget?: UnitStatus
+): boolean {
   if (from === to) return true;
 
   const hasReason = Boolean(reason?.trim());
-  if (EXCEPTION_STATES.has(to)) return hasReason;
-  if (EXCEPTION_STATES.has(from)) return hasReason && NORMAL_STATES.has(to);
+  if (EXCEPTION_STATES.has(from)) {
+    if (from === 'BLOCKED' || from === 'QA_FAILED') {
+      return hasReason && to === 'REVISION_REQUIRED';
+    }
+    return hasReason && recoveryTarget === to;
+  }
 
+  if (EXCEPTION_STATES.has(to)) return hasReason;
   return NORMAL_NEXT[from as keyof typeof NORMAL_NEXT] === to;
 }
 
@@ -43,13 +77,14 @@ export function transitionUnit(
   next: UnitStatus,
   context: { actor: string; now: string; evidence?: string[]; reason?: string }
 ): UnitManifest {
-  if (!canTransition(unit.status, next, context.reason)) {
+  const recoveryTarget = recoveryTargetFor(unit);
+  if (!canTransition(unit.status, next, context.reason, recoveryTarget)) {
     throw new IllegalTransitionError(unit.status, next);
   }
   if (unit.status === next) return unit;
 
-  const recovering = EXCEPTION_STATES.has(unit.status) && !EXCEPTION_STATES.has(next);
-  if (recovering && !(context.evidence?.length)) {
+  const exceptionMove = EXCEPTION_STATES.has(unit.status) || EXCEPTION_STATES.has(next);
+  if (exceptionMove && !(context.evidence?.length)) {
     throw new IllegalTransitionError(unit.status, next);
   }
 

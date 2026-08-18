@@ -5,10 +5,14 @@ import type { CliContainer } from '../container.js';
 
 export async function executeQaRun(unitId: string, container: CliContainer): Promise<string> {
   let unit = await container.store.loadUnit(unitId);
-  assertUnitStatus(unit, 'CONTENT_READY');
-  unit = transitionUnit(unit, 'CONTENT_QA', {
-    actor: container.actor, now: container.now(), evidence: ['qa:run']
-  });
+  if (unit.status === 'CONTENT_READY') {
+    unit = transitionUnit(unit, 'CONTENT_QA', {
+      actor: container.actor, now: container.now(), evidence: ['qa:run']
+    });
+  } else {
+    assertUnitStatus(unit, 'CONTENT_QA');
+  }
+
   const report = runUnitQa({ unit, registry: await container.store.listSources() });
   unit = { ...unit, qa: { status: report.status, findings: report.findings } };
 

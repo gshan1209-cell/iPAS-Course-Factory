@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { UnitManifest } from '@ipas-course-factory/schemas';
-import { canTransition, IllegalTransitionError, transitionUnit } from '../src/workflow.js';
+import {
+  canTransition,
+  IllegalTransitionError,
+  recoveryTargetFor,
+  transitionUnit
+} from '../src/workflow.js';
 
 const unit = (status: UnitManifest['status']): UnitManifest => ({
   schemaVersion: 1,
@@ -14,6 +19,13 @@ const unit = (status: UnitManifest['status']): UnitManifest => ({
   drive: { unitFolderId: null, folders: {} },
   sources: [], artifacts: {}, gates: {},
   qa: { status: 'NOT_RUN', findings: [] }, history: []
+});
+
+const ctx = (reason?: string, evidence: string[] = ['review:evidence']) => ({
+  actor: 'reviewer',
+  now: '2026-08-18T07:12:00.000Z',
+  evidence,
+  reason
 });
 
 describe('workflow state machine', () => {
@@ -55,9 +67,37 @@ describe('workflow state machine', () => {
     expect(after.history[0]?.next).toBe('CONTENT_QA');
   });
 
-  it('requires evidence when recovering from an exception state', () => {
-    expect(() => transitionUnit(unit('QA_FAILED'), 'CONTENT_QA', {
-      actor: 'reviewer', now: '2026-08-18T07:12:00.000Z', reason: 'fixed'
-    })).toThrow(IllegalTransitionError);
+  it('forbids direct recovery from QA_FAILED to a normal or terminal state', () => {
+    expect(canTransition('QA_FAILED', 'CONTENT_QA', 'fixed')).toBe(false);
+    expect(canTransition('QA_FAILED', 'PUBLISHED', 'fixed')).toBe(false);
+    expect(canTransition('QA_FAILED', 'REVISION_REQUIRED', 'fixed')).toBe(true);
+  });
+
+  it('requires evidence while entering the explicit revision path', () => {
+    const failed = transitionUnit(unit('CONTENT_QA'), 'QA_FAILED', ctx('critical finding'));
+    expect(() => transitionUnit(failed, 'REVISION_REQUIRED', ctx('fix planned', [])))
+      .toThrow(IllegalTransitionError);
+  });
+
+  it('recovers only to the history-derived state after REVISION_REQUIRED', () => {
+    const failed = transitionUnit(unit('CONTENT_QA'), 'QA_FAILED', ctx('critical finding'));
+    const revision = transitionUnit(failed, 'REVISION_REQUIRED', ctx('fix planned'));
+
+    expect(recoveryTargetFor(revision)).toBe('CONTENT_QA');
+    expect(canTransition('REVISION_REQUIRED', 'PUBLISHED', 'fixed', recoveryTargetFor(revision))).toBe(false);
+
+    const recovered = transitionUnit(revision, 'CONTENT_QA', ctx('content corrected'));
+    expect(recovered.status).toBe('CONTENT_QA');
+  });
+
+  it('returns a failed generation to BRIEF_READY so the content pack can be regenerated', () => {
+    const generating = transitionUnit(unit('BRIEF_READY'), 'CONTENT_GENERATING', {
+      actor: 'factory', now: '2026-08-18T07:13:00.000Z', evidence: ['generation:start']
+    });
+    const failed = transitionUnit(generating, 'QA_FAILED', ctx('generation failed'));
+    const revision = transitionUnit(failed, 'REVISION_REQUIRED', ctx('generator fixed'));
+
+    expect(recoveryTargetFor(revision)).toBe('BRIEF_READY');
+    expect(transitionUnit(revision, 'BRIEF_READY', ctx('retry generation')).status).toBe('BRIEF_READY');
   });
 });

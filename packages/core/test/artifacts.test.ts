@@ -9,7 +9,7 @@ import {
   registerExternalArtifact
 } from '../src/artifacts.js';
 
-const makeUnit = (): UnitManifest => ({
+const makeUnit = (status: UnitManifest['status'] = 'SLIDES_REVIEW'): UnitManifest => ({
   schemaVersion: 1,
   unitId: 'M1-03',
   courseId: 'ipas-ai-planner',
@@ -17,7 +17,7 @@ const makeUnit = (): UnitManifest => ({
   subjectId: 'M1',
   title: 'Computer Vision',
   coreThesis: 'AI 看一張圖，其實可能在回答三種不同問題。',
-  status: 'SLIDES_REVIEW',
+  status,
   drive: { unitFolderId: null, folders: {} },
   sources: [],
   artifacts: createDefaultArtifactGroups(),
@@ -58,15 +58,24 @@ describe('artifact contract', () => {
   });
 
   it('requires an external Voice output before Voice approval', () => {
-    expect(() => approveGate(makeUnit(), {
+    expect(() => approveGate(makeUnit('VOICE_REVIEW'), {
       gateType: 'VOICE', approvedBy: 'Sean', approvedAt: '2026-08-18T07:20:00.000Z', evidence: ['review:voice']
     })).toThrow(GateApprovalError);
   });
 
   it('requires an external Video output before final approval', () => {
-    expect(() => approveGate(makeUnit(), {
+    expect(() => approveGate(makeUnit('FINAL_REVIEW'), {
       gateType: 'FINAL_PUBLICATION', approvedBy: 'Sean', approvedAt: '2026-08-18T07:20:00.000Z', evidence: ['review:final']
     })).toThrow(GateApprovalError);
+  });
+
+  it('requires the matching review state even when the external output already exists', () => {
+    const registered = registerExternalArtifact(makeUnit('NOTEBOOKLM_PENDING'), {
+      groupKey: 'slides', kind: 'SLIDES_OUTPUT', url: 'https://example.com/slides', actor: 'Sean', now: '2026-08-18T07:21:00.000Z'
+    });
+    expect(() => approveGate(registered, {
+      gateType: 'SLIDES', approvedBy: 'Sean', approvedAt: '2026-08-18T07:22:00.000Z', evidence: ['review:slides']
+    })).toThrow('SLIDES approval requires unit state SLIDES_REVIEW');
   });
 
   it('rejects a parseable but non-ISO approval timestamp', () => {

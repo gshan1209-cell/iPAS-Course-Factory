@@ -153,9 +153,9 @@ export interface ApproveGateInput {
 }
 
 const GATE_CONFIG = {
-  SLIDES: { gateKey: 'slides', groupKey: 'slides', kind: 'SLIDES_OUTPUT' },
-  VOICE: { gateKey: 'voice', groupKey: 'voice', kind: 'VOICE_OUTPUT' },
-  FINAL_PUBLICATION: { gateKey: 'finalPublication', groupKey: 'video', kind: 'VIDEO_OUTPUT' }
+  SLIDES: { gateKey: 'slides', groupKey: 'slides', kind: 'SLIDES_OUTPUT', reviewState: 'SLIDES_REVIEW' },
+  VOICE: { gateKey: 'voice', groupKey: 'voice', kind: 'VOICE_OUTPUT', reviewState: 'VOICE_REVIEW' },
+  FINAL_PUBLICATION: { gateKey: 'finalPublication', groupKey: 'video', kind: 'VIDEO_OUTPUT', reviewState: 'FINAL_REVIEW' }
 } as const;
 
 const ISO_UTC_DATETIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
@@ -176,6 +176,9 @@ export function approveGate(unit: UnitManifest, input: ApproveGateInput): UnitMa
   if (evidence.length === 0) throw new GateApprovalError('Gate approval requires evidence');
 
   const config = GATE_CONFIG[input.gateType];
+  if (unit.status !== config.reviewState) {
+    throw new GateApprovalError(`${input.gateType} approval requires unit state ${config.reviewState}`);
+  }
   const artifactGroup = unit.artifacts[config.groupKey];
   const output = artifactGroup?.items.find(item => item.kind === config.kind);
   if (!output || (!output.driveFileId && !output.url)) {
