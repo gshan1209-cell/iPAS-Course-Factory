@@ -12,7 +12,7 @@
   "dependencies": {
     "@ipas-course-factory/core": "workspace:*",
     "@ipas-course-factory/schemas": "workspace:*",
-    "google-auth-library": "^10.5.0",
+    "google-auth-library": "10.5.0",
     "googleapis": "^173.0.0",
     "pdfjs-dist": "^6.2.108"
   }
