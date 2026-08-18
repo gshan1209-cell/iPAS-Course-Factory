@@ -42,7 +42,7 @@ A unit is system-managed when:
 1. it has a valid Unit Manifest;
 2. all source IDs are registered and traceable;
 3. the standard Drive structure can be created idempotently;
-4. all expected artifact groups have tracked status;
+4. all expected artifact groups and their sub-artifacts have tracked status;
 5. workflow transitions are legal and auditable;
 6. automatic QA can report missing or invalid artifacts;
 7. human-gate states cannot be bypassed silently;
@@ -215,16 +215,26 @@ Minimum fields:
 - `effectiveDate` where relevant
 - `supersedes[]` / `corrects[]` where relevant
 
-### 7.5 Artifact
+### 7.5 Artifact Group and Sub-Artifact
 
-Minimum fields:
+The ten numbered unit outputs are **artifact groups**, because some folders contain both a generated prompt and a later human-reviewed production output.
+
+Minimum group fields:
 - `artifactType`
 - `status`
-- `driveFileId` or URL when applicable
+- `subArtifacts[]`
 - `sourceIds[]`
-- `generatedAt`
 - `qaStatus`
 - `version`
+
+Minimum sub-artifact fields:
+- `role` such as `prompt`, `slides`, `audio`, `video`, `script`, or `reviewEvidence`
+- `status`
+- `driveFileId` or URL when applicable
+- `generatedAt`
+- `version`
+
+This distinction is required so the system can track both the NotebookLM slide prompt and the actual generated deck, and both the voice prompt and the actual generated audio.
 
 ### 7.6 Gate
 
@@ -258,8 +268,8 @@ Rules:
 Each production unit tracks ten artifact groups:
 
 1. Source Brief
-2. NotebookLM master-style slide prompt
-3. NotebookLM per-slide voice prompt
+2. Course Slides Package — NotebookLM master-style prompt + generated deck + slide review evidence
+3. Voice Package — per-slide voice prompt + generated audio + voice review evidence
 4. Video output
 5. Course handout
 6. Desktop explainer visuals
@@ -268,7 +278,7 @@ Each production unit tracks ten artifact groups:
 9. Official-question breakdown
 10. Unit question bank
 
-Each artifact status uses at least:
+Each artifact-group or sub-artifact status uses at least:
 - `NOT_STARTED`
 - `GENERATING`
 - `READY`
@@ -278,6 +288,8 @@ Each artifact status uses at least:
 - `NOT_APPLICABLE`
 
 `NOT_APPLICABLE` requires a recorded reason.
+
+Completeness must distinguish **content readiness** from **publication readiness**. For example, a slide prompt can be `READY` while the generated deck remains `NOT_STARTED`; the group is therefore not yet publication-complete.
 
 ## 10. Workflow State Machine
 
@@ -294,6 +306,8 @@ PLANNED
   -> SLIDES_REVIEW
   -> SLIDES_APPROVED
   -> VOICE_PENDING
+  -> VOICE_REVIEW
+  -> VOICE_APPROVED
   -> VIDEO_PENDING
   -> FINAL_REVIEW
   -> PUBLISHED
@@ -309,6 +323,9 @@ Rules:
 - transitions must be idempotent where safe;
 - a transition records timestamp, actor, previous state, new state, and evidence/reason;
 - human gates cannot be skipped by a generated artifact appearing in Drive;
+- `SLIDES_APPROVED` requires slide-review evidence;
+- `VOICE_APPROVED` requires voice-review evidence;
+- `PUBLISHED` requires final publication approval evidence;
 - recovery paths return through explicit revision/QA states, not direct state mutation.
 
 ## 11. Standard Drive Contract
@@ -444,19 +461,20 @@ Checks:
 Checks:
 - schema validity
 - legal workflow state
-- artifact completeness
+- artifact-group and sub-artifact completeness
 - gate consistency
+- approval evidence presence for human-gated states
 - Drive mapping consistency
 
 ## 15. Human Gates
 
 ### Gate 1 — Slides
 
-NotebookLM slide output enters `SLIDES_REVIEW`. Human approval records evidence and transitions to `SLIDES_APPROVED`.
+NotebookLM slide output enters `SLIDES_REVIEW`. Human approval records review evidence inside the Course Slides Package and transitions to `SLIDES_APPROVED`.
 
 ### Gate 2 — Voice
 
-Voice output is reviewed for pace, pronunciation, terminology, and teaching naturalness. Approval is recorded before final video assembly is treated as complete.
+Generated audio enters `VOICE_REVIEW`. Human review covers pace, pronunciation, terminology, and teaching naturalness. Approval evidence is recorded inside the Voice Package before transition to `VOICE_APPROVED`.
 
 ### Gate 3 — Final Publication
 
@@ -537,7 +555,8 @@ Phase 1 requires automated tests for:
 - errata precedence
 - legal and illegal state transitions
 - transition idempotency
-- artifact completeness calculation
+- slide and voice gate enforcement
+- artifact-group/sub-artifact completeness calculation
 - Drive folder plan idempotency
 - duplicate-folder detection behavior
 - template required-input validation
@@ -556,7 +575,7 @@ Deliver:
 - course/subject/unit manifests
 - source registry
 - state machine
-- artifact registry
+- artifact registry with sub-artifact tracking
 - Drive folder planner/adapter
 - template contracts
 - QA framework
@@ -579,11 +598,12 @@ Deliver:
 
 Deliver operator helpers for the human workflow:
 - copy/open approved NotebookLM prompts
-- register slide output URL
-- trigger slide review state
-- register voice output
+- register generated slide output URL
+- enter `SLIDES_REVIEW` and record slide approval evidence
+- register generated voice output
+- enter `VOICE_REVIEW` and record voice approval evidence
 - register CapCut/video output
-- collect approval evidence
+- collect final approval evidence
 
 Do not use brittle browser automation to bypass unsupported NotebookLM/CapCut APIs.
 
@@ -618,7 +638,7 @@ Existing manually produced Subject 1 Unit 01 and Unit 02 should later be registe
 4. TypeScript domain core and adapters.
 5. CLI first; dashboard second.
 6. Source governance and errata precedence are first-class domain rules.
-7. Ten artifact groups define unit completeness.
+7. Ten artifact groups define the unit contract, with sub-artifacts tracking prompts and human-produced outputs.
 8. Human gates remain mandatory for slides, voice, and final publication.
 9. Approved Master Art Direction is a reusable contract, not a one-off prompt.
 10. Existing M1-01 and M1-02 are migration fixtures for validating Phase 1.
