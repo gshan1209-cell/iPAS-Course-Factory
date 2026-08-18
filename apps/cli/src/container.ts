@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { google } from 'googleapis';
 import type { Course, Source, SourceMapping, Subject, UnitManifest } from '@ipas-course-factory/schemas';
 import { YamlManifestStore } from '@ipas-course-factory/core';
@@ -31,8 +33,32 @@ export interface CliContainer {
   getGeneration(): GenerationPort;
 }
 
+export function resolveRepoRoot(
+  env: Record<string, string | undefined> = process.env,
+  cwd: string = process.cwd()
+): string {
+  const explicit = env.COURSE_FACTORY_REPO_ROOT?.trim();
+  if (explicit) return path.resolve(explicit);
+
+  let current = path.resolve(cwd);
+  while (true) {
+    if (existsSync(path.join(current, 'pnpm-workspace.yaml'))) return current;
+    const parent = path.dirname(current);
+    if (parent === current) break;
+    current = parent;
+  }
+
+  throw new Error(`Could not locate iPAS-Course-Factory repo root from ${path.resolve(cwd)}. Set COURSE_FACTORY_REPO_ROOT explicitly.`);
+}
+
+function resolveTemplateRoot(repoRoot: string, configured?: string): string {
+  const value = configured?.trim();
+  if (!value) return path.join(repoRoot, 'templates');
+  return path.isAbsolute(value) ? value : path.resolve(repoRoot, value);
+}
+
 export function createCliContainer(env: NodeJS.ProcessEnv = process.env): CliContainer {
-  const repoRoot = env.COURSE_FACTORY_REPO_ROOT?.trim() || process.cwd();
+  const repoRoot = resolveRepoRoot(env, process.cwd());
   const store = new YamlManifestStore(repoRoot);
   let drive: GoogleDriveAdapter | undefined;
   let documents: GoogleDocsArtifactWriter | undefined;
@@ -50,7 +76,7 @@ export function createCliContainer(env: NodeJS.ProcessEnv = process.env): CliCon
     store,
     actor: env.COURSE_FACTORY_ACTOR?.trim() || env.USER?.trim() || 'operator',
     now: () => new Date().toISOString(),
-    templateRoot: env.COURSE_FACTORY_TEMPLATE_ROOT?.trim() || `${repoRoot}/templates`,
+    templateRoot: resolveTemplateRoot(repoRoot, env.COURSE_FACTORY_TEMPLATE_ROOT),
     getDrive() {
       if (!drive) drive = new GoogleDriveAdapter(googleServices().drive);
       return drive;
