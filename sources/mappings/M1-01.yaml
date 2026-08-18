@@ -1,0 +1,25 @@
+schemaVersion: 1
+unitId: M1-01
+sourceIds:
+- ipas-mid-s1-subject1-guide
+- ipas-mid-s2-errata-2026-04-10
+- ipas-mid-s3-exam-2025-round2-subject1
+scope:
+- 文字表示
+- TF-IDF
+- N-gram
+- Word2Vec
+- GloVe
+- Embedding
+officialQuestionRefs:
+- sourceId: ipas-mid-s3-exam-2025-round2-subject1
+  questions:
+  - Q1
+  - Q4
+  - Q5
+  - Q6
+templateVariables:
+  official_scope: NLP 文字表示與特徵化
+  exam_focus: TF-IDF、N-gram、Word2Vec 與 GloVe 的特性與限制
+  known_traps: 詞頻高不等於辨識力高；固定 N-gram 上下文與語意向量不可混淆
+  visual_motif: 文字逐步轉成可比較的向量座標

@@ -1,0 +1,9 @@
+schemaVersion: 1
+courseId: ipas-ai-planner
+name: iPAS AI 應用規劃師
+provider: 經濟部產業人才能力鑑定
+authority: iPAS
+levels:
+- intermediate
+status: ACTIVE
+driveRootFolderId: 15ei4NnV4FRfaWORZifUPONzsZ6Ki_1ke
