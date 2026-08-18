@@ -6,6 +6,7 @@
   "bin": { "course-factory": "./dist/index.js" },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
