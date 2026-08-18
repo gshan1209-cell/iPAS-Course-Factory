@@ -33,8 +33,8 @@ Rules:
 A production-ready unit tracks these ten artifact groups:
 
 01. Source Brief
-02. NotebookLM master-style slide prompt
-03. NotebookLM per-slide voice prompt
+02. Course Slides Package — NotebookLM master-style prompt + generated deck + slide review evidence
+03. Voice Package — per-slide voice prompt + generated audio + voice review evidence
 04. Video output
 05. Course handout
 06. Desktop explainer visuals
@@ -43,13 +43,13 @@ A production-ready unit tracks these ten artifact groups:
 09. Official-question breakdown
 10. Unit question bank
 
-An artifact can be intentionally not-applicable only when the manifest records the reason and QA accepts it.
+An artifact group may contain multiple sub-artifacts. A group can be intentionally not-applicable only when the manifest records the reason and QA accepts it.
 
 ## State Machine
 
 Normal flow:
 
-PLANNED -> SOURCE_READY -> BRIEF_READY -> CONTENT_GENERATING -> CONTENT_READY -> CONTENT_QA -> NOTEBOOKLM_PENDING -> SLIDES_REVIEW -> SLIDES_APPROVED -> VOICE_PENDING -> VIDEO_PENDING -> FINAL_REVIEW -> PUBLISHED
+PLANNED -> SOURCE_READY -> BRIEF_READY -> CONTENT_GENERATING -> CONTENT_READY -> CONTENT_QA -> NOTEBOOKLM_PENDING -> SLIDES_REVIEW -> SLIDES_APPROVED -> VOICE_PENDING -> VOICE_REVIEW -> VOICE_APPROVED -> VIDEO_PENDING -> FINAL_REVIEW -> PUBLISHED
 
 Exception states:
 - BLOCKED
@@ -65,7 +65,7 @@ Human review remains mandatory for:
 - Voice approval
 - Final video/publication approval
 
-The system may prepare prompts and validate metadata, but must not claim these outputs are approved until the manifest records approval evidence.
+The system may prepare prompts and validate metadata, but must not claim generated slides, audio, or video are approved until the manifest records approval evidence.
 
 ## Presentation Contract
 
@@ -94,7 +94,8 @@ All iPAS intermediate slide prompts inherit the approved Master Art Direction Sy
 At minimum cover:
 - schema validation
 - state transition legality
-- artifact completeness calculation
+- human-gate enforcement
+- artifact-group and sub-artifact completeness calculation
 - source-priority / errata resolution
 - Drive folder planning and idempotency
 - QA rule evaluation
