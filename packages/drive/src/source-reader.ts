@@ -47,7 +47,7 @@ export class PdfJsTextExtractor implements PdfTextExtractor {
       }
       return pages.join('\n\n');
     } finally {
-      await document.destroy();
+      await loadingTask.destroy();
     }
   }
 }
