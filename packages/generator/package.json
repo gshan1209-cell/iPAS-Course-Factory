@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ipas-course-factory/core": "workspace:*",
+    "@ipas-course-factory/drive": "workspace:*",
     "@ipas-course-factory/schemas": "workspace:*",
     "handlebars": "^4.7.9",
     "openai": "^7.5.0"
