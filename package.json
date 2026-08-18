@@ -6,6 +6,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "vitest run",
+    "test:acceptance": "vitest run tests/phase1.acceptance.test.ts",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
