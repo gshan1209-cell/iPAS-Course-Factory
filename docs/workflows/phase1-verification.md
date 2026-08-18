@@ -24,36 +24,47 @@ COURSE_FACTORY_INTEGRATION_DRIVE_ROOT=<test-folder-id> \
 
 Integration test 必須在 teardown 將 disposable test root 移到 Trash。
 
-## Current Validation Boundary
+## Dependency-Backed Validation
 
-目前開發 sandbox 無法連 npm registry，因此不能：
-- 取得／安裝 pnpm workspace dependencies
-- 生成可信的 `pnpm-lock.yaml`
-- 執行完整 Vitest + Zod + Google SDK + Handlebars + OpenAI SDK test suite
+GitHub Actions `Phase 1 Validation` 已提供可安裝完整依賴的乾淨 Linux runner。
 
-這是**驗證環境限制，不等於測試已通過**。
+Run #9 (`32119527290`) 在 Node.js `22.16.0` / pnpm `10.34.5` 上完成以下步驟：
 
-在此限制下已完成的檢查只能視為 pre-validation evidence：
-- task-by-task TypeScript static contract checks where dependencies could be safely stubbed
-- pure-domain/runtime smoke assertions
-- fake Drive / Generation / CLI path checks
+- dependency install / lockfile generation — PASS
+- `pnpm build` — PASS
+- `pnpm test:acceptance` — PASS
+- `pnpm test` — PASS
+- `pnpm typecheck` — PASS
+- `pnpm --filter @ipas-course-factory/cli start -- status M1-02` — PASS
+
+同一 run 已將生成的 `pnpm-lock.yaml` 提交回 feature branch。此文件提交會觸發後續 validation run；後續 run 必須在 lockfile 已存在且不再變更的 final branch tree 上再次全綠，才視為 merge gate 完成。
+
+## Local Sandbox Boundary
+
+目前 ChatGPT container 仍無法解析 `github.com` / npm registry，因此本地 sandbox 不能重跑 dependency-backed suite。這不再是 PR 的驗證 blocker，因為 GitHub-hosted validation runner 已可提供獨立、可重製的 CI 證據。
+
+本地可做的補充檢查仍限於：
 - GitHub diff / architecture review
-
-在 dependency-backed commands 全部 PASS 前：
-- PR 維持 Draft
-- Issue 不關閉
-- Phase 1 不標示 DEV5 / Production Ready
+- workflow logs / step-level evidence review
+- source / manifest / Human Gate invariant 靜態檢查
 
 ## Required Exit Evidence
 
-最終 review 應至少附：
+最終 review 至少需要：
+- `pnpm-lock.yaml` committed and stable
 - `pnpm build` PASS
 - `pnpm test:acceptance` PASS
 - `pnpm test` PASS
 - `pnpm typecheck` PASS
-- M1-01 / M1-02 canonical manifest validation PASS
-- guarded Drive integration result（若 credentials configured）
+- CLI M1-02 smoke PASS
+- M1-01 / M1-02 canonical manifest validation PASS（由 acceptance/full suite 覆蓋）
+- guarded Drive integration result（只有 credentials configured 時要求）
 - final PR diff review
 - no Dashboard code in Phase 1
 - no committed credentials
 - no bypassed Human Gate
+
+在上述 final-tree CI 全綠前：
+- PR 維持 Draft
+- Issue 不關閉
+- Phase 1 維持 DEV4
