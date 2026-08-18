@@ -1,0 +1,18 @@
+{
+  "name": "@ipas-course-factory/generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ipas-course-factory/core": "workspace:*",
+    "@ipas-course-factory/schemas": "workspace:*",
+    "handlebars": "^4.7.9",
+    "openai": "^7.5.0"
+  }
+}
