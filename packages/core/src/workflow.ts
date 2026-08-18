@@ -22,6 +22,14 @@ const EXCEPTION_STATES = new Set<UnitStatus>(['BLOCKED', 'QA_FAILED', 'REVISION_
 const NORMAL_STATES = new Set<UnitStatus>(Object.keys(NORMAL_NEXT) as UnitStatus[]);
 const ALL_STATES = new Set<UnitStatus>([...NORMAL_STATES, ...EXCEPTION_STATES]);
 
+const REQUIRED_GATE_BY_TARGET = {
+  SLIDES_APPROVED: 'slides',
+  VOICE_APPROVED: 'voice',
+  PUBLISHED: 'finalPublication'
+} as const;
+
+type GatedTarget = keyof typeof REQUIRED_GATE_BY_TARGET;
+
 export class IllegalTransitionError extends Error {
   constructor(public readonly from: UnitStatus, public readonly to: UnitStatus) {
     super(`Illegal unit transition: ${from} -> ${to}`);
@@ -43,6 +51,12 @@ function recoveryOrigin(unit: UnitManifest): UnitStatus | undefined {
     cursor = entry.previous;
   }
   return undefined;
+}
+
+function hasRequiredGateApproval(unit: UnitManifest, next: UnitStatus): boolean {
+  if (!(next in REQUIRED_GATE_BY_TARGET)) return true;
+  const gateKey = REQUIRED_GATE_BY_TARGET[next as GatedTarget];
+  return unit.gates[gateKey]?.status === 'APPROVED';
 }
 
 export function recoveryTargetFor(unit: UnitManifest): UnitStatus | undefined {
@@ -82,6 +96,10 @@ export function transitionUnit(
     throw new IllegalTransitionError(unit.status, next);
   }
   if (unit.status === next) return unit;
+
+  if (!hasRequiredGateApproval(unit, next)) {
+    throw new IllegalTransitionError(unit.status, next);
+  }
 
   const exceptionMove = EXCEPTION_STATES.has(unit.status) || EXCEPTION_STATES.has(next);
   if (exceptionMove && !(context.evidence?.length)) {
