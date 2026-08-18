@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+.env
+.course-factory/
+.superpowers/sdd/
+.DS_Store

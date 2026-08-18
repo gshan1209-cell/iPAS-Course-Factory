@@ -1,0 +1,48 @@
+- sourceId: ipas-mid-s1-subject1-guide
+  tier: S1
+  title: AI應用規劃師（中級）科目一學習指引
+  provider: 經濟部產業人才能力鑑定
+  driveFileId: 1AgLmuHDx06UIa6C7uj5rRHNQc3n8X-1q
+  scope:
+  - 人工智慧技術應用與規劃
+  - 自然語言處理
+  - 電腦視覺
+  - 生成式 AI
+  - 多模態 AI
+  - AI 導入評估與部署
+  effectiveDate: null
+  supersedes: []
+  corrects: []
+- sourceId: ipas-mid-s2-errata-2026-04-10
+  tier: S2
+  title: AI應用規劃師（中級）學習指引勘誤表 1150410
+  provider: 經濟部產業人才能力鑑定
+  driveFileId: 1oscVIEx5nKzv52407Qx5Sh7wJLi6N6mM
+  scope:
+  - TF-IDF 範例修正
+  - ChatGPT 名稱勘誤
+  - PDPA 用語修正
+  effectiveDate: '2026-04-10'
+  supersedes: []
+  corrects:
+  - ipas-mid-s1-subject1-guide
+- sourceId: ipas-mid-s3-exam-2025-round2-subject1
+  tier: S3
+  title: 114年第二梯次 AI應用規劃師（中級）科目一公告試題
+  provider: 經濟部產業人才能力鑑定
+  driveFileId: 1GNiEPNBD8Z-HF5gIW9OLk0Cwcoow_RZJ
+  scope:
+  - 科目一正式試題
+  effectiveDate: null
+  supersedes: []
+  corrects: []
+- sourceId: ipas-mid-s4-sample-2025-09-v2
+  tier: S4
+  title: iPAS 中級考試樣題 114年9月版 v2
+  provider: 經濟部產業人才能力鑑定
+  driveFileId: 1y8cqmk5YmYG3BHsyy4lOHDR99Hv4UsWx
+  scope:
+  - 中級考試樣題
+  effectiveDate: null
+  supersedes: []
+  corrects: []

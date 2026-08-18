@@ -1,0 +1,78 @@
+name: Phase 1 Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    name: build-test-typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.16.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+          run_install: false
+
+      - name: Show toolchain
+        run: |
+          node --version
+          pnpm --version
+
+      - name: Install dependencies and generate lockfile
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Persist generated lockfile
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if [ -z "$(git status --porcelain -- pnpm-lock.yaml)" ]; then
+            echo "pnpm-lock.yaml is already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pnpm-lock.yaml
+          git commit -m "chore: add pnpm lockfile"
+          git push origin "HEAD:${{ github.head_ref }}"
+
+      - name: Upload generated lockfile
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: phase1-pnpm-lock
+          path: pnpm-lock.yaml
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Build
+        run: pnpm build
+
+      - name: Phase 1 acceptance
+        run: pnpm test:acceptance
+
+      - name: Full test suite
+        run: pnpm test
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: CLI migrated-unit smoke
+        run: pnpm --filter @ipas-course-factory/cli start -- status M1-02

@@ -1,0 +1,19 @@
+# iPAS 單元題庫 Prompt
+
+課程：{{course}}
+科目：{{subject}}
+單元：{{unit}}
+考試重點：{{exam_focus}}
+常見陷阱：{{known_traps}}
+
+## 治理來源
+{{source_pack}}
+
+請建立 15 題原創四選一單選題，難度覆蓋概念辨識、情境應用、陷阱排除與必要計算。不得複製正式題句。每題必須有：questionId、topic、stem、A–D options、answer、explanation、每個錯誤選項的 distractorReasoning、sourceIds。
+
+先輸出適合學員閱讀的題目與解析；最後再輸出一段可供系統解析的 JSON，必須放在以下固定標記之間，且標記內只能有合法 JSON：
+<QUESTION_BANK_JSON>
+{"questions":[{"questionId":"{{unit}}-Q001","topic":"...","stem":"...","options":["A ...","B ...","C ...","D ..."],"answer":"B","explanation":"...","distractorReasoning":{"A":"...","C":"...","D":"..."},"sourceIds":["..."]}]}
+</QUESTION_BANK_JSON>
+
+JSON 內必須完整包含 15 題，不使用省略號作為實際資料。

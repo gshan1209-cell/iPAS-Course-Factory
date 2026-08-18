@@ -1,0 +1,10 @@
+schemaVersion: 1
+subjectId: M1
+courseId: ipas-ai-planner
+level: intermediate
+name: 人工智慧技術應用與規劃
+badge: AI PLANNER
+unitIds:
+- M1-01
+- M1-02
+driveFolderId: 1LwqmceAjhLTQSIEpGGnGE15K25zn4HXA

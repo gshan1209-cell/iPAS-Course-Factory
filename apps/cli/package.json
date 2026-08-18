@@ -1,0 +1,21 @@
+{
+  "name": "@ipas-course-factory/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": { "course-factory": "./dist/index.js" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ipas-course-factory/core": "workspace:*",
+    "@ipas-course-factory/drive": "workspace:*",
+    "@ipas-course-factory/generator": "workspace:*",
+    "@ipas-course-factory/qa": "workspace:*",
+    "@ipas-course-factory/schemas": "workspace:*",
+    "commander": "^15.0.0",
+    "googleapis": "^173.0.0"
+  }
+}

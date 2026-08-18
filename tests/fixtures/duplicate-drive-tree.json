@@ -1,0 +1,7 @@
+{
+  "root": { "id": "unit-root", "name": "M1-03", "mimeType": "application/vnd.google-apps.folder", "parentId": "subject-root" },
+  "children": [
+    { "id": "dup-a", "name": "01_Source", "mimeType": "application/vnd.google-apps.folder", "parentId": "unit-root" },
+    { "id": "dup-b", "name": "01_Source", "mimeType": "application/vnd.google-apps.folder", "parentId": "unit-root" }
+  ]
+}

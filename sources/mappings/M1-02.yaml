@@ -1,0 +1,21 @@
+schemaVersion: 1
+unitId: M1-02
+sourceIds:
+- ipas-mid-s1-subject1-guide
+- ipas-mid-s3-exam-2025-round2-subject1
+scope:
+- Transformer
+- Self-Attention
+- Long-range dependency
+- BERT MLM
+- BERT vs GPT
+officialQuestionRefs:
+- sourceId: ipas-mid-s3-exam-2025-round2-subject1
+  questions:
+  - Q2
+  - Q3
+templateVariables:
+  official_scope: Transformer 與 BERT 的核心機制與用途
+  exam_focus: Self-Attention 長距依賴、BERT MLM、BERT 與 GPT 任務差異
+  known_traps: Self-Attention 不是固定局部視窗；BERT 的 MLM 不是單向下一詞預測
+  visual_motif: 詞與詞之間逐步亮起的關係連線

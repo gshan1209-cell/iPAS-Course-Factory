@@ -1,0 +1,169 @@
+schemaVersion: 1
+unitId: M1-01
+courseId: ipas-ai-planner
+level: intermediate
+subjectId: M1
+title: AI 看不懂文字，直到文字變成向量
+coreThesis: AI 要先把文字轉成可計算的數字表示，才能比較與處理文字特徵。
+status: CONTENT_READY
+drive:
+  unitFolderId: 1G7MEI7EbVsNV7iIOikvX5ItoHboIYUai
+  folders:
+    source: 1kJQMwmE8Rmb7qfUoB7LMqOvPDPXMZ84R
+    slides: 1DJBF6zLjYPTLzIEt9iSCDvx7q-TVVfaf
+    voice: 1T5VXWJPY0bxLB6H_aSdtODb2slt5Kq9m
+    video: 1kR5j2S2Pf5ziITqoRxategJyASjC_owO
+    handout: 1O60G8HCH3ysl4i6HNowV6_s2ajdtmgnY
+    desktopExplainers: 1fDJtuNkb9qTaoZCbm86fsDNAfrS1aI9E
+    mobileCards: 1b63hyMNPbsgRdvlt3sqTo7nhqVLM46ZQ
+    formulaDecisionCard: 1eosCgAmqsbukLEgG_vRXurDTayT1nar1
+    officialQuestionBreakdown: 1hNJ8o2c_nSc7eTxiDGzLarrbq9HAG50y
+    questionBank: 1pFgtcFPhP-xbPnDf3c3YQYUPRLStDksY
+sources:
+- ipas-mid-s1-subject1-guide
+- ipas-mid-s2-errata-2026-04-10
+- ipas-mid-s3-exam-2025-round2-subject1
+artifacts:
+  sourceBrief:
+    group: SOURCE_BRIEF
+    status: READY
+    items:
+    - artifactId: sourceBrief.document
+      kind: SOURCE_BRIEF
+      status: READY
+      driveFileId: 1rOTMzby2hFdDitN3zeQCuP2_KhU6qjM7pryVs9litgQ
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  slides:
+    group: SLIDES_PACKAGE
+    status: GENERATING
+    items:
+    - artifactId: slides.prompt
+      kind: SLIDES_PROMPT
+      status: READY
+      driveFileId: 1tw9EZ4ieuaI4JmGB68C7tHOWMrBPKFiIXTO5LqoPWuU
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+    - artifactId: slides.output
+      kind: SLIDES_OUTPUT
+      status: NOT_STARTED
+  voice:
+    group: VOICE_PACKAGE
+    status: GENERATING
+    items:
+    - artifactId: voice.prompt
+      kind: VOICE_PROMPT
+      status: READY
+      driveFileId: 1Z9UruHr4xcTty8GsUiG0Gwh3ptsgUpyVYRmSzVCeKpg
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+    - artifactId: voice.output
+      kind: VOICE_OUTPUT
+      status: NOT_STARTED
+  video:
+    group: VIDEO_OUTPUT
+    status: NOT_STARTED
+    items:
+    - artifactId: video.output
+      kind: VIDEO_OUTPUT
+      status: NOT_STARTED
+  handout:
+    group: COURSE_HANDOUT
+    status: READY
+    items:
+    - artifactId: handout.document
+      kind: COURSE_HANDOUT
+      status: READY
+      driveFileId: 12DN-lV7bfakIvcz_8fg5LLnwGuimCFtUZ1NMFx4xjSI
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  desktopExplainers:
+    group: DESKTOP_EXPLAINERS
+    status: READY
+    items:
+    - artifactId: desktopExplainers.document
+      kind: DESKTOP_EXPLAINERS
+      status: READY
+      driveFileId: 1W54dYYY43gwUciH8H4qnRrQoqKufb85tcupZF33zgrU
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  mobileCards:
+    group: MOBILE_KEY_CARDS
+    status: READY
+    items:
+    - artifactId: mobileCards.document
+      kind: MOBILE_KEY_CARDS
+      status: READY
+      driveFileId: 1KWxzsBgkUNFXWFqS5S3h-DXhqDMY4njjR4wBU22maXg
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  formulaDecisionCard:
+    group: FORMULA_DECISION_CARD
+    status: READY
+    items:
+    - artifactId: formulaDecisionCard.document
+      kind: FORMULA_DECISION_CARD
+      status: READY
+      driveFileId: 1l9hYxJPP1ybhgD2HVmEWB80Vd0bj-MWonvZdvC29Gu0
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  officialQuestionBreakdown:
+    group: OFFICIAL_QUESTION_BREAKDOWN
+    status: READY
+    items:
+    - artifactId: officialQuestionBreakdown.document
+      kind: OFFICIAL_QUESTION_BREAKDOWN
+      status: READY
+      driveFileId: 1SqRR3W92_LUliRMqA5bXXHp7dF54sBghYJSH4p1vDIg
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+  questionBank:
+    group: UNIT_QUESTION_BANK
+    status: READY
+    items:
+    - artifactId: questionBank.document
+      kind: UNIT_QUESTION_BANK
+      status: READY
+      driveFileId: 1OwqzhX8WX2L4UKE-oDuAvCRJ4A-umlbjit-vJOPt_5g
+      sourceIds:
+      - ipas-mid-s1-subject1-guide
+      - ipas-mid-s2-errata-2026-04-10
+      - ipas-mid-s3-exam-2025-round2-subject1
+gates:
+  slides:
+    gateType: SLIDES
+    status: PENDING
+  voice:
+    gateType: VOICE
+    status: PENDING
+  finalPublication:
+    gateType: FINAL_PUBLICATION
+    status: PENDING
+qa:
+  status: NOT_RUN
+  findings: []
+history:
+- timestamp: '2026-08-18T08:30:00.000Z'
+  actor: migration
+  action: unit.migrated
+  previous: null
+  next: CONTENT_READY
+  evidence:
+  - drive:1G7MEI7EbVsNV7iIOikvX5ItoHboIYUai
+  - human-gates:not-evidenced
