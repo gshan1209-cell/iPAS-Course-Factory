@@ -20,6 +20,8 @@ describe('iPAS intermediate migration fixtures', () => {
     const store = new YamlManifestStore(repoRoot);
     expect((await store.loadCourse('ipas-ai-planner')).driveRootFolderId).toBe('15ei4NnV4FRfaWORZifUPONzsZ6Ki_1ke');
     expect((await store.loadSubject('intermediate-M1')).unitIds).toEqual(['M1-01', 'M1-02']);
+    expect((await store.findSubject('intermediate', 'M1')).subject.driveFolderId).toBe('1LwqmceAjhLTQSIEpGGnGE15K25zn4HXA');
+    expect((await store.loadSourceMapping('M1-01')).unitId).toBe('M1-01');
     expect((await store.listSources()).map(source => source.sourceId)).toEqual([
       'ipas-mid-s1-subject1-guide',
       'ipas-mid-s2-errata-2026-04-10',

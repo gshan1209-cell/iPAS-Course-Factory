@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GateSchema, SourceSchema, UnitManifestSchema } from '../src/index.js';
+import { GateSchema, SourceMappingSchema, SourceSchema, SubjectSchema, UnitManifestSchema } from '../src/index.js';
 
 const valid = {
   schemaVersion: 1,
@@ -49,9 +49,7 @@ describe('UnitManifestSchema', () => {
     expect(() => UnitManifestSchema.parse({
       ...valid,
       artifacts: {
-        formula: {
-          group: 'FORMULA_DECISION_CARD', status: 'READY', reason: null, items: [], typoField: true
-        }
+        formula: { group: 'FORMULA_DECISION_CARD', status: 'READY', reason: null, items: [], typoField: true }
       }
     })).toThrow();
   });
@@ -67,8 +65,35 @@ describe('canonical nested schemas', () => {
 
   it('rejects unknown gate fields', () => {
     expect(() => GateSchema.parse({
-      gateType: 'SLIDES', status: 'PENDING', approvedBy: null, approvedAt: null,
-      evidence: [], approvedAT: null
+      gateType: 'SLIDES', status: 'PENDING', approvedBy: null, approvedAt: null, evidence: [], approvedAT: null
     })).toThrow();
+  });
+});
+
+describe('operator support schemas', () => {
+  it('accepts a governed SourceMapping contract', () => {
+    const mapping = SourceMappingSchema.parse({
+      schemaVersion: 1,
+      unitId: 'M1-03',
+      sourceIds: ['guide'],
+      scope: ['Computer Vision'],
+      officialQuestionRefs: [{ sourceId: 'exam', questions: ['Q10'] }],
+      templateVariables: {
+        official_scope: 'Computer Vision',
+        exam_focus: 'Classification / Detection / Segmentation',
+        known_traps: 'task confusion',
+        visual_motif: 'scan light'
+      }
+    });
+    expect(mapping.unitId).toBe('M1-03');
+  });
+
+  it('defaults Subject driveFolderId to null but accepts a mapped folder', () => {
+    const base = {
+      schemaVersion: 1 as const, subjectId: 'M1', courseId: 'ipas-ai-planner', level: 'intermediate',
+      name: 'Subject 1', badge: 'AI PLANNER', unitIds: []
+    };
+    expect(SubjectSchema.parse(base).driveFolderId).toBe(null);
+    expect(SubjectSchema.parse({ ...base, driveFolderId: 'drive-M1' }).driveFolderId).toBe('drive-M1');
   });
 });

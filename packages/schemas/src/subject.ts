@@ -7,7 +7,8 @@ export const SubjectSchema = z.object({
   level: z.string().min(1),
   name: z.string().min(1),
   badge: z.string().min(1),
-  unitIds: z.array(z.string()).default([])
+  unitIds: z.array(z.string()).default([]),
+  driveFolderId: z.string().min(1).nullable().default(null)
 }).strict();
 
 export type Subject = z.infer<typeof SubjectSchema>;

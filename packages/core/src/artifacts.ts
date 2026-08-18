@@ -28,6 +28,14 @@ const group = (name: ArtifactGroup['group'], items: ArtifactItem[]): ArtifactGro
   items
 });
 
+export function createDefaultGates(): UnitManifest['gates'] {
+  return {
+    slides: { gateType: 'SLIDES', status: 'PENDING', approvedBy: null, approvedAt: null, evidence: [] },
+    voice: { gateType: 'VOICE', status: 'PENDING', approvedBy: null, approvedAt: null, evidence: [] },
+    finalPublication: { gateType: 'FINAL_PUBLICATION', status: 'PENDING', approvedBy: null, approvedAt: null, evidence: [] }
+  };
+}
+
 export function createDefaultArtifactGroups(): UnitManifest['artifacts'] {
   return {
     sourceBrief: group('SOURCE_BRIEF', [baseItem('sourceBrief.document', 'SOURCE_BRIEF')]),
