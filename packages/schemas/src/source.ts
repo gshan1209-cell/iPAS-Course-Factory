@@ -12,7 +12,7 @@ export const SourceSchema = z.object({
   effectiveDate: z.string().date().nullable().default(null),
   supersedes: z.array(z.string()).default([]),
   corrects: z.array(z.string()).default([])
-});
+}).strict();
 
 export type SourceTier = z.infer<typeof SourceTierSchema>;
 export type Source = z.infer<typeof SourceSchema>;

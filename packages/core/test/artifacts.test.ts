@@ -69,6 +69,15 @@ describe('artifact contract', () => {
     })).toThrow(GateApprovalError);
   });
 
+  it('rejects a parseable but non-ISO approval timestamp', () => {
+    const registered = registerExternalArtifact(makeUnit(), {
+      groupKey: 'slides', kind: 'SLIDES_OUTPUT', url: 'https://example.com/slides', actor: 'Sean', now: '2026-08-18T07:21:00.000Z'
+    });
+    expect(() => approveGate(registered, {
+      gateType: 'SLIDES', approvedBy: 'Sean', approvedAt: 'August 18, 2026 07:22 UTC', evidence: ['review:slides']
+    })).toThrow('approvedAt must be an ISO UTC datetime');
+  });
+
   it('registers an external output immutably and permits its gate approval', () => {
     const before = makeUnit();
     const registered = registerExternalArtifact(before, {

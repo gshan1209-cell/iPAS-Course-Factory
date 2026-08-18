@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { UnitManifestSchema } from '../src/index.js';
+import { GateSchema, SourceSchema, UnitManifestSchema } from '../src/index.js';
 
 const valid = {
   schemaVersion: 1,
@@ -43,5 +43,32 @@ describe('UnitManifestSchema', () => {
 
   it('rejects unknown top-level fields', () => {
     expect(() => UnitManifestSchema.parse({ ...valid, unexpected: true })).toThrow();
+  });
+
+  it('rejects unknown nested artifact fields instead of stripping them', () => {
+    expect(() => UnitManifestSchema.parse({
+      ...valid,
+      artifacts: {
+        formula: {
+          group: 'FORMULA_DECISION_CARD', status: 'READY', reason: null, items: [], typoField: true
+        }
+      }
+    })).toThrow();
+  });
+});
+
+describe('canonical nested schemas', () => {
+  it('rejects unknown source fields', () => {
+    expect(() => SourceSchema.parse({
+      sourceId: 'guide', tier: 'S1', title: 'Guide', provider: 'iPAS', driveFileId: 'g',
+      scope: [], effectiveDate: null, supersedes: [], corrects: [], typoField: true
+    })).toThrow();
+  });
+
+  it('rejects unknown gate fields', () => {
+    expect(() => GateSchema.parse({
+      gateType: 'SLIDES', status: 'PENDING', approvedBy: null, approvedAt: null,
+      evidence: [], approvedAT: null
+    })).toThrow();
   });
 });

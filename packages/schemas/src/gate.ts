@@ -6,6 +6,6 @@ export const GateSchema = z.object({
   approvedBy: z.string().nullable().default(null),
   approvedAt: z.string().datetime().nullable().default(null),
   evidence: z.array(z.string()).default([])
-});
+}).strict();
 
 export type Gate = z.infer<typeof GateSchema>;

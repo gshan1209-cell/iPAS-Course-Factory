@@ -150,6 +150,8 @@ const GATE_CONFIG = {
   FINAL_PUBLICATION: { gateKey: 'finalPublication', groupKey: 'video', kind: 'VIDEO_OUTPUT' }
 } as const;
 
+const ISO_UTC_DATETIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
+
 export class GateApprovalError extends Error {
   constructor(message: string) {
     super(message);
@@ -159,7 +161,9 @@ export class GateApprovalError extends Error {
 
 export function approveGate(unit: UnitManifest, input: ApproveGateInput): UnitManifest {
   if (!input.approvedBy.trim()) throw new GateApprovalError('approvedBy is required');
-  if (Number.isNaN(Date.parse(input.approvedAt))) throw new GateApprovalError('approvedAt must be an ISO datetime');
+  if (!ISO_UTC_DATETIME.test(input.approvedAt) || Number.isNaN(Date.parse(input.approvedAt))) {
+    throw new GateApprovalError('approvedAt must be an ISO UTC datetime');
+  }
   const evidence = input.evidence.filter(item => item.trim().length > 0);
   if (evidence.length === 0) throw new GateApprovalError('Gate approval requires evidence');
 

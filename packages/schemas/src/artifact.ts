@@ -16,7 +16,7 @@ export const ArtifactItemSchema = z.object({
   qaStatus: z.enum(['NOT_RUN', 'PASSED', 'FAILED']).default('NOT_RUN'),
   version: z.string().min(1).default('1.0'),
   metadata: z.record(z.string(), z.unknown()).default({})
-});
+}).strict();
 
 export const ArtifactGroupNameSchema = z.enum([
   'SOURCE_BRIEF', 'SLIDES_PACKAGE', 'VOICE_PACKAGE', 'VIDEO_OUTPUT',
@@ -29,7 +29,7 @@ export const ArtifactGroupSchema = z.object({
   status: ArtifactStatusSchema,
   reason: z.string().min(1).nullable().default(null),
   items: z.array(ArtifactItemSchema).default([])
-}).superRefine((value, ctx) => {
+}).strict().superRefine((value, ctx) => {
   if (value.status === 'NOT_APPLICABLE' && !value.reason) {
     ctx.addIssue({ code: 'custom', message: 'NOT_APPLICABLE requires reason', path: ['reason'] });
   }
