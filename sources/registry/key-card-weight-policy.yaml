@@ -1,0 +1,48 @@
+policyVersion: STAR-v1.1
+effectiveFrom: '2026-08-20'
+denominator:
+  sourceType: announced-exam
+  tier: S3
+  status: ACTIVE
+  includeInWeight: true
+excludeFromHistoricalRatio:
+  - official-sample-question
+  - learning-guide
+  - errata
+  - internal-supplement
+thresholds:
+  fiveStar:
+    minRatio: 0.15
+    defaultCardCount: [2, 3]
+  fourStar:
+    minRatio: 0.10
+    maxRatioExclusive: 0.15
+    defaultCardCount: [1, 2]
+  threeStar:
+    minRatio: 0.06
+    maxRatioExclusive: 0.10
+    defaultCardCount: [1, 1]
+  twoStar:
+    minRatio: 0.03
+    maxRatioExclusive: 0.06
+    defaultCardCount: [0, 1]
+  oneStar:
+    minRatio: 0.0
+    maxRatioExclusive: 0.03
+    defaultCardCount: [0, 0]
+fields:
+  computedStar: immutableWithinSnapshot
+  overrideStar: optional
+  overrideReason: requiredWhenOverridePresent
+  effectiveStar: overrideStarOrComputedStar
+  computedCardCount: derived
+  overrideCardCount: optional
+  effectiveCardCount: overrideOrComputed
+snapshots:
+  appendOnly: true
+  idFormat: YYYY-MM-DD-exam<N>-v<N>
+newTopicPolicy:
+  createCandidateCard: true
+  status: NEW_TOPIC_REVIEW
+  doNotForceIntoLegacyCard: true
+  requireQaBeforePublish: true
