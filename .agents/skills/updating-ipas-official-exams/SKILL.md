@@ -1,6 +1,6 @@
 ---
 name: updating-ipas-official-exams
-description: Use when manually checking, importing, synchronizing, or recalculating iPAS AI應用規劃師 official announced exam questions, official PDF archives, question mappings, key-card weights, or star ratings.
+description: Use when manually checking, importing, synchronizing, or recalculating iPAS AI應用規劃師 official announced exam questions, official PDF archives, question mappings, key-card weights, star ratings, or key-card labels.
 ---
 
 # Updating iPAS Official Exams
@@ -14,8 +14,10 @@ Maintain iPAS official announced exams as a traceable, append-only source set. *
 Read before changing state:
 - `AGENTS.md`
 - `docs/IPAS_EXAM_SOURCE_GOVERNANCE.md`
+- `docs/KEY_CARD_LABEL_SYSTEM.md`
 - `sources/registry/ipas-official-exams.yaml`
 - `sources/registry/key-card-weight-policy.yaml`
+- `sources/registry/key-card-label-policy.yaml`
 
 Canonical discovery source: the iPAS AI應用規劃師 official learning-resources page recorded in the registry.
 
@@ -31,16 +33,18 @@ Run only when the user explicitly asks to update/check/sync iPAS sources. Do not
 6. **EXTRACT/MAP** — create `questionUid = <sourceId>-Q<nn>` and map each question to one primary official competency indicator. Secondary concepts may be recorded separately.
 7. **RECALC** — compute ratios from ACTIVE S3 announced exams only. Official samples, guides, errata, and internal supplements do not enter historical frequency.
 8. **STAR** — write `computedStar`; preserve `overrideStar` and required `overrideReason`; publish `effectiveStar = overrideStar ?? computedStar`. Do the same for card counts.
-9. **NEW TOPIC** — when a genuinely new tested concept appears, create a candidate card with `NEW_TOPIC_REVIEW`; do not force it into a legacy card just because frequency is initially low.
-10. **SNAPSHOT/QA** — append an analysis snapshot and change log, update subject Master Index files, then run QA before declaring card data current.
+9. **LABEL** — map the Master Index `卡片類型` to the approved Card Label System one-to-one. Star = exam priority; category label = learning/memory mode; auxiliary labels = exam traits. Never use category color to imply priority.
+10. **NEW TOPIC** — when a genuinely new tested concept appears, create a candidate card with `NEW_TOPIC_REVIEW` and auxiliary label `🆕 NEW`; do not force it into a legacy card just because frequency is initially low.
+11. **SNAPSHOT/QA** — append an analysis snapshot and change log, update subject Master Index files, then run QA before declaring card data current.
 
 ## Hard Gates
 
 - Missing raw official PDF => `PENDING_DRIVE_MIRROR`; analysis may be provisional if official content is verifiable, but **full update is not complete**.
-- Never report `12/12 mirrored` unless every registry source has an archive Drive file ID.
+- Never report mirror complete unless every registry source has an archive Drive file ID.
 - Never replace computed history with a manual override.
 - Never mix sample-question counts into real-exam ratios.
 - Never delete old source versions or old analysis snapshots.
+- Never invent a new card category, display label, icon, or system code outside `key-card-label-policy.yaml`.
 
 ## Completion Report
 
@@ -48,7 +52,7 @@ Always report these independently:
 - `OFFICIAL_CURRENT`: official list matches registry.
 - `MIRROR_COMPLETE`: every ACTIVE official exam has raw PDF in Drive.
 - `ANALYSIS_CURRENT`: all ACTIVE exams are mapped and included in the latest snapshot.
-- `KEYCARD_CURRENT`: Master Index effective stars/card counts are updated and QA-ready.
+- `KEYCARD_CURRENT`: Master Index effective stars/card counts and approved labels are updated and QA-ready.
 
 Only say **「已完整更新到最新」** when all four are true.
 
@@ -58,5 +62,6 @@ Before completion, verify:
 - New official PDF exists but Drive lacks it -> must not claim mirror complete.
 - Same filename/version changed -> append new version, supersede old.
 - Official sample added -> no historical-star effect.
-- One-time new concept -> candidate card remains possible despite low ratio.
+- One-time new concept -> candidate card remains possible despite low ratio and gets `NEW` until QA resolves it.
 - Human raises/lowers priority -> override is recorded without changing computed value.
+- Card type changes -> visual label/code must follow the canonical one-to-one mapping without changing computed star.
