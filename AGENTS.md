@@ -28,6 +28,14 @@ Rules:
 - If the source does not support a teaching claim, mark it as supplemental or omit it.
 - Every source-bound artifact must be traceable to source IDs recorded in the unit manifest.
 
+## Project Skills
+
+When manually checking, importing, synchronizing, or recalculating iPAS official announced exams, official PDF archives, question mappings, key-card weights, or star ratings, read and follow:
+
+- `.agents/skills/updating-ipas-official-exams/SKILL.md`
+
+The skill is authoritative for the manual update workflow and its completion gates. Do not claim the iPAS source set is fully current unless the skill's OFFICIAL_CURRENT, MIRROR_COMPLETE, ANALYSIS_CURRENT, and KEYCARD_CURRENT gates are all satisfied.
+
 ## Unit Artifact Contract
 
 A production-ready unit tracks these ten artifact groups:
