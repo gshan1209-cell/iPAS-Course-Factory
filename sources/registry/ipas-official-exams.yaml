@@ -1,0 +1,148 @@
+schemaVersion: 1
+registryId: ipas-aiap-official-exams
+canonicalDiscoveryUrl: https://ipd.nat.gov.tw/ipas/certification/AIAP/learning-resources
+verifiedAt: '2026-08-20'
+rules:
+  actualExamTier: S3
+  includeSampleInHistoricalWeight: false
+  appendOnlyVersions: true
+  sameTitleDifferentHashCreatesNewVersion: true
+  questionUidFormat: '<source_id>-Q<nn>'
+sources:
+  - sourceId: EXAM-JR-114-R4-S1
+    level: junior
+    subject: 1
+    year: 114
+    session: R4
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20251226000442'
+    driveFileId: 1Wb0etsvDiIzZ_qJSI7YviAOqvgvS-fjW
+  - sourceId: EXAM-JR-114-R4-S2
+    level: junior
+    subject: 2
+    year: 114
+    session: R4
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20251226000507'
+    driveFileId: 1EfETT8mmb6po0Ck_salVprRImvb2CYrH
+  - sourceId: EXAM-JR-115-R1-S1
+    level: junior
+    subject: 1
+    year: 115
+    session: R1
+    examDate: '2026-03-21'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260410164304'
+    driveFileId: 1HB0lezGdzvX9fOQeiZb2Z9KA6WalltRx
+  - sourceId: EXAM-JR-115-R1-S2
+    level: junior
+    subject: 2
+    year: 115
+    session: R1
+    examDate: '2026-03-21'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260410164328'
+    driveFileId: 1BYZTxlfa4z6rJbVwq20o-XPaQebpMh9B
+  - sourceId: EXAM-JR-115-R2-S1
+    level: junior
+    subject: 1
+    year: 115
+    session: R2
+    examDate: '2026-05-16'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260604212644'
+    exactBytes: 560181
+    mirrorStatus: PENDING_DRIVE_MIRROR
+    backupGitBlob: 21ce0e12293210b8e9102d881f9f643203db7517
+  - sourceId: EXAM-JR-115-R2-S2
+    level: junior
+    subject: 2
+    year: 115
+    session: R2
+    examDate: '2026-05-16'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260604212719'
+    exactBytes: 558739
+    mirrorStatus: PENDING_DRIVE_MIRROR
+    backupGitBlob: a8170fb709773b313e9a88d38042ac14ba395728
+  - sourceId: EXAM-MID-114-R2-S1
+    level: intermediate
+    subject: 1
+    year: 114
+    session: R2
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20251226000616'
+    driveFileId: 1GNiEPNBD8Z-HF5gIW9OLk0Cwcoow_RZJ
+  - sourceId: EXAM-MID-114-R2-S2
+    level: intermediate
+    subject: 2
+    year: 114
+    session: R2
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20251226000634'
+    driveFileId: 1fX4UV3nAmER7zz1oMwOG2XoMcEw0Ypoi
+  - sourceId: EXAM-MID-114-R2-S3
+    level: intermediate
+    subject: 3
+    year: 114
+    session: R2
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20251226000650'
+    driveFileId: 1yaNTGqIFZp73QOu4YJXZbILnTu3eBfza
+  - sourceId: EXAM-MID-115-R1-S1
+    level: intermediate
+    subject: 1
+    year: 115
+    session: R1
+    examDate: '2026-06-13'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260615003359'
+    exactBytes: 721396
+    mirrorStatus: PENDING_DRIVE_MIRROR
+    backupGitBlob: 3fa30f3a258309ccccbb9778cb6872b2ac35c506
+  - sourceId: EXAM-MID-115-R1-S2
+    level: intermediate
+    subject: 2
+    year: 115
+    session: R1
+    examDate: '2026-06-13'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260615003417'
+    exactBytes: 789445
+    mirrorStatus: PENDING_DRIVE_MIRROR
+    backupGitBlob: bec85670d6896358011c19c62e4db234375916a6
+  - sourceId: EXAM-MID-115-R1-S3
+    level: intermediate
+    subject: 3
+    year: 115
+    session: R1
+    examDate: '2026-06-13'
+    sourceType: announced-exam
+    includeInWeight: true
+    status: ACTIVE
+    versionToken: '20260615003428'
+    exactBytes: 1596592
+    mirrorStatus: PENDING_DRIVE_MIRROR
+    backupGitBlob: f69c154d6cb3007c6f649136a3b852b445cef422
