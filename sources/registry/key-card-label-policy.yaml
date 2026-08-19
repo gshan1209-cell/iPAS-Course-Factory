@@ -1,0 +1,108 @@
+policyVersion: CARD-LABEL-v1.0
+effectiveFrom: '2026-08-20'
+status: ACTIVE
+scope:
+  levels: [junior, intermediate]
+  artifact: key-point-card
+principles:
+  starMeansExamPriorityOnly: true
+  categoryLabelMeansMemoryModeOnly: true
+  auxiliaryLabelsMeanExamTraitsOnly: true
+  keepDataTypeVisualLabelAndSystemCodeSeparate: true
+  defaultMaxAuxiliaryLabelsPerCard: 3
+categories:
+  concept:
+    dataType: 概念卡
+    displayLabel: 核心概念
+    icon: '💡'
+    code: CONCEPT
+    colorSemantic: blue
+    purpose: 名詞、定義、基本原理
+  compare:
+    dataType: 比較卡
+    displayLabel: 差異比較
+    icon: '⚖️'
+    code: COMPARE
+    colorSemantic: purple
+    purpose: A vs B、易混淆觀念
+  flow:
+    dataType: 流程卡
+    displayLabel: 流程必背
+    icon: '🔄'
+    code: FLOW
+    colorSemantic: teal
+    purpose: 步驟、生命週期、處理流程
+  trap:
+    dataType: 陷阱卡
+    displayLabel: 考題陷阱
+    icon: '⚠️'
+    code: TRAP
+    colorSemantic: red-orange
+    purpose: 常見錯誤選項、易混淆敘述
+  formula:
+    dataType: 公式卡
+    displayLabel: 公式計算
+    icon: '🧮'
+    code: FORMULA
+    colorSemantic: navy
+    purpose: 公式、符號、計算
+  case:
+    dataType: 情境卡
+    displayLabel: 情境判斷
+    icon: '🎯'
+    code: CASE
+    colorSemantic: orange
+    purpose: 題幹情境、線索判讀、答案選擇
+  exam:
+    dataType: 真題卡
+    displayLabel: 歷屆真題
+    icon: '📝'
+    code: EXAM
+    colorSemantic: gold
+    purpose: 官方歷屆題目拆解
+  review:
+    dataType: 總整理卡
+    displayLabel: 考前速讀
+    icon: '🧠'
+    code: REVIEW
+    colorSemantic: ink-purple
+    purpose: 章節／單元考前快速複習
+auxiliaryLabels:
+  must:
+    displayLabel: 必考
+    icon: '🔥'
+    code: MUST
+    meaning: 高考試優先度或核心能力指標
+  error:
+    displayLabel: 易錯
+    icon: '❗'
+    code: ERROR
+    meaning: 高混淆、高誤判或高干擾選項風險
+  repeat:
+    displayLabel: 重複出題
+    icon: '🔁'
+    code: REPEAT
+    meaning: 多次正式公告試題重複命中
+  new:
+    displayLabel: 新興考點
+    icon: '🆕'
+    code: NEW
+    meaning: 新試題首次或近期新增的重要考點
+cardFaceOrder:
+  - star_and_exam_weight
+  - category_label
+  - auxiliary_exam_labels
+  - topic_title
+  - core_content
+  - one_line_memory_or_exam_judgment
+rules:
+  visualCategoryMustMapOneToOneFromDataType: true
+  systemCodeMustBeStable: true
+  doNotUseCategoryColorToImplyStarPriority: true
+  starRatingMayChangeWithoutChangingCategory: true
+  categoryMayChangeWithoutChangingComputedStar: true
+  auxiliaryLabelsAreAdditiveAndOptional: true
+  newTopicUsesNEWAuxiliaryLabelUntilQAResolved: true
+references:
+  starPolicy: sources/registry/key-card-weight-policy.yaml
+  officialExamUpdateSkill: .agents/skills/updating-ipas-official-exams/SKILL.md
