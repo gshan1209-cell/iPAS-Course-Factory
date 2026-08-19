@@ -1,5 +1,6 @@
 policyVersion: STAR-v1.1
 effectiveFrom: '2026-08-20'
+labelPolicyRef: sources/registry/key-card-label-policy.yaml
 denominator:
   sourceType: announced-exam
   tier: S3
@@ -38,6 +39,10 @@ fields:
   computedCardCount: derived
   overrideCardCount: optional
   effectiveCardCount: overrideOrComputed
+separationRules:
+  starRepresentsExamPriorityOnly: true
+  categoryLabelRepresentsLearningModeOnly: true
+  auxiliaryLabelRepresentsExamTraitOnly: true
 snapshots:
   appendOnly: true
   idFormat: YYYY-MM-DD-exam<N>-v<N>
