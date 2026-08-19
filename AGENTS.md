@@ -36,6 +36,25 @@ When manually checking, importing, synchronizing, or recalculating iPAS official
 
 The skill is authoritative for the manual update workflow and its completion gates. Do not claim the iPAS source set is fully current unless the skill's OFFICIAL_CURRENT, MIRROR_COMPLETE, ANALYSIS_CURRENT, and KEYCARD_CURRENT gates are all satisfied.
 
+## Key-Card Label Contract
+
+All junior and intermediate key-point cards, Master Index files, card templates, and QA flows must follow:
+
+- `docs/KEY_CARD_LABEL_SYSTEM.md`
+- `sources/registry/key-card-label-policy.yaml`
+- `sources/registry/key-card-weight-policy.yaml`
+
+Keep these dimensions separate:
+- star rating / exam ratio = exam priority only;
+- category label = learning and memory mode only;
+- auxiliary label = exam trait only.
+
+The approved category mapping is fixed: 概念卡→💡核心概念/CONCEPT, 比較卡→⚖️差異比較/COMPARE, 流程卡→🔄流程必背/FLOW, 陷阱卡→⚠️考題陷阱/TRAP, 公式卡→🧮公式計算/FORMULA, 情境卡→🎯情境判斷/CASE, 真題卡→📝歷屆真題/EXAM, 總整理卡→🧠考前速讀/REVIEW.
+
+Approved auxiliary labels: 🔥必考/MUST, ❗易錯/ERROR, 🔁重複出題/REPEAT, 🆕新興考點/NEW.
+
+Do not invent new category codes or reinterpret label colors without first updating the canonical label policy.
+
 ## Unit Artifact Contract
 
 A production-ready unit tracks these ten artifact groups:
