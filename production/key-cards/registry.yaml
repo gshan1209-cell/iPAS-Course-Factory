@@ -114,27 +114,21 @@ records:
         reviewedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: QA_REJECTED
-        reason: 'KCT-v3.4 canonical sample structure mismatch: mascot scale/crop, second-row hierarchy, title spacing, section proportions and visual framing drifted from KCS-v1.1.'
+        reason: 'KCT-v3.4 canonical sample structure mismatch.'
       - renderedAt: '2026-08-20T12:00:00+08:00'
         renderedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: RENDERED_REVISION
         revision: 2
-        rule: 'image-generated body; deterministic source footer only'
       - reviewedAt: '2026-08-20T12:45:28+08:00'
         reviewedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: QA_PASSED
         revision: 4
-        reason: 'User approved the card format; final artifact keeps exactly five star slots and replaces only the bottom source citation with deterministic text.'
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
     renderFingerprint: e44223749a36535edd3aa1ef3b1f6a410fffc68978835a58051a0ceb8efd16fa
     artifactRevision: 4
-    previousRejectedArtifact:
-      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v1.png
-      driveFileId: 1B8KOf35BkqJ1S8BkCcvcdtJP7gX5hx67
-      qaDisposition: REJECTED
     finalDriveFileId: 1r-AnJFK4FSzIKIRW-Kw3Bg0wUX2VFl1x
     finalArtifact:
       filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v4.png
@@ -152,26 +146,21 @@ records:
       cardNumber: C-001
       categoryCode: CONCEPT
       categoryIcon: '💡'
-      examLabels:
-        - 重複出題
+      examLabels: [重複出題]
       sourceFooter: '指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4'
     renderingMode:
       body: IMAGE_GENERATED
       footerSourceCitation: DETERMINISTIC_TEXT
-      userApprovedAt: '2026-08-20T12:45:28+08:00'
     qa:
       evidenceTextLocked: true
       sourceFooterDeterministic: true
       visualEvidenceMatched: true
-      bodyTextDeterministic: false
-      mascotImageGenerated: true
       mascotIdentityLocked: true
       finalQaPassed: true
       fixedWidthPx: 1024
       renderedHeightPx: 1536
       starSlotCountExactlyFive: true
       examRateVisible: false
-      awaitingVisualReview: false
     updatedAt: '2026-08-20T12:45:28+08:00'
 
   - programCode: IPAS
@@ -184,16 +173,12 @@ records:
     topic: 機器學習基本原理
     cardFocus: 監督式、非監督式、半監督式、強化學習
     plannedBatchId: KC-JR-S1-B001
-    state: CLAIMED
-    productionComplete: false
+    state: QA_PASSED
+    productionComplete: true
     sampleOnly: false
-    note: 'Selected from latest governed Master as the highest current parent priority (5 stars, 21.3%, suggestedCardCount 3). Atomic QMAP is pending, so this batch uses the governed parent Master topic as the card unit without copying parent star values into atomic children.'
-    claim:
-      claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
-      claimedAt: '2026-08-20T12:46:41+08:00'
-      leaseUntil: '2026-08-20T13:46:41+08:00'
-      claimedBy: ChatGPT-04_iPAS-Course-Factory
-      batchId: KC-JR-S1-B001
+    note: 'Selected from latest governed Master as the highest current parent priority (5 stars, 21.3%, suggestedCardCount 3). Three image-generation attempts failed template/evidence QA, so the final body uses the approved template-locked raster fallback; the bottom source footer remains deterministic.'
+    revisionReason: QA_REJECTED
+    claim: null
     claimHistory:
       - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
         claimedAt: '2026-08-20T12:46:41+08:00'
@@ -201,9 +186,26 @@ records:
         claimedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: CLAIMED
+      - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
+        completedAt: '2026-08-20T12:53:56+08:00'
+        claimedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: QA_PASSED
+        revision: 2
+        reason: 'Exactly five header star slots; correct C-002, subject, labels, mascot identity and deterministic footer.'
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
-    artifactRevision: 1
+    renderFingerprint: b164f541536520743567d042b9150f8099db68c3384a4929641c19182e06df90
+    artifactRevision: 2
+    finalDriveFileId: 1_G5_lXecD-pX-7boM4lEhZAAAFbF5F-5
+    finalArtifact:
+      filename: IPAS_初級_科目一_C-002_I1-06_機器學習基本原理_v2.png
+      widthPx: 1024
+      heightPx: 1700
+      sizeVariant: EXTENDED
+      imageSha256: 1dc8e096f15bd304af0951014c40ba1e6631498b9b5d326f6564656e4151be51
+      driveFolderId: 1bCvZQ69bmfPZci7s16qXMMCerSQOwWut
+      qaDisposition: PASSED
     evidence:
       levelSubject: 初級-科目一
       sectionTitle: '3.3 機器學習概念'
@@ -212,14 +214,20 @@ records:
       cardNumber: C-002
       categoryCode: COMPARE
       categoryIcon: '⚖️'
-      examLabels:
-        - 必考
-        - 重複出題
+      examLabels: [必考, 重複出題]
       sourceFooter: '指引:「機器學習基本原理」；考題:114-4 初級科一 Q4、Q5、Q11、Q13、Q17、Q18、Q19、Q39、Q40、Q44、Q46；115-1 初級科一 Q3、Q19、Q20、Q30、Q31、Q39、Q40、Q43、Q50；115-2 初級科一 Q2、Q14、Q16、Q19、Q21、Q22、Q23、Q24、Q26、Q36、Q38、Q48'
     renderingMode:
-      body: IMAGE_GENERATED
+      body: TEMPLATE_LOCKED_RASTER
       footerSourceCitation: DETERMINISTIC_TEXT
+      fallbackReason: 'IMAGE_MODEL_TEMPLATE_DRIFT_AFTER_3_ATTEMPTS'
     qa:
-      finalQaPassed: false
-      starSlotCountExactlyFive: required
-    updatedAt: '2026-08-20T12:46:41+08:00'
+      evidenceTextLocked: true
+      sourceFooterDeterministic: true
+      visualEvidenceMatched: true
+      mascotIdentityLocked: true
+      finalQaPassed: true
+      fixedWidthPx: 1024
+      renderedHeightPx: 1700
+      starSlotCountExactlyFive: true
+      examRateVisible: false
+    updatedAt: '2026-08-20T12:53:56+08:00'
