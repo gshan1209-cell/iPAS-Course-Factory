@@ -88,22 +88,15 @@ records:
     cardNumber: C-001
     topic: AI 的定義與分類
     plannedBatchId: KC-JR-S1-B001
-    state: CLAIMED
-    productionComplete: false
+    state: QA_PASSED
+    productionComplete: true
     sampleOnly: false
-    note: 'Formal deterministic production claimed from the governed KCS-v1.1 design-reference record; sample artifact remains reference-only.'
+    note: 'Formal deterministic KCT-v3.4 production card. Historical KCS-v1.1 remains design reference only.'
     sampleArtifact:
       title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
       driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
       sampleVersion: KCS-v1.1
-    claim:
-      programCode: IPAS
-      globalProductionKey: IPAS-JR-S1-I1-01-C001
-      claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
-      claimedAt: '2026-08-20T11:48:16+08:00'
-      leaseUntil: '2026-08-20T12:48:16+08:00'
-      claimedBy: ChatGPT-04_iPAS-Course-Factory
-      batchId: KC-JR-S1-B001
+    claim: null
     claimHistory:
       - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
         claimedAt: '2026-08-20T11:48:16+08:00'
@@ -111,11 +104,42 @@ records:
         claimedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: CLAIMED
-    renderFingerprint: null
-    artifactRevision: null
-    finalDriveFileId: null
+      - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
+        completedAt: '2026-08-20T11:52:17+08:00'
+        claimedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: QA_PASSED
+    sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
+    templateOrVisualProfileVersion: KCT-v3.4
+    renderFingerprint: d3df2c3a2b7690724dbb68b2100ea99ef3f1983d1f3b5d8ca89fce83825b5d3e
+    artifactRevision: 1
+    finalDriveFileId: 1B8KOf35BkqJ1S8BkCcvcdtJP7gX5hx67
+    finalArtifact:
+      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v1.png
+      widthPx: 1024
+      heightPx: 1536
+      sizeVariant: STANDARD
+      imageSha256: aae5fbca23bb830a3e4d9718326236300ce616448fbfef2e1b9b46dffdb3e900
+      driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
+    evidence:
+      levelSubject: 初級-科目一
+      sectionTitle: '3.1 人工智慧概念'
+      starRating: 2
+      cardNumber: C-001
+      categoryCode: CONCEPT
+      categoryIcon: '💡'
+      examLabels:
+        - 重複出題
+      sourceFooter: '指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4'
     qa:
-      evidenceTextLocked: false
+      evidenceTextLocked: true
       mascotIdentityLocked: true
-      finalQaPassed: false
-    updatedAt: '2026-08-20T11:48:16+08:00'
+      finalQaPassed: true
+      evidenceMethod: deterministic-programmatic-text-layer
+      mascotMethod: governed-XIAOXIN-v1-base-asset-direct
+      fixedWidthPx: 1024
+      renderedHeightPx: 1536
+      examRateVisible: false
+      categoryTextVisible: false
+      applicableExamLabelsOnly: true
+    updatedAt: '2026-08-20T11:52:17+08:00'
