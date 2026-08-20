@@ -15,8 +15,9 @@ Before generating any production card, read:
 
 1. `sources/registry/key-card-template-policy.yaml`
 2. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
-3. `production/key-cards/registry.yaml`
-4. the current governed Master / atomic-topic record for the candidate card
+3. `production/key-cards/batches.yaml`
+4. `production/key-cards/registry.yaml`
+5. the current governed Master / atomic-topic record for the candidate card
 
 Also honor:
 
@@ -32,16 +33,17 @@ Chat memory is not a production lock.
 
 ## Card Selection
 
-If the user names a card, use that card.
+If the user names a card, use that card if it is eligible under the current registry state.
 
 If the user says only `繼續`, `下一張`, `產生第一批`, or similar:
 
-1. read the current Master / atomic-topic data layer;
-2. read the current production registry;
-3. exclude `QA_PASSED` cards;
-4. exclude cards with an unexpired `CLAIMED` lease;
-5. prefer resuming existing `VISUAL_READY`, `RENDERED`, `REVISION_REQUIRED`, or `STALE_REGEN_REQUIRED` work when appropriate;
-6. otherwise choose the next governed priority card.
+1. read the ACTIVE batch from `production/key-cards/batches.yaml`;
+2. read the current Master / atomic-topic data layer within that batch scope;
+3. read the current production registry;
+4. exclude `QA_PASSED` cards;
+5. exclude cards with an unexpired `CLAIMED` lease;
+6. prefer resuming existing `VISUAL_READY`, `RENDERED`, `REVISION_REQUIRED`, or `STALE_REGEN_REQUIRED` work when appropriate;
+7. otherwise choose the next governed priority card.
 
 Do not choose the next card from memory alone.
 
@@ -56,13 +58,14 @@ Example: `JR-S1-I1-01-C001`.
 ## Claim Protocol
 
 1. Fetch `production/key-cards/registry.yaml` and retain its current blob SHA.
-2. Confirm the card is eligible.
+2. Confirm the card is eligible and belongs to the current ACTIVE batch scope.
 3. Create a claim token such as `20260820T111500+0800_a1b2c3d4`.
 4. Set card state to `CLAIMED` with:
    - `claimToken`
    - `claimedAt`
    - `leaseUntil` (default +60 minutes)
    - `claimedBy: chatgpt-session`
+   - `batchId`
 5. Update the registry using the fetched SHA.
 6. Only after the update succeeds may image production start.
 7. If the update fails because the SHA is stale, re-fetch the registry. Another conversation may have claimed or completed the card. Never generate from the stale plan.
@@ -131,14 +134,25 @@ After rendering:
 
 1. upload the final PNG to the proper Drive `04_重點卡` location;
 2. record exact Drive file ID in the registry;
-3. record `renderFingerprint` and `artifactRevision`;
+3. record `renderFingerprint`, `artifactRevision`, and `batchId`;
 4. run both QA gates:
    - `EVIDENCE_TEXT_LOCKED`
    - `MASCOT_IDENTITY_LOCKED`
 5. set `QA_PASSED` only if both pass;
-6. otherwise set `REVISION_REQUIRED` with a reason.
+6. after QA passes, add the production key to the current batch's `qaPassedProductionKeys` and update `completedCount`;
+7. otherwise set `REVISION_REQUIRED` with a reason.
 
 Only `QA_PASSED` counts as production complete.
+
+## Batch Rule
+
+Logical batches default to 10 QA-passed cards.
+
+A batch is not a lock. Never pre-claim all 10 cards.
+
+Current batch selection and completion are controlled by `production/key-cards/batches.yaml`.
+
+When a batch reaches its target, reconcile the latest Master and registry before creating the next batch. Do not create future card lists from memory.
 
 ## Revision
 
@@ -156,4 +170,4 @@ Increment artifact revision and record `supersedes`.
 
 ## Cross-Chat Rule
 
-Every new conversation must re-read the registry immediately before selecting or claiming a card. Never rely on what another conversation was expected to do.
+Every new conversation must re-read both the batch queue and registry immediately before selecting or claiming a card. Never rely on what another conversation was expected to do.
