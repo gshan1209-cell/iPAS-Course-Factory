@@ -63,14 +63,14 @@ All junior and intermediate key-point cards must use the approved master templat
 - `sources/registry/key-card-citation-policy.yaml`
 
 Canonical Drive master:
-- file: `iPAS_重點卡_標準格式母版_v2.0.png`
-- Drive file ID: `1X_aE2cqHtpjEV9LwpfQEno7uxCXBs_Ib`
+- file: `iPAS_重點卡_標準格式母版_v3.0.png`
+- Drive file ID: `1ghcc2Pcn4Yqf_assysJfB0ekXWd7N2TR`
 - Drive folder ID: `10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0`
-- standard canvas: `945 × 1663 px`, portrait
+- standard canvas: `1024 × 1536 px`, portrait
 
 Required card structure:
-1. header with visible level-subject label, card number, and star rating;
-2. card-type label plus only applicable auxiliary exam labels;
+1. top header: `iPAS` + visible level-subject label + large star icons + card number;
+2. second row: left-aligned section title + card category + only applicable exam labels;
 3. exam-point title + one-line summary;
 4. no more than four concise core points;
 5. a life example is mandatory and should prefer a simple visual process;
@@ -79,9 +79,13 @@ Required card structure:
 8. up to three related concepts;
 9. compact source footer.
 
-Visible identity rules:
+Header rules:
 - level/subject must be shown, e.g. `初級-科目一`;
+- do not show the text `重點卡` in the header;
+- do not show the text `重要度`; use large star icons directly;
 - card number must be shown in `C-<nnn>` format and is scoped per subject;
+- second-row section title is required and left aligned, e.g. `AI 基礎概念`;
+- do not repeat the level-subject label again on the second row;
 - visible card number never replaces internal atomic-topic/source/question traceability.
 
 Production rules:
@@ -90,7 +94,8 @@ Production rules:
 - prefer short sentences and avoid dense paragraphs;
 - star rating remains the only exam-priority indicator on the card;
 - exam ratio remains in the data layer and must not be shown on the card;
-- label semantics must follow the Card Label System;
+- card category must follow the Card Label System;
+- exam labels must show only applicable labels; do not render unused placeholders;
 - footer source format is fixed as `指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>`;
 - source footer must be cross-checked against the full data-layer citation/evidence;
 - template changes require approval and a new version; do not silently replace historical template evidence.
