@@ -88,10 +88,10 @@ records:
     cardNumber: C-001
     topic: AI 的定義與分類
     plannedBatchId: KC-JR-S1-B001
-    state: RENDERED
-    productionComplete: false
+    state: QA_PASSED
+    productionComplete: true
     sampleOnly: false
-    note: 'User-approved visual revision: all card-body visuals/text are image-generated from the governed content and canonical sample reference; only the bottom source citation is deterministic text.'
+    note: 'User-approved formal card using the approved image-body format, five fixed star slots, no repeated upper guide topic, and deterministic bottom source footer.'
     revisionReason: USER_APPROVED_REDESIGN
     sampleArtifact:
       title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
@@ -121,25 +121,34 @@ records:
         action: RENDERED_REVISION
         revision: 2
         rule: 'image-generated body; deterministic source footer only'
+      - reviewedAt: '2026-08-20T12:45:28+08:00'
+        reviewedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: QA_PASSED
+        revision: 4
+        reason: 'User approved the card format; final artifact keeps exactly five star slots and replaces only the bottom source citation with deterministic text.'
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
-    artifactRevision: 2
+    renderFingerprint: e44223749a36535edd3aa1ef3b1f6a410fffc68978835a58051a0ceb8efd16fa
+    artifactRevision: 4
     previousRejectedArtifact:
       filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v1.png
       driveFileId: 1B8KOf35BkqJ1S8BkCcvcdtJP7gX5hx67
       qaDisposition: REJECTED
-    renderedArtifact:
-      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v2.png
-      driveFileId: 13_FumOPqYSkEH5jeuqZOfu99mSBcF32r
+    finalDriveFileId: 1r-AnJFK4FSzIKIRW-Kw3Bg0wUX2VFl1x
+    finalArtifact:
+      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v4.png
       widthPx: 1024
       heightPx: 1536
       sizeVariant: STANDARD
+      imageSha256: cae1e4b8e94a0619e3bded4a06fedc2873a81c007d4af4d6b8ba45799b686083
       driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
-      qaDisposition: PENDING_VISUAL_REVIEW
+      qaDisposition: PASSED
     evidence:
       levelSubject: 初級-科目一
       sectionTitle: '3.1 人工智慧概念'
       starRating: 2
+      starSlotCount: 5
       cardNumber: C-001
       categoryCode: CONCEPT
       categoryIcon: '💡'
@@ -149,13 +158,18 @@ records:
     renderingMode:
       body: IMAGE_GENERATED
       footerSourceCitation: DETERMINISTIC_TEXT
-      userApprovedAt: '2026-08-20T11:58:00+08:00'
+      userApprovedAt: '2026-08-20T12:45:28+08:00'
     qa:
+      evidenceTextLocked: true
       sourceFooterDeterministic: true
+      visualEvidenceMatched: true
       bodyTextDeterministic: false
       mascotImageGenerated: true
-      finalQaPassed: false
+      mascotIdentityLocked: true
+      finalQaPassed: true
       fixedWidthPx: 1024
       renderedHeightPx: 1536
-      awaitingVisualReview: true
-    updatedAt: '2026-08-20T12:00:00+08:00'
+      starSlotCountExactlyFive: true
+      examRateVisible: false
+      awaitingVisualReview: false
+    updatedAt: '2026-08-20T12:45:28+08:00'
