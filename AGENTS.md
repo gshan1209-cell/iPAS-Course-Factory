@@ -55,6 +55,36 @@ Approved auxiliary labels: 🔥必考/MUST, ❗易錯/ERROR, 🔁重複出題/RE
 
 Do not invent new category codes or reinterpret label colors without first updating the canonical label policy.
 
+## Key-Card Template Contract
+
+All junior and intermediate key-point cards must use the approved master template contract:
+
+- `sources/registry/key-card-template-policy.yaml`
+
+Canonical Drive master:
+- file: `iPAS_重點卡_標準格式母版_v1.0.png`
+- Drive file ID: `1hkosypExdKsSs0ih_yfItoVm7yzh4etJ`
+- Drive folder ID: `10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0`
+- standard canvas: `875 × 2517 px`, portrait
+
+Required card structure:
+1. header with card ID + stars + historical ratio;
+2. card-type label;
+3. exam-point title + one-line summary;
+4. no more than four core points;
+5. a life example is mandatory;
+6. common traps, up to three;
+7. one memory phrase;
+8. up to three related concepts;
+9. footer tip.
+
+Production rules:
+- one card focuses on one exam point;
+- simplify content and use large readable typography;
+- star rating remains the only exam-priority indicator;
+- label semantics must follow the Card Label System;
+- template changes require approval and a new version; do not silently replace historical template evidence.
+
 ## Unit Artifact Contract
 
 A production-ready unit tracks these ten artifact groups:
