@@ -15,10 +15,11 @@ Before production, read and follow:
 2. `sources/registry/exam-programs.yaml`
 3. `docs/MULTI_EXAM_FACTORY_ARCHITECTURE.md`
 4. `sources/registry/key-card-template-policy.yaml`
-5. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
-6. `production/key-cards/batches.yaml`
-7. `production/key-cards/registry.yaml`
-8. the current governed iPAS Master / atomic-topic record
+5. `sources/registry/key-card-weight-policy.yaml`
+6. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+7. `production/key-cards/batches.yaml`
+8. `production/key-cards/registry.yaml`
+9. the current governed iPAS Master / atomic-topic record
 
 Also honor:
 
@@ -97,6 +98,42 @@ Never select from another program's batch or data.
 - `SAMPLE_ONLY` -> does not count as final production
 - `REVISION_REQUIRED` / `STALE_REGEN_REQUIRED` -> redraw allowed with revision reason
 
+## Star / Exam-Frequency Semantics
+
+Formal definition:
+
+**星級是依歷屆公告試題之出題比例換算出的考試優先度，可作為出題率高低的簡化參考，但不等同於精確出題百分比。**
+
+Production rules:
+
+- valid star range is `1..5` only;
+- the header has exactly `5` star slots, never 6;
+- filled stars show the governed effective star rating;
+- star rating is the only exam-priority visual on the card;
+- exact historical hit count and exact exam-rate percentage remain in the data layer and are not displayed on the card;
+- `必考 / 易錯 / 重複出題 / 新興考點` are exam-trait labels and must not replace or alter the star rating;
+- a star rating may be used as a rough exam-frequency reference band, but must never be described as an exact percentage;
+- when announced-exam data changes, use the current governed snapshot and recompute according to `sources/registry/key-card-weight-policy.yaml`;
+- within one snapshot, `computedStar` must not drift;
+- when atomic QMAP is still pending, never claim that a parent frequency or parent star is the atomic topic's exact frequency or computed atomic star. Parent priority may be used only as a governed priority reference when policy allows it.
+
+Current parent-level ratio bands:
+
+- `★★★★★` = `>=15%`
+- `★★★★` = `10% to <15%`
+- `★★★` = `6% to <10%`
+- `★★` = `3% to <6%`
+- `★` = `<3%`
+
+QA must fail when:
+
+- more than five star slots are visible;
+- fewer or more than exactly five header star positions are rendered;
+- filled star count does not match the governed effective star value;
+- a precise exam-rate percentage appears on the card face;
+- star meaning is replaced by an auxiliary label;
+- an atomic topic is presented with an exact frequency/star not supported by atomic QMAP or an explicit governed override.
+
 ## iPAS Rendering Profile
 
 Continue to enforce:
@@ -129,6 +166,8 @@ Final iPAS card QA requires:
 - `EVIDENCE_TEXT_LOCKED = true` — exact deterministic bottom source footer
 - `VISUAL_EVIDENCE_MATCHED = true` — body evidence visually matches governed data
 - `MASCOT_IDENTITY_LOCKED = true`
+- `STAR_SLOT_COUNT_EXACTLY_FIVE = true`
+- `EXAM_RATE_HIDDEN = true`
 - canonical sample structure match
 
 ## Completion
