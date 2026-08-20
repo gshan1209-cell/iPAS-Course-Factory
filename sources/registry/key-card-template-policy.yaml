@@ -1,4 +1,4 @@
-policyVersion: KCT-v3.3
+policyVersion: KCT-v3.4
 canonicalSince: '2026-08-20'
 status: ACTIVE
 scope:
@@ -64,15 +64,46 @@ historicalTemplates:
 mascot:
   name: 小芯
   required: true
-  assetTitle: iPAS_重點卡_角色素材_小芯_v1.0.png
-  driveFileId: 1rknCaHazFlMqRZ1QSKmmhRJ9F8T9kHdM
+  baseIdentityAssetTitle: iPAS_重點卡_角色素材_小芯_v1.0.png
+  baseIdentityDriveFileId: 1rknCaHazFlMqRZ1QSKmmhRJ9F8T9kHdM
+  policyRef: docs/KEY_CARD_MASCOT_POLICY.md
   placement: top-right
+  identityLockRequired: true
+  themeVariationAllowed: true
+  variationRule: '主題可變，身份不變；姿態可變，角色鎖定。'
+  allowedVariations:
+    - pose
+    - facial-expression
+    - outfit
+    - handheld-props
+    - wearable-accessories
+    - topic-themed-professional-role
+    - supporting-visual-effect
+  coreIdentityMustRemain:
+    - name-Xiaoxin
+    - chibi-cute-tech-girl-positioning
+    - recognizable-face-and-eye-language
+    - pink-purple-white-tech-color-family
+    - signature-headset-or-tech-headgear-language
+    - AI-teaching-assistant-character-impression
+  suggestedThemeRoles:
+    ai-foundation: 教學助理風
+    data-processing: 資料分析師風
+    machine-learning: 研究員或工程師風
+    generative-ai: 創作助手風
+    ai-governance-security: 審核官或守門員風
   keepClearOf:
     - stars
     - card-number
     - exam-labels
     - main-title
-  rule: use the governed mascot asset; do not redraw the mascot into a different identity during batch production
+  prohibited:
+    - materially-different-character-identity
+    - photorealistic-style-drift
+    - unrelated-character-replacement
+    - complete-core-palette-drift
+    - pose-or-costume-that-obscures-key-card-information
+  rule: use the governed base asset as the identity reference; theme-aware redraws are allowed only when the result remains unmistakably 小芯
 sizeVariants:
   widthPolicy:
     fixedWidthPx: 1024
@@ -203,6 +234,7 @@ renderingPolicy:
   visualGeneration:
     allowedFor:
       - mascot-and-illustration-assets
+      - theme-aware-mascot-variants-under-identity-lock
       - icons
       - decorative-backgrounds
       - non-text-visual-process-elements
@@ -235,7 +267,8 @@ renderingPolicy:
   workflow:
     - resolve-governed-card-record
     - validate-locked-fields
-    - generate-or-select-visual-assets
+    - select-or-generate-theme-aware-xiaoxin-under-identity-lock
+    - generate-or-select-other-visual-assets
     - compose-fixed-layout
     - inject-deterministic-text
     - compare-rendered-locked-text-with-data-record
@@ -257,6 +290,7 @@ cardIdentity:
   rule: visible card number must never replace internal atomic/source traceability
 weightPolicyRef: sources/registry/key-card-weight-policy.yaml
 citationPolicyRef: sources/registry/key-card-citation-policy.yaml
+mascotPolicyRef: docs/KEY_CARD_MASCOT_POLICY.md
 changeControl:
   templateVersioning: append-only
   replaceMasterRequiresApproval: true
@@ -279,6 +313,9 @@ qa:
   requireApplicableExamLabelsOnly: true
   requireExamLabelsWhenApplicable: true
   requireMascotTopRight: true
+  requireMascotIdentityLock: true
+  allowThemeAwareMascotVariation: true
+  failOnMascotIdentityDrift: true
   requireLifeExample: true
   requireSimplifiedContent: true
   forbidExamRateOnCard: true
