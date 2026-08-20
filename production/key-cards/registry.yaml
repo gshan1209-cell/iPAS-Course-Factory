@@ -1,0 +1,86 @@
+schemaVersion: KCIR-v1.0
+status: ACTIVE
+effectiveDate: '2026-08-20'
+coordinationSource: github
+registryRole: cross-chat-image-production-lock-and-audit
+policyRefs:
+  productionPlan: docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md
+  template: sources/registry/key-card-template-policy.yaml
+  deterministicText: docs/KEY_CARD_DETERMINISTIC_TEXT_POLICY.md
+  mascot: docs/KEY_CARD_MASCOT_POLICY.md
+  dynamicHeight: docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md
+claimPolicy:
+  granularity: one-card
+  leaseMinutes: 60
+  preclaimBatch: false
+  requireFreshRegistrySha: true
+  staleShaMeansRefetchAndRetry: true
+  allowTakeoverAfterLeaseExpiry: true
+fingerprintPolicy:
+  algorithm: sha256
+  canonicalEncoding: utf-8-json-sorted-keys
+  include:
+    - productionKey
+    - templatePolicyVersion
+    - sourceAnalysisSnapshotId
+    - lockedEvidenceFields
+    - governedTeachingContent
+    - lifeExample
+    - traps
+    - memoryPhrase
+    - relatedConcepts
+    - mascotThemeRole
+    - explicitVisualRevisionKey
+  exclude:
+    - randomImageSeed
+    - chatTitle
+    - conversationMemory
+states:
+  productionComplete: QA_PASSED
+  allowed:
+    - PLANNED
+    - CLAIMED
+    - VISUAL_READY
+    - RENDERED
+    - QA_PASSED
+    - REVISION_REQUIRED
+    - STALE_REGEN_REQUIRED
+    - SUPERSEDED
+    - SAMPLE_ONLY
+revisionReasons:
+  - SOURCE_CHANGED
+  - TEMPLATE_CHANGED
+  - CONTENT_CORRECTION
+  - QA_REJECTED
+  - USER_APPROVED_REDESIGN
+  - MASCOT_IDENTITY_FIX
+  - EVIDENCE_TEXT_FIX
+productionKeyFormat: '<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>'
+examples:
+  - JR-S1-I1-01-C001
+  - JR-S2-I2-04-C017
+  - MID-S3-M3-06-C023
+artifactNameFormat: '<級別>_<科目>_<CARD_NO>_<ATOMIC_TOPIC_ID>_<短主題>_v<artifactRevision>.png'
+records:
+  - productionKey: JR-S1-I1-01-C001
+    levelSubject: 初級-科目一
+    atomicTopicId: I1-01
+    cardNumber: C-001
+    topic: AI 的定義與分類
+    state: SAMPLE_ONLY
+    productionComplete: false
+    sampleOnly: true
+    note: 'Existing KCS-v1.1 visual sample is a design reference only. It does not count as final production because final deterministic evidence-text rendering must still be performed.'
+    sampleArtifact:
+      title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
+      driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
+      sampleVersion: KCS-v1.1
+    claim: null
+    renderFingerprint: null
+    artifactRevision: null
+    finalDriveFileId: null
+    qa:
+      evidenceTextLocked: false
+      mascotIdentityLocked: true
+      finalQaPassed: false
+    updatedAt: '2026-08-20T11:06:00+08:00'
