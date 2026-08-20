@@ -1,4 +1,4 @@
-policyVersion: KCT-v3.2
+policyVersion: KCT-v3.3
 canonicalSince: '2026-08-20'
 status: ACTIVE
 scope:
@@ -14,10 +14,10 @@ canonicalTemplate:
   role: master-template
   replaces: iPAS_重點卡_標準格式母版_v2.0.png
 canonicalSample:
-  sampleVersion: KCS-v1.0
-  title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.0.png
+  sampleVersion: KCS-v1.1
+  title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
   driveFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
-  driveFileId: 1S55pMXly4Bj5vjCn3QCb-bKSx53D6Git
+  driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
   widthPx: 1024
   heightPx: 1536
   orientation: portrait
@@ -34,14 +34,24 @@ canonicalSample:
     - content-density
     - section-spacing
     - icon-and-color-rhythm
+    - mascot-placement
+    - exam-label-placement
   doNotCopyLiteralEvidenceValues: true
   evidenceFieldsMustComeFromDataLayer:
+    - level-subject
+    - section-title
     - star-rating
+    - card-number
     - card-category
     - exam-labels
     - source-footer
     - exam-question-refs
-  rule: standard sample is the visual/content-density and typography baseline; evidence-driven values must always be regenerated from the current governed data layer and must not be copied literally from the sample
+  rule: standard sample is a visual/content-density baseline only; evidence-driven values must always be regenerated from the current governed data layer and rendered as deterministic text, never copied from the sample image
+historicalSamples:
+  - version: KCS-v1.0
+    file: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.0.png
+    driveFileId: 1S55pMXly4Bj5vjCn3QCb-bKSx53D6Git
+    status: historical
 historicalTemplates:
   - version: KCT-v1.1
     file: iPAS_重點卡_標準格式母版_v1.0.png
@@ -51,6 +61,18 @@ historicalTemplates:
     file: iPAS_重點卡_標準格式母版_v2.0.png
     driveFileId: 1X_aE2cqHtpjEV9LwpfQEno7uxCXBs_Ib
     status: historical
+mascot:
+  name: 小芯
+  required: true
+  assetTitle: iPAS_重點卡_角色素材_小芯_v1.0.png
+  driveFileId: 1rknCaHazFlMqRZ1QSKmmhRJ9F8T9kHdM
+  placement: top-right
+  keepClearOf:
+    - stars
+    - card-number
+    - exam-labels
+    - main-title
+  rule: use the governed mascot asset; do not redraw the mascot into a different identity during batch production
 sizeVariants:
   widthPolicy:
     fixedWidthPx: 1024
@@ -127,7 +149,7 @@ headerContract:
     doNotRepeatLevelSubject: true
 layout:
   - top-header-brand-level-subject-large-stars-card-number
-  - second-row-section-title-card-category-exam-labels
+  - second-row-section-title-category-icon-exam-labels-and-mascot
   - exam-point-title-and-one-line-summary
   - core-points
   - life-example
@@ -155,27 +177,76 @@ contentRules:
   removeUnusedLabelPlaceholders: true
 labelPlacement:
   cardCategory:
-    heading: 卡片類別
-    showCode: true
+    displayMode: icon-only
+    headingVisible: false
+    showText: false
+    showCode: false
+    iconRequired: true
     policyRef: sources/registry/key-card-label-policy.yaml
   examLabels:
-    heading: 考試標籤
+    headingVisible: false
+    displayMode: text-badge
     showOnlyApplicable: true
+    requiredWhenApplicable: true
     allowMultiple: true
     policyRef: sources/registry/key-card-label-policy.yaml
 footerSourceCitation:
   policyRef: sources/registry/key-card-citation-policy.yaml
   format: '指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>'
-  example: '指引:「AI 治理概念」；考題:115-2 初級科一 Q5、Q6'
+  example: '指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4'
   guideFirst: true
   examSecond: true
   compactDisplayOnly: true
+  exactTextRequired: true
+renderingPolicy:
+  mode: hybrid-deterministic
+  visualGeneration:
+    allowedFor:
+      - mascot-and-illustration-assets
+      - icons
+      - decorative-backgrounds
+      - non-text-visual-process-elements
+    forbiddenFor:
+      - evidence-text
+      - source-footer-text
+      - card-number-text
+      - star-count-text-or-value
+      - exam-label-text
+  deterministicTextLayer:
+    required: true
+    rendererRole: fixed-template-or-programmatic-layout
+    exactTextMode: true
+    sourceOfTruth: governed-data-layer
+    lockedFields:
+      - level-subject
+      - section-title
+      - atomic-topic-title
+      - star-rating
+      - card-number
+      - card-category-code-and-icon
+      - exam-labels
+      - guide-topic
+      - exam-question-refs
+      - source-footer
+    noParaphrase: true
+    noAutoCorrection: true
+    noQuestionNumberInference: true
+    noSourceSubstitution: true
+  workflow:
+    - resolve-governed-card-record
+    - validate-locked-fields
+    - generate-or-select-visual-assets
+    - compose-fixed-layout
+    - inject-deterministic-text
+    - compare-rendered-locked-text-with-data-record
+    - fail-on-any-mismatch
+  qaGate: EVIDENCE_TEXT_LOCKED
 cardIdentity:
   visibleFields:
     - brand
     - level-subject
     - section-title
-    - card-category
+    - card-category-icon
     - exam-labels
     - star-rating
     - card-number
@@ -203,14 +274,20 @@ qa:
   requireLargeStarIcons: true
   forbidImportanceText: true
   forbidKeyCardTextInHeader: true
-  requireCardCategory: true
+  requireCardCategoryIcon: true
+  forbidCardCategoryText: true
   requireApplicableExamLabelsOnly: true
+  requireExamLabelsWhenApplicable: true
+  requireMascotTopRight: true
   requireLifeExample: true
   requireSimplifiedContent: true
   forbidExamRateOnCard: true
   requireCompactSourceFooter: true
+  requireExactSourceFooterText: true
   crossCheckSourceFooterAgainstDataLayer: true
   requireSampleStructureMatch: true
   forbidTypographyDownscaleForFit: true
   requireDynamicHeightWhenNeeded: true
   requireSplitWhenMultipleExamPoints: true
+  requireDeterministicLockedText: true
+  failOnLockedTextMismatch: true
