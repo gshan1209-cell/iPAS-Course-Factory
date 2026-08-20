@@ -1,0 +1,106 @@
+schemaVersion: EXAM-PROGRAM-v1.0
+status: ACTIVE
+effectiveDate: '2026-08-20'
+role: multi-exam-program-registry
+corePrinciple: '共用核心，考試隔離；規範可繼承，資料不可混用。'
+namespacePolicy:
+  programCodeRequired: true
+  programCodeFormat: 'UPPERCASE-ASCII-SHORT-CODE'
+  globallyUniqueArtifactKeyMustIncludeProgramCode: true
+  sourceIdsMustBeProgramScoped: true
+  topicIdsMustBeProgramScopedOrResolvedWithinProgram: true
+  subjectIdsMustBeProgramScopedOrResolvedWithinProgram: true
+  crossProgramEvidenceMixing: false
+  crossProgramQuestionFrequencyMixing: false
+inheritancePolicy:
+  coreMayProvideDefaults:
+    - source-governance-framework
+    - artifact-state-machine
+    - cross-chat-claim-lock
+    - deterministic-evidence-text
+    - dynamic-card-height
+    - batch-coordination
+    - qa-framework
+    - artifact-versioning
+  programMustDefineOrOverride:
+    - official-authority
+    - official-source-entrypoints
+    - level-or-track-model
+    - subject-model
+    - question-uid-format
+    - topic-taxonomy
+    - historical-weight-denominator
+    - source-priority-profile
+    - citation-display-profile
+    - drive-root
+  programMayOverride:
+    - card-template-profile
+    - label-profile
+    - mascot-profile
+    - visual-art-direction
+    - filename-profile
+    - batch-size
+programs:
+  - programCode: IPAS
+    displayName: iPAS AI應用規劃師
+    programType: certification
+    status: ACTIVE
+    onboardingState: ACTIVE_NATIVE
+    productionNamespace: IPAS
+    existingCompatibility:
+      preserveLegacyIds: true
+      legacyProductionKeyWithoutProgramPrefix: true
+      newGlobalKeysRequireProgramPrefix: true
+    levelOrTrackModel:
+      type: level
+      knownCodes:
+        - JR
+        - MID
+    sourceGovernanceProfile: IPAS-SOURCE-v1
+    cardTemplateProfile: KCT-v3.4
+    mascotProfile: XIAOXIN-v1
+    driveRootId: 15ei4NnV4FRfaWORZifUPONzsZ6Ki_1ke
+    notes:
+      - 'Current project data remains authoritative for iPAS.'
+      - 'Do not rewrite existing iPAS IDs solely to satisfy the new multi-exam namespace; use global aliases for compatibility.'
+  - programCode: POSTAL
+    displayName: 郵局招考
+    programType: recruitment-exam
+    status: PLANNED
+    onboardingState: SOURCE_DISCOVERY_REQUIRED
+    productionNamespace: POSTAL
+    officialProgramName: TBC_FROM_OFFICIAL_SOURCE
+    officialAuthority: TBC_FROM_OFFICIAL_SOURCE
+    levelOrTrackModel: TBC_FROM_OFFICIAL_SOURCE
+    subjectModel: []
+    sourceGovernanceProfile: TBC_AFTER_SOURCE_REVIEW
+    cardTemplateProfile: INHERIT_CORE_DEFAULT_UNTIL_APPROVED
+    mascotProfile: INHERIT_OR_OVERRIDE_LATER
+    driveRootId: null
+    restrictions:
+      - 'Do not infer official tracks, subjects, weights, question counts, or eligibility from iPAS.'
+      - 'Do not activate production until official recruitment notice / exam scope / question sources are registered.'
+      - 'Historical frequency and star weighting must use POSTAL-only evidence.'
+    nextGate: PROGRAM_PROFILE_READY
+futureProgramTemplate:
+  requiredFields:
+    - programCode
+    - displayName
+    - programType
+    - officialAuthority
+    - officialSourceEntryPoints
+    - levelOrTrackModel
+    - subjectModel
+    - questionUidFormat
+    - topicTaxonomy
+    - sourceGovernanceProfile
+    - historicalWeightPolicy
+    - driveRootId
+  activationGates:
+    - PROGRAM_REGISTERED
+    - OFFICIAL_SOURCES_REGISTERED
+    - SUBJECT_MODEL_READY
+    - TOPIC_TAXONOMY_READY
+    - QUESTION_ID_POLICY_READY
+    - STORAGE_READY
+    - QA_PROFILE_READY
