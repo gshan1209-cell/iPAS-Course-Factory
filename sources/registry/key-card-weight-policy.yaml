@@ -1,6 +1,38 @@
-policyVersion: STAR-v1.1
+policyVersion: STAR-v1.2
 effectiveFrom: '2026-08-20'
+status: ACTIVE
 labelPolicyRef: sources/registry/key-card-label-policy.yaml
+
+semanticDefinition:
+  formalStatement: '星級是依歷屆公告試題之出題比例換算出的考試優先度，可作為出題率高低的簡化參考，但不等同於精確出題百分比。'
+  starIsExamPriorityBand: true
+  mayBeUsedAsExamFrequencyReference: true
+  equalsExactExamRate: false
+  preciseExamRateRemainsDataLayerOnly: true
+  cardFaceShowsPreciseExamRate: false
+  examPriorityVisualOnCard: star-only
+
+starDisplayContract:
+  minStar: 1
+  maxStar: 5
+  fixedSlotCount: 5
+  forbidSixthStar: true
+  qaFailWhenSlotCountNotFive: true
+  qaFailWhenFilledStarCountOutsideRange: true
+  interpretation:
+    fiveStar: '最高優先度／高頻考點區間'
+    fourStar: '高重要度考點區間'
+    threeStar: '中度重要考點區間'
+    twoStar: '低至中度考點區間'
+    oneStar: '低頻補充考點區間'
+
+usageRules:
+  - '星級可用來快速判斷考點大約有多常考，但不得當成精確百分比解讀。'
+  - '資料層保留歷屆出題次數與精確出題比例；卡面不顯示出題率百分比。'
+  - '必考、易錯、重複出題、新興考點屬考試特性標籤，不得取代星級作為重要度指標。'
+  - '歷屆公告試題資料更新時應建立新 snapshot 並重新計算星級；同一 snapshot 內 computedStar 不可漂移。'
+  - '原子考點若尚未完成 atomic QMAP，不得把父層出題比例或父層星級宣稱為原子考點的精確出題率。'
+
 denominator:
   sourceType: announced-exam
   tier: S3
@@ -11,26 +43,33 @@ excludeFromHistoricalRatio:
   - learning-guide
   - errata
   - internal-supplement
+
 thresholds:
   fiveStar:
     minRatio: 0.15
+    displayBand: '>=15%'
     defaultCardCount: [2, 3]
   fourStar:
     minRatio: 0.10
     maxRatioExclusive: 0.15
+    displayBand: '10% to <15%'
     defaultCardCount: [1, 2]
   threeStar:
     minRatio: 0.06
     maxRatioExclusive: 0.10
+    displayBand: '6% to <10%'
     defaultCardCount: [1, 1]
   twoStar:
     minRatio: 0.03
     maxRatioExclusive: 0.06
+    displayBand: '3% to <6%'
     defaultCardCount: [0, 1]
   oneStar:
     minRatio: 0.0
     maxRatioExclusive: 0.03
+    displayBand: '<3%'
     defaultCardCount: [0, 0]
+
 fields:
   computedStar: immutableWithinSnapshot
   overrideStar: optional
@@ -39,13 +78,26 @@ fields:
   computedCardCount: derived
   overrideCardCount: optional
   effectiveCardCount: overrideOrComputed
+  exactHistoricalExamCount: data-layer-only
+  exactHistoricalExamRatio: data-layer-only
+
 separationRules:
   starRepresentsExamPriorityOnly: true
+  starMayReferenceExamFrequencyBand: true
+  starMustNotBePresentedAsExactExamRate: true
   categoryLabelRepresentsLearningModeOnly: true
   auxiliaryLabelRepresentsExamTraitOnly: true
+
+atomicTopicGuard:
+  requireAtomicQmapForAtomicExactFrequencyClaim: true
+  forbidCopyingParentFrequencyAsAtomicExactFrequency: true
+  forbidCopyingParentStarAsAtomicComputedStar: true
+  parentStarMayRemainPriorityReferenceOnly: true
+
 snapshots:
   appendOnly: true
   idFormat: YYYY-MM-DD-exam<N>-v<N>
+
 newTopicPolicy:
   createCandidateCard: true
   status: NEW_TOPIC_REVIEW
