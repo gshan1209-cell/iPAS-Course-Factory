@@ -1,0 +1,31 @@
+policyVersion: CITATION-v1.0
+status: ACTIVE
+effectiveFrom: '2026-08-20'
+purpose: auditable-key-card-source-citation
+fields:
+  citationField: 出處
+  sourceEvidenceField: 來源依據
+format:
+  examCitation: '<完整梯次><級別><科目> Q<nn>、Q<nn>'
+  officialGuideCitation: '官方學習指引：<能力指標>'
+  separator: '；'
+examples:
+  - '115年第二次初級科目一 Q7；官方學習指引：L11101'
+  - '114年第二梯次中級科目三 Q22、Q23；115年第一次中級科目三 Q1、Q5；官方學習指引：L23101 機率／統計之機器學習基礎應用'
+rules:
+  requireExplicitSession: true
+  requireLevelAndSubject: true
+  requireQuestionPrefixQ: true
+  allowMultipleSessions: true
+  includeOfficialGuideWhenMapped: true
+  forbidAmbiguousShorthand:
+    - '114Q'
+    - '115Q'
+    - '115-1Q'
+    - '115-2Q'
+  citationMustBeHumanReadable: true
+  sourceEvidenceMustRetainOfficialUrlOrDriveMirror: true
+qa:
+  citationRequiredForPublishedCard: true
+  zeroAmbiguousShorthandBeforePublish: true
+  crossCheckCitationAgainstTrueQuestionReference: true
