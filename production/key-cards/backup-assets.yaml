@@ -1,0 +1,30 @@
+schemaVersion: KCBA-v1.0
+status: ACTIVE
+effectiveDate: '2026-08-20'
+role: historical-and-backup-visual-assets
+backupFolder:
+  title: 99_備用素材_歷史產圖_20260820
+  driveFolderId: 1y7oooq1TnlPdBA19OBGOCmFlILwzvTXo
+  parentTemplateFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
+  verifiedImageCount: 32
+usagePolicy:
+  referenceOnly: true
+  countsAsProductionComplete: false
+  mustNotSetRegistryQaPassed: true
+  mustNotReplaceCanonicalTemplate: true
+  mustNotReplaceCanonicalSample: true
+  mayBeUsedFor:
+    - visual-reference
+    - layout-reference
+    - historical-comparison
+    - mascot-reference
+    - recovery-source
+  excludedFrom:
+    - production-completion-count
+    - batch-completed-count
+    - render-fingerprint-completion-test
+    - final-artifact-selection
+notes:
+  - 'These files are historical images generated during template/card design iteration and are preserved as backup material.'
+  - 'A file existing in this Drive folder does not mean its card is produced, claimed, rendered, or QA passed.'
+  - 'Cross-chat production decisions must continue to use production/key-cards/registry.yaml.'
