@@ -1,41 +1,58 @@
-policyVersion: KCT-v2.0
+policyVersion: KCT-v3.0
 canonicalSince: '2026-08-20'
 status: ACTIVE
 scope:
   levels: [junior, intermediate]
   artifact: key-point-card
 canonicalTemplate:
-  title: iPAS_重點卡_標準格式母版_v2.0.png
+  title: iPAS_重點卡_標準格式母版_v3.0.png
   driveFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
-  driveFileId: 1X_aE2cqHtpjEV9LwpfQEno7uxCXBs_Ib
-  widthPx: 945
-  heightPx: 1663
+  driveFileId: 1ghcc2Pcn4Yqf_assysJfB0ekXWd7N2TR
+  widthPx: 1024
+  heightPx: 1536
   orientation: portrait
   role: master-template
-  replaces: iPAS_重點卡_標準格式母版_v1.0.png
+  replaces: iPAS_重點卡_標準格式母版_v2.0.png
 historicalTemplates:
   - version: KCT-v1.1
     file: iPAS_重點卡_標準格式母版_v1.0.png
     driveFileId: 1hkosypExdKsSs0ih_yfItoVm7yzh4etJ
     status: historical
-headerFields:
-  levelSubjectRequired: true
-  levelSubjectDisplayFormat: '<級別>-<科目>'
-  examples:
-    - 初級-科目一
-    - 初級-科目二
-    - 中級-科目一
-    - 中級-科目二
-    - 中級-科目三
-  cardNumberRequired: true
-  cardNumberDisplayFormat: 'C-<nnn>'
-  cardNumberScope: per-subject
-  starRatingRequired: true
-  examRateVisible: false
+  - version: KCT-v2.0
+    file: iPAS_重點卡_標準格式母版_v2.0.png
+    driveFileId: 1X_aE2cqHtpjEV9LwpfQEno7uxCXBs_Ib
+    status: historical
+headerContract:
+  topBar:
+    brandText: iPAS
+    levelSubjectRequired: true
+    levelSubjectDisplayFormat: '<級別>-<科目>'
+    examples:
+      - 初級-科目一
+      - 初級-科目二
+      - 中級-科目一
+      - 中級-科目二
+      - 中級-科目三
+    starRatingRequired: true
+    starDisplay: large-icon-row
+    starSlotCount: 5
+    hideImportanceText: true
+    hideKeyCardText: true
+    cardNumberRequired: true
+    cardNumberDisplayFormat: 'C-<nnn>'
+    cardNumberScope: per-subject
+    examRateVisible: false
+  secondRow:
+    sectionTitleRequired: true
+    sectionTitleExample: 'AI 基礎概念'
+    sectionTitleAlignment: left
+    cardCategoryRequired: true
+    examLabelsRequiredWhenApplicable: true
+    doNotRepeatLevelSubject: true
 layout:
-  - header-with-level-subject-card-number-stars
-  - card-type-and-exam-labels
-  - title-and-one-line-summary
+  - top-header-brand-level-subject-large-stars-card-number
+  - second-row-section-title-card-category-exam-labels
+  - exam-point-title-and-one-line-summary
   - core-points
   - life-example
   - common-traps
@@ -59,6 +76,17 @@ contentRules:
   avoidDenseParagraphs: true
   preferShortSentences: true
   preferVisualProcessForLifeExample: true
+  removeUnusedLabelPlaceholders: true
+labelPlacement:
+  cardCategory:
+    heading: 卡片類別
+    showCode: true
+    policyRef: sources/registry/key-card-label-policy.yaml
+  examLabels:
+    heading: 考試標籤
+    showOnlyApplicable: true
+    allowMultiple: true
+    policyRef: sources/registry/key-card-label-policy.yaml
 footerSourceCitation:
   policyRef: sources/registry/key-card-citation-policy.yaml
   format: '指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>'
@@ -68,14 +96,18 @@ footerSourceCitation:
   compactDisplayOnly: true
 cardIdentity:
   visibleFields:
+    - brand
     - level-subject
+    - section-title
+    - card-category
+    - exam-labels
+    - star-rating
     - card-number
   internalTraceabilityFields:
     - atomic-topic-id
     - source-id
     - question-uid
   rule: visible card number must never replace internal atomic/source traceability
-labelPolicyRef: sources/registry/key-card-label-policy.yaml
 weightPolicyRef: sources/registry/key-card-weight-policy.yaml
 citationPolicyRef: sources/registry/key-card-citation-policy.yaml
 changeControl:
@@ -84,11 +116,17 @@ changeControl:
   neverOverwriteHistoricalTemplateEvidence: true
   updateDriveAndPolicyTogether: true
 qa:
+  requireExactCanvas: true
   requireReadableMobileText: true
   requireVisualHierarchy: true
   requireLevelSubjectLabel: true
+  requireSectionTitle: true
   requireCardNumber: true
-  requireLabelConsistency: true
+  requireLargeStarIcons: true
+  forbidImportanceText: true
+  forbidKeyCardTextInHeader: true
+  requireCardCategory: true
+  requireApplicableExamLabelsOnly: true
   requireLifeExample: true
   requireSimplifiedContent: true
   forbidExamRateOnCard: true
