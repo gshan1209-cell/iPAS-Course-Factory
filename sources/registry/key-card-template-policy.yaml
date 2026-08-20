@@ -1,4 +1,4 @@
-policyVersion: KCT-v3.0
+policyVersion: KCT-v3.1
 canonicalSince: '2026-08-20'
 status: ACTIVE
 scope:
@@ -13,6 +13,35 @@ canonicalTemplate:
   orientation: portrait
   role: master-template
   replaces: iPAS_重點卡_標準格式母版_v2.0.png
+canonicalSample:
+  sampleVersion: KCS-v1.0
+  title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.0.png
+  driveFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
+  driveFileId: 1S55pMXly4Bj5vjCn3QCb-bKSx53D6Git
+  widthPx: 1024
+  heightPx: 1536
+  orientation: portrait
+  role: canonical-design-sample
+  levelSubject: 初級-科目一
+  sectionTitle: AI 基礎概念
+  cardNumber: C-001
+  referenceTopicId: I1-01
+  referenceTopic: AI 的定義與分類
+  useFor:
+    - layout-proportion
+    - visual-hierarchy
+    - typography-scale
+    - content-density
+    - section-spacing
+    - icon-and-color-rhythm
+  doNotCopyLiteralEvidenceValues: true
+  evidenceFieldsMustComeFromDataLayer:
+    - star-rating
+    - card-category
+    - exam-labels
+    - source-footer
+    - exam-question-refs
+  rule: standard sample is the visual/content-density reference; evidence-driven values must always be regenerated from the current governed data layer and must not be copied literally from the sample
 historicalTemplates:
   - version: KCT-v1.1
     file: iPAS_重點卡_標準格式母版_v1.0.png
@@ -132,3 +161,4 @@ qa:
   forbidExamRateOnCard: true
   requireCompactSourceFooter: true
   crossCheckSourceFooterAgainstDataLayer: true
+  requireSampleStructureMatch: true
