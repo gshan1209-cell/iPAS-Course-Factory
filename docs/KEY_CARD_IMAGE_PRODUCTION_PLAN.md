@@ -18,6 +18,12 @@ No conversation may generate a production key-card image until it has successful
 
 `production/key-cards/registry.yaml`
 
+Logical batches are coordinated through:
+
+`production/key-cards/batches.yaml`
+
+A batch is a progress/packaging unit only. It does not reserve all cards in the batch.
+
 ## Unique Production Key
 
 Each production card has exactly one stable key:
@@ -37,21 +43,36 @@ The key must not be derived from the chat title or generated image filename.
 Every conversation that produces cards must follow this sequence:
 
 1. Read `sources/registry/key-card-template-policy.yaml`.
-2. Read `production/key-cards/registry.yaml` and remember its current GitHub blob SHA.
-3. Resolve the next card from the governed Master / atomic-topic data layer.
-4. Build the card's `productionKey`.
-5. Check the registry:
+2. Read `production/key-cards/batches.yaml` and identify the current ACTIVE batch.
+3. Read `production/key-cards/registry.yaml` and remember its current GitHub blob SHA.
+4. Resolve the next eligible card from the governed Master / atomic-topic data layer using the ACTIVE batch scope.
+5. Build the card's `productionKey`.
+6. Check the registry:
    - `QA_PASSED` + same fingerprint -> skip; never regenerate.
    - active `CLAIMED` -> skip; another conversation owns it.
    - `RENDERED` / `VISUAL_READY` -> resume the existing work; do not start a second copy.
    - `REVISION_REQUIRED` or `STALE_REGEN_REQUIRED` -> a new revision is allowed.
-   - no record / `PLANNED` -> attempt claim.
-6. Claim one card by updating the registry using the current blob SHA.
-7. If the GitHub update fails because the SHA is stale, another conversation changed the registry first. Re-fetch and choose again. Never generate before the claim succeeds.
-8. Produce only the claimed card.
-9. Upload the final artifact to the proper Drive `04_重點卡` location.
-10. Write Drive ID, fingerprint, artifact revision, timestamps and QA state back to the registry.
-11. A card counts as complete only at `QA_PASSED`.
+   - no record / `PLANNED` / `SAMPLE_ONLY` -> attempt claim when production is needed.
+7. Claim one card by updating the registry using the current blob SHA and record the ACTIVE `batchId`.
+8. If the GitHub update fails because the SHA is stale, another conversation changed the registry first. Re-fetch and choose again. Never generate before the claim succeeds.
+9. Produce only the claimed card.
+10. Upload the final artifact to the proper Drive `04_重點卡` location.
+11. Write Drive ID, fingerprint, artifact revision, timestamps and QA state back to the registry.
+12. Add the production key to the batch's QA-passed list only after final QA passes.
+13. A card counts as complete only at `QA_PASSED`.
+
+## Batch Plan
+
+Default logical batch size is 10 cards.
+
+Current first batch:
+
+- `KC-JR-S1-B001`
+- scope: `初級-科目一`
+- target: 10 QA-passed production cards
+- selection: dynamically read from the latest governed Master / atomic-topic data, highest governed priority first
+
+Do not pre-fill future batches from chat memory. When an active batch finishes, reconcile the latest Master and registry, then create the next batch.
 
 ## Claim / Lease Rule
 
@@ -65,6 +86,7 @@ A claim contains:
 - `claimedAt`
 - `leaseUntil`
 - `claimedBy`
+- `batchId`
 
 If the lease is still active, another conversation must not take the card.
 
@@ -131,8 +153,8 @@ The registry key, not the filename, is the primary duplicate-prevention identity
 
 When the user does not name a specific card, select the next candidate in this order:
 
-1. governed production priority / star order;
-2. subject order;
+1. current ACTIVE batch scope;
+2. governed production priority / star order;
 3. card number / atomic-topic order;
 4. exclude `QA_PASSED`;
 5. exclude cards with an active claim;
@@ -171,15 +193,15 @@ Every new revision must include `supersedes` pointing to the prior artifact revi
 
 A new conversation must never assume that the previous conversation finished or stopped.
 
-Before saying `繼續產圖`, it must read the registry and decide from current state.
+Before saying `繼續產圖`, it must read both the batch queue and registry and decide from current state.
 
 If a user opens several chats at the same time, GitHub SHA-based optimistic concurrency is the collision guard: only one claim update against the same registry SHA can win. A losing conversation must re-fetch and claim another card.
 
 ## Completion Accounting
 
-Production dashboard counts are derived from registry states:
+Production dashboard counts are derived from registry and batch states:
 
-- total planned
+- active batch target
 - claimed now
 - rendered awaiting QA
 - QA passed
