@@ -1,0 +1,51 @@
+policyVersion: ATOMIC-v1.0
+effectiveFrom: '2026-08-20'
+status: ACTIVE
+hierarchy:
+  L1: official-competency-or-parent-topic
+  L2: atomic-exam-topic
+  L3: key-card
+rules:
+  parentTopicCount: 50
+  atomicTopicCount: 279
+  officialQuestionCount: 600
+  parentQuestionMappingComplete: true
+  parentQuestionMappingCoverage: 600/600
+  parentQuestionMappingConflicts: 0
+  atomicQuestionMappingStatus: PENDING
+  atomicTopicIdFormat: '<parent_id>-A<nn>'
+  questionUidFormat: '<source_id>-Q<nn>'
+  onePrimaryParentPerQuestion: true
+  onePrimaryAtomicTopicPerQuestion: true
+  allowSecondaryAtomicTopics: true
+  parentFrequencyMayNotBeCopiedToChildren: true
+  parentStarIsPriorityReferenceOnly: true
+  atomicStarRequiresAtomicQmap: true
+  newOfficialConceptCreatesCandidateAtomicTopic: true
+  newTopicStatus: NEW_TOPIC_REVIEW
+  doNotForceNewTopicIntoLegacyAtomicTopic: true
+cardPolicy:
+  atomicTopicIsDefaultCardUnit: true
+  defaultCardsPerAtomicTopic: 1
+  maySplitWhenDistinctExamPatternsExist: true
+  sourceCitationRequired: true
+  cardLabelPolicy: sources/registry/key-card-label-policy.yaml
+  citationPolicy: sources/registry/key-card-citation-policy.yaml
+starPolicy:
+  policy: sources/registry/key-card-weight-policy.yaml
+  computedStarSource: atomic-question-hit-count
+  overridePreserved: true
+qaGates:
+  - PARENT_QMAP_COMPLETE
+  - ATOMIC_TOPIC_CATALOG_REVIEWED
+  - ATOMIC_QMAP_COMPLETE
+  - ATOMIC_STAR_RECALCULATED
+  - KEYCARD_PLAN_REGENERATED
+currentBaseline:
+  initialSubject1AtomicTopics: 61
+  initialSubject2AtomicTopics: 48
+  intermediateSubject1AtomicTopics: 54
+  intermediateSubject2AtomicTopics: 58
+  intermediateSubject3AtomicTopics: 58
+  totalAtomicTopics: 279
+  driveWorkbookId: 1H0AGkDxdrLw29biDoEaGJmBCBGIyvJPdQi50gekRCdM
