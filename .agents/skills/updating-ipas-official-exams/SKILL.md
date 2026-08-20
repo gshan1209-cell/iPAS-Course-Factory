@@ -1,13 +1,13 @@
 ---
 name: updating-ipas-official-exams
-description: Use when manually checking, importing, synchronizing, or recalculating iPAS AI應用規劃師 official announced exam questions, official PDF archives, question mappings, key-card weights, star ratings, or key-card labels.
+description: Use when manually checking, importing, synchronizing, or recalculating iPAS AI應用規劃師 official announced exam questions, official PDF archives, question mappings, atomic topics, key-card weights, star ratings, or key-card labels.
 ---
 
 # Updating iPAS Official Exams
 
 ## Overview
 
-Maintain iPAS official announced exams as a traceable, append-only source set. **Official-current, PDF-mirrored, analysis-current, and key-card-current are separate gates; never collapse them into one claim.**
+Maintain iPAS official announced exams as a traceable, append-only source set. **Official-current, PDF-mirrored, parent-mapped, atomic-mapped, and key-card-current are separate gates; never collapse them into one claim.**
 
 ## Canonical References
 
@@ -16,8 +16,10 @@ Read before changing state:
 - `docs/IPAS_EXAM_SOURCE_GOVERNANCE.md`
 - `docs/KEY_CARD_LABEL_SYSTEM.md`
 - `sources/registry/ipas-official-exams.yaml`
+- `sources/registry/atomic-topic-policy.yaml`
 - `sources/registry/key-card-weight-policy.yaml`
 - `sources/registry/key-card-label-policy.yaml`
+- `sources/registry/key-card-citation-policy.yaml`
 
 Canonical discovery source: the iPAS AI應用規劃師 official learning-resources page recorded in the registry.
 
@@ -30,20 +32,24 @@ Run only when the user explicitly asks to update/check/sync iPAS sources. Do not
 3. **VERIFY** — verify official filename, exam date/session, PDF identity/size/hash when obtainable.
 4. **MIRROR** — save the **raw official PDF** in project Drive under `00_官方來源_公告試題/初級` or `/中級`. Never recreate/re-render a PDF and call it official.
 5. **REGISTER** — append/update registry metadata. Old versions become `SUPERSEDED`; do not delete history.
-6. **EXTRACT/MAP** — create `questionUid = <sourceId>-Q<nn>` and map each question to one primary official competency indicator. Secondary concepts may be recorded separately.
-7. **RECALC** — compute ratios from ACTIVE S3 announced exams only. Official samples, guides, errata, and internal supplements do not enter historical frequency.
-8. **STAR** — write `computedStar`; preserve `overrideStar` and required `overrideReason`; publish `effectiveStar = overrideStar ?? computedStar`. Do the same for card counts.
-9. **LABEL** — map the Master Index `卡片類型` to the approved Card Label System one-to-one. Star = exam priority; category label = learning/memory mode; auxiliary labels = exam traits. Never use category color to imply priority.
-10. **NEW TOPIC** — when a genuinely new tested concept appears, create a candidate card with `NEW_TOPIC_REVIEW` and auxiliary label `🆕 NEW`; do not force it into a legacy card just because frequency is initially low.
-11. **SNAPSHOT/QA** — append an analysis snapshot and change log, update subject Master Index files, then run QA before declaring card data current.
+6. **PARENT MAP** — create `questionUid = <sourceId>-Q<nn>` and map every question to exactly one primary L1 official competency indicator / parent topic. Secondary concepts may be recorded separately.
+7. **ATOMIC MAP** — maintain L2 atomic topics under each L1 parent and map every official question to one primary atomic topic. Secondary atomic topics may be recorded separately. **Never copy a parent frequency or star to every child atomic topic.**
+8. **RECALC** — compute L2 atomic-topic counts and ratios from ACTIVE S3 announced exams only. Official samples, guides, errata, and internal supplements do not enter historical frequency.
+9. **STAR** — write atomic `computedStar`; preserve `overrideStar` and required `overrideReason`; publish `effectiveStar = overrideStar ?? computedStar`. Parent star is priority context only, not the child star.
+10. **LABEL** — map the planned card type to the approved Card Label System one-to-one. Star = exam priority; category label = learning/memory mode; auxiliary labels = exam traits. Never use category color to imply priority.
+11. **NEW TOPIC** — when a genuinely new tested concept appears, create a candidate L2 atomic topic with `NEW_TOPIC_REVIEW` and auxiliary label `🆕 NEW`; do not force it into an unrelated legacy topic because its frequency is initially low.
+12. **CARD PLAN** — use L2 atomic topics as the default L3 card unit. Default one card per atomic topic; split further only when distinct exam patterns require separate cards.
+13. **SNAPSHOT/QA** — append an analysis snapshot and change log, update subject Master Index files, then run QA before declaring card data current.
 
 ## Hard Gates
 
-- Missing raw official PDF => `PENDING_DRIVE_MIRROR`; analysis may be provisional if official content is verifiable, but **full update is not complete**.
+- Missing raw official PDF => `PENDING_DRIVE_MIRROR`; analysis may proceed from verifiable official content, but **full update is not complete**.
 - Never report mirror complete unless every registry source has an archive Drive file ID.
+- Never report atomic analysis complete until all ACTIVE S3 questions have a primary L2 atomic-topic mapping.
+- Never assign a child atomic-topic count/star by inheriting the L1 parent count/star.
 - Never replace computed history with a manual override.
 - Never mix sample-question counts into real-exam ratios.
-- Never delete old source versions or old analysis snapshots.
+- Never delete old source versions, atomic topics with history, or old analysis snapshots.
 - Never invent a new card category, display label, icon, or system code outside `key-card-label-policy.yaml`.
 
 ## Completion Report
@@ -51,10 +57,11 @@ Run only when the user explicitly asks to update/check/sync iPAS sources. Do not
 Always report these independently:
 - `OFFICIAL_CURRENT`: official list matches registry.
 - `MIRROR_COMPLETE`: every ACTIVE official exam has raw PDF in Drive.
-- `ANALYSIS_CURRENT`: all ACTIVE exams are mapped and included in the latest snapshot.
-- `KEYCARD_CURRENT`: Master Index effective stars/card counts and approved labels are updated and QA-ready.
+- `PARENT_QMAP_COMPLETE`: every ACTIVE exam question has one primary L1 parent mapping.
+- `ATOMIC_QMAP_COMPLETE`: every ACTIVE exam question has one primary L2 atomic-topic mapping.
+- `KEYCARD_CURRENT`: L2 counts/stars, L3 card plan, citations and approved labels are updated and QA-ready.
 
-Only say **「已完整更新到最新」** when all four are true.
+Only say **「已完整更新到最新」** when all five are true.
 
 ## Pressure Checks
 
@@ -62,6 +69,7 @@ Before completion, verify:
 - New official PDF exists but Drive lacks it -> must not claim mirror complete.
 - Same filename/version changed -> append new version, supersede old.
 - Official sample added -> no historical-star effect.
-- One-time new concept -> candidate card remains possible despite low ratio and gets `NEW` until QA resolves it.
+- Parent mapping is 600/600 but atomic mapping is incomplete -> analysis is not yet key-card current.
+- One-time new concept -> candidate atomic topic remains possible despite low ratio and gets `NEW` until QA resolves it.
 - Human raises/lowers priority -> override is recorded without changing computed value.
 - Card type changes -> visual label/code must follow the canonical one-to-one mapping without changing computed star.
