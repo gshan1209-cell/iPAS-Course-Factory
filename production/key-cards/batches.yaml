@@ -40,13 +40,14 @@ batches:
       - qa-passed-counts-toward-batch-target
       - program-data-must-not-cross-boundary
       - header-star-slot-count-must-equal-5
+      - card-body-must-be-image-generated
+      - only-source-footer-may-use-deterministic-programmatic-text
     assignedProductionKeys:
       - IPAS-JR-S1-I1-01-C001
       - IPAS-JR-S1-I1-06-C002
     qaPassedProductionKeys:
       - IPAS-JR-S1-I1-01-C001
-      - IPAS-JR-S1-I1-06-C002
-    completedCount: 2
+    completedCount: 1
     createdAt: '2026-08-20T11:06:00+08:00'
     completedAt: null
 plannedPrograms:
