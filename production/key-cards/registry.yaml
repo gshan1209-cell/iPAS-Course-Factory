@@ -5,6 +5,7 @@ coordinationSource: github
 registryRole: cross-chat-image-production-lock-and-audit
 policyRefs:
   productionPlan: docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md
+  batches: production/key-cards/batches.yaml
   template: sources/registry/key-card-template-policy.yaml
   deterministicText: docs/KEY_CARD_DETERMINISTIC_TEXT_POLICY.md
   mascot: docs/KEY_CARD_MASCOT_POLICY.md
@@ -67,6 +68,7 @@ records:
     atomicTopicId: I1-01
     cardNumber: C-001
     topic: AI 的定義與分類
+    plannedBatchId: KC-JR-S1-B001
     state: SAMPLE_ONLY
     productionComplete: false
     sampleOnly: true
@@ -76,6 +78,7 @@ records:
       driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
       sampleVersion: KCS-v1.1
     claim: null
+    claimHistory: []
     renderFingerprint: null
     artifactRevision: null
     finalDriveFileId: null
