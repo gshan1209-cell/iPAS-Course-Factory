@@ -3,6 +3,18 @@ status: ACTIVE
 effectiveDate: '2026-08-20'
 role: multi-exam-program-registry
 corePrinciple: '共用核心，考試隔離；規範可繼承，資料不可混用。'
+subjectIsolationPolicy:
+  policyRef: docs/KEY_CARD_SUBJECT_ISOLATION_POLICY.md
+  singleSubjectExamAssumption: true
+  contentIsolationRequired: true
+  cardNumberSequenceScope: per-subject
+  cardNumberSequenceStartsAt: C-001
+  qaScope: per-subject
+  storageScope: per-subject
+  batchScope: per-subject
+  crossSubjectEvidenceMixing: false
+  crossSubjectCardNumberContinuation: false
+  crossSubjectQaReuse: false
 namespacePolicy:
   programCodeRequired: true
   programCodeFormat: 'UPPERCASE-ASCII-SHORT-CODE'
@@ -22,6 +34,7 @@ inheritancePolicy:
     - batch-coordination
     - qa-framework
     - artifact-versioning
+    - subject-isolation-framework
   programMustDefineOrOverride:
     - official-authority
     - official-source-entrypoints
@@ -56,6 +69,15 @@ programs:
       knownCodes:
         - JR
         - MID
+    subjectProductionPolicy:
+      independentExamUnit: true
+      contentScope: per-subject
+      cardNumberScope: per-subject
+      cardNumberStart: C-001
+      qaScope: per-subject
+      storageScope: per-subject
+      batchScope: per-subject
+      policyRef: docs/KEY_CARD_SUBJECT_ISOLATION_POLICY.md
     sourceGovernanceProfile: IPAS-SOURCE-v1
     cardTemplateProfile: KCT-v3.4
     mascotProfile: XIAOXIN-v1
@@ -63,6 +85,7 @@ programs:
     notes:
       - 'Current project data remains authoritative for iPAS.'
       - 'Do not rewrite existing iPAS IDs solely to satisfy the new multi-exam namespace; use global aliases for compatibility.'
+      - 'Each iPAS subject is an independent exam unit; numbering, content, QA, batch accounting and storage must remain subject-scoped.'
   - programCode: POSTAL
     displayName: 郵局招考
     programType: recruitment-exam
