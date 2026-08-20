@@ -1,4 +1,4 @@
-policyVersion: KCT-v1.0
+policyVersion: KCT-v1.1
 effectiveFrom: '2026-08-20'
 status: ACTIVE
 scope:
@@ -21,7 +21,7 @@ layout:
   - common-traps
   - memory-phrase
   - related-concepts
-  - footer-tip
+  - footer-source-citation
 contentRules:
   oneCardOneExamPoint: true
   simplifyContent: true
@@ -32,6 +32,16 @@ contentRules:
   relatedConceptCountMax: 3
   memoryPhraseRequired: true
   examPriorityUsesStarOnly: true
+  displayExamRateOnCard: false
+  retainExamRateInDataLayer: true
+  footerSourceCitationRequired: true
+footerSourceCitation:
+  policyRef: sources/registry/key-card-citation-policy.yaml
+  format: '指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>'
+  example: '指引:「AI 治理概念」；考題:115-2 初級科一 Q5、Q6'
+  guideFirst: true
+  examSecond: true
+  compactDisplayOnly: true
 labelPolicyRef: sources/registry/key-card-label-policy.yaml
 weightPolicyRef: sources/registry/key-card-weight-policy.yaml
 changeControl:
@@ -43,5 +53,7 @@ qa:
   requireReadableMobileText: true
   requireVisualHierarchy: true
   requireLabelConsistency: true
-  requireStarRatioConsistency: true
   requireLifeExample: true
+  forbidExamRateOnCard: true
+  requireCompactSourceFooter: true
+  crossCheckSourceFooterAgainstDataLayer: true
