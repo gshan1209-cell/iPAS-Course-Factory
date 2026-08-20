@@ -36,6 +36,14 @@ When manually checking, importing, synchronizing, or recalculating iPAS official
 
 The skill is authoritative for the manual update workflow and its completion gates. Do not claim the iPAS source set is fully current unless the skill's OFFICIAL_CURRENT, MIRROR_COMPLETE, ANALYSIS_CURRENT, and KEYCARD_CURRENT gates are all satisfied.
 
+When producing, continuing, revising, or batch-generating iPAS key-card images in any conversation, read and follow before generating:
+
+- `.agents/skills/producing-ipas-key-cards/SKILL.md`
+- `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+- `production/key-cards/registry.yaml`
+
+The production registry is the cross-chat source of truth. Chat memory is not a production lock. Never generate a production card until its one-card CLAIM has been successfully written to the current registry SHA.
+
 ## Key-Card Label Contract
 
 All junior and intermediate key-point cards, Master Index files, card templates, and QA flows must follow:
@@ -114,6 +122,26 @@ Production rules:
 - 小芯 follows the rule `主題可變，身份不變；姿態可變，角色鎖定` and must not cover stars, card number, exam labels, main title, or evidence text;
 - final QA requires both `EVIDENCE_TEXT_LOCKED = true` and `MASCOT_IDENTITY_LOCKED = true`;
 - template changes require approval and a new version; do not silently replace historical template evidence.
+
+## Key-Card Cross-Chat Production Contract
+
+All key-card image production across chats must use GitHub optimistic concurrency and the global registry:
+
+- registry: `production/key-cards/registry.yaml`
+- plan: `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+- skill: `.agents/skills/producing-ipas-key-cards/SKILL.md`
+
+Rules:
+- one card has one stable `productionKey` in format `<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>`;
+- claim exactly one card immediately before production; do not pre-claim a whole batch;
+- an active `CLAIMED` card belongs to another conversation and must be skipped;
+- `QA_PASSED` with the same `renderFingerprint` must never be generated again;
+- `VISUAL_READY` or `RENDERED` work must be resumed rather than duplicated;
+- `SAMPLE_ONLY` is a design reference and does not count as final production;
+- regeneration requires `REVISION_REQUIRED` or `STALE_REGEN_REQUIRED` plus a recorded revision reason;
+- if a registry write fails because its SHA is stale, re-fetch immediately; never continue from the stale selection;
+- only `QA_PASSED` counts as complete;
+- completion counts come from registry state, not the number of images visible in Drive.
 
 ## Unit Artifact Contract
 
