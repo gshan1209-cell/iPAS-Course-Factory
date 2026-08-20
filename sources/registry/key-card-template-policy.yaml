@@ -1,4 +1,4 @@
-policyVersion: KCT-v3.1
+policyVersion: KCT-v3.2
 canonicalSince: '2026-08-20'
 status: ACTIVE
 scope:
@@ -9,7 +9,7 @@ canonicalTemplate:
   driveFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
   driveFileId: 1ghcc2Pcn4Yqf_assysJfB0ekXWd7N2TR
   widthPx: 1024
-  heightPx: 1536
+  baselineHeightPx: 1536
   orientation: portrait
   role: master-template
   replaces: iPAS_重點卡_標準格式母版_v2.0.png
@@ -41,7 +41,7 @@ canonicalSample:
     - exam-labels
     - source-footer
     - exam-question-refs
-  rule: standard sample is the visual/content-density reference; evidence-driven values must always be regenerated from the current governed data layer and must not be copied literally from the sample
+  rule: standard sample is the visual/content-density and typography baseline; evidence-driven values must always be regenerated from the current governed data layer and must not be copied literally from the sample
 historicalTemplates:
   - version: KCT-v1.1
     file: iPAS_重點卡_標準格式母版_v1.0.png
@@ -51,6 +51,53 @@ historicalTemplates:
     file: iPAS_重點卡_標準格式母版_v2.0.png
     driveFileId: 1X_aE2cqHtpjEV9LwpfQEno7uxCXBs_Ib
     status: historical
+sizeVariants:
+  widthPolicy:
+    fixedWidthPx: 1024
+    allowWidthChange: false
+  standard:
+    code: STANDARD
+    widthPx: 1024
+    heightPx: 1536
+    useWhen: content fits while preserving canonical typography and spacing hierarchy
+  extended:
+    code: EXTENDED
+    widthPx: 1024
+    heightMode: dynamic
+    minHeightPx: 1537
+    preferredHeightPresetsPx: [1700, 1850, 2048]
+    mayExtendBeyondPreset: true
+    useWhen: content cannot fit in STANDARD after simplification without reducing typography
+    preserveSectionOrder: true
+    preserveTypographyScale: true
+    preserveCardIdentity: true
+  selectionRule: use STANDARD by default; switch to EXTENDED whenever fitting the governed content would otherwise require shrinking text below the canonical sample scale
+heightAndTypographyPolicy:
+  coreRule: '寧可拉高卡片，不可縮小字體。'
+  typographyBaselineRef: canonicalSample
+  fontScaleLocked: true
+  minimumFontScaleRatioVsCanonicalSample: 1.0
+  forbidFontDownscaleForFit: true
+  allowHeightGrowth: true
+  allowDecorativeWhitespaceTightening: true
+  allowDecorativeIconResizeWithinHierarchy: true
+  overflowResolutionOrder:
+    - simplify-wording-without-losing-exam-meaning
+    - remove-redundant-explanatory-phrases
+    - tighten-nonsemantic-whitespace-within-readable-limits
+    - switch-to-extended-height
+    - increase-height-until-readable
+    - split-into-multiple-cards-if-content-contains-more-than-one-exam-point
+  splitRule:
+    splitWhenMultipleExamPoints: true
+    doNotUseExtremeHeightToCombineDistinctExamPoints: true
+    preserveOneCardOneExamPoint: true
+  prohibited:
+    - shrink-body-font-to-fit
+    - shrink-source-footer-below-readable-baseline
+    - compress-line-height-until-text-crowds
+    - remove-required-life-example-to-save-space
+    - remove-required-source-citation-to-save-space
 headerContract:
   topBar:
     brandText: iPAS
@@ -145,7 +192,9 @@ changeControl:
   neverOverwriteHistoricalTemplateEvidence: true
   updateDriveAndPolicyTogether: true
 qa:
-  requireExactCanvas: true
+  requireFixedWidthPx: 1024
+  standardVariantExactHeightPx: 1536
+  extendedVariantDynamicHeight: true
   requireReadableMobileText: true
   requireVisualHierarchy: true
   requireLevelSubjectLabel: true
@@ -162,3 +211,6 @@ qa:
   requireCompactSourceFooter: true
   crossCheckSourceFooterAgainstDataLayer: true
   requireSampleStructureMatch: true
+  forbidTypographyDownscaleForFit: true
+  requireDynamicHeightWhenNeeded: true
+  requireSplitWhenMultipleExamPoints: true
