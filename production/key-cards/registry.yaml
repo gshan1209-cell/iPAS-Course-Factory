@@ -88,16 +88,29 @@ records:
     cardNumber: C-001
     topic: AI 的定義與分類
     plannedBatchId: KC-JR-S1-B001
-    state: SAMPLE_ONLY
+    state: CLAIMED
     productionComplete: false
-    sampleOnly: true
-    note: 'Existing KCS-v1.1 visual sample is a design reference only. It does not count as final production because final deterministic evidence-text rendering must still be performed.'
+    sampleOnly: false
+    note: 'Formal deterministic production claimed from the governed KCS-v1.1 design-reference record; sample artifact remains reference-only.'
     sampleArtifact:
       title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
       driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
       sampleVersion: KCS-v1.1
-    claim: null
-    claimHistory: []
+    claim:
+      programCode: IPAS
+      globalProductionKey: IPAS-JR-S1-I1-01-C001
+      claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
+      claimedAt: '2026-08-20T11:48:16+08:00'
+      leaseUntil: '2026-08-20T12:48:16+08:00'
+      claimedBy: ChatGPT-04_iPAS-Course-Factory
+      batchId: KC-JR-S1-B001
+    claimHistory:
+      - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
+        claimedAt: '2026-08-20T11:48:16+08:00'
+        leaseUntil: '2026-08-20T12:48:16+08:00'
+        claimedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: CLAIMED
     renderFingerprint: null
     artifactRevision: null
     finalDriveFileId: null
@@ -105,4 +118,4 @@ records:
       evidenceTextLocked: false
       mascotIdentityLocked: true
       finalQaPassed: false
-    updatedAt: '2026-08-20T11:28:00+08:00'
+    updatedAt: '2026-08-20T11:48:16+08:00'
