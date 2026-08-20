@@ -1,15 +1,25 @@
-schemaVersion: KCIR-v1.0
+schemaVersion: KCIR-v1.1
 status: ACTIVE
 effectiveDate: '2026-08-20'
 coordinationSource: github
-registryRole: cross-chat-image-production-lock-and-audit
+registryRole: cross-chat-cross-program-image-production-lock-and-audit
+programRegistryRef: sources/registry/exam-programs.yaml
 policyRefs:
+  architecture: docs/MULTI_EXAM_FACTORY_ARCHITECTURE.md
   productionPlan: docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md
   batches: production/key-cards/batches.yaml
   template: sources/registry/key-card-template-policy.yaml
   deterministicText: docs/KEY_CARD_DETERMINISTIC_TEXT_POLICY.md
   mascot: docs/KEY_CARD_MASCOT_POLICY.md
   dynamicHeight: docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md
+namespacePolicy:
+  requireProgramCodeForNewRecords: true
+  globalProductionKeyFormat: '<PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>'
+  globallyUniqueKeyField: globalProductionKey
+  legacyProductionKeyField: productionKey
+  legacyIpasKeysRemainReadable: true
+  neverMassRewriteHistoricalEvidenceIds: true
+  duplicateCheckUsesGlobalProductionKey: true
 claimPolicy:
   granularity: one-card
   leaseMinutes: 60
@@ -17,12 +27,14 @@ claimPolicy:
   requireFreshRegistrySha: true
   staleShaMeansRefetchAndRetry: true
   allowTakeoverAfterLeaseExpiry: true
+  claimMustMatchProgramCode: true
 fingerprintPolicy:
   algorithm: sha256
   canonicalEncoding: utf-8-json-sorted-keys
   include:
-    - productionKey
-    - templatePolicyVersion
+    - programCode
+    - globalProductionKey
+    - templateOrVisualProfileVersion
     - sourceAnalysisSnapshotId
     - lockedEvidenceFields
     - governedTeachingContent
@@ -56,14 +68,21 @@ revisionReasons:
   - USER_APPROVED_REDESIGN
   - MASCOT_IDENTITY_FIX
   - EVIDENCE_TEXT_FIX
-productionKeyFormat: '<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>'
+  - PROGRAM_PROFILE_CHANGED
+legacyProductionKeyFormat: '<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>'
+globalProductionKeyFormat: '<PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>'
 examples:
-  - JR-S1-I1-01-C001
-  - JR-S2-I2-04-C017
-  - MID-S3-M3-06-C023
-artifactNameFormat: '<級別>_<科目>_<CARD_NO>_<ATOMIC_TOPIC_ID>_<短主題>_v<artifactRevision>.png'
+  - IPAS-JR-S1-I1-01-C001
+  - IPAS-MID-S3-M3-06-C023
+  - POSTAL-<TRACK>-<SUBJECT>-<TOPIC>-C001
+artifactNamePolicy:
+  globalRecommendedFormat: '<PROGRAM>_<級別或類組>_<科目>_<CARD_NO>_<TOPIC_ID>_<短主題>_v<artifactRevision>.png'
+  ipasLegacyCompatibleFormat: '<級別>_<科目>_<CARD_NO>_<ATOMIC_TOPIC_ID>_<短主題>_v<artifactRevision>.png'
 records:
-  - productionKey: JR-S1-I1-01-C001
+  - programCode: IPAS
+    globalProductionKey: IPAS-JR-S1-I1-01-C001
+    productionKey: JR-S1-I1-01-C001
+    legacyAlias: true
     levelSubject: 初級-科目一
     atomicTopicId: I1-01
     cardNumber: C-001
@@ -86,4 +105,4 @@ records:
       evidenceTextLocked: false
       mascotIdentityLocked: true
       finalQaPassed: false
-    updatedAt: '2026-08-20T11:06:00+08:00'
+    updatedAt: '2026-08-20T11:28:00+08:00'
