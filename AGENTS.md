@@ -61,6 +61,9 @@ All junior and intermediate key-point cards must use the approved master templat
 
 - `sources/registry/key-card-template-policy.yaml`
 - `sources/registry/key-card-citation-policy.yaml`
+- `docs/KEY_CARD_DETERMINISTIC_TEXT_POLICY.md`
+- `docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md`
+- `docs/KEY_CARD_MASCOT_POLICY.md`
 
 Canonical Drive master:
 - file: `iPAS_重點卡_標準格式母版_v3.0.png`
@@ -69,15 +72,15 @@ Canonical Drive master:
 - standard canvas: `1024 × 1536 px`, portrait
 
 Canonical standard sample:
-- file: `iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.0.png`
-- Drive file ID: `1S55pMXly4Bj5vjCn3QCb-bKSx53D6Git`
+- file: `iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png`
+- Drive file ID: `184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u`
 - role: canonical design/content-density sample for KCT-v3.x
-- use the sample for layout proportion, typography scale, visual hierarchy, content density, spacing, icon rhythm, and section balance;
+- use the sample for layout proportion, typography scale, visual hierarchy, content density, spacing, icon rhythm, mascot placement, and section balance;
 - do not copy the sample's literal star rating, category, exam labels, or source references into another card; those evidence-driven fields must always come from the governed data layer.
 
 Required card structure:
 1. top header: `iPAS` + visible level-subject label + large star icons + card number;
-2. second row: left-aligned section title + card category + only applicable exam labels;
+2. second row: left-aligned section title + card-category icon + only applicable exam labels + 小芯 in the upper-right visual area;
 3. exam-point title + one-line summary;
 4. no more than four concise core points;
 5. a life example is mandatory and should prefer a simple visual process;
@@ -99,12 +102,17 @@ Production rules:
 - one card focuses on one exam point;
 - simplify content and use large mobile-readable typography;
 - prefer short sentences and avoid dense paragraphs;
+- if content does not fit, increase card height instead of reducing the canonical text scale;
 - star rating remains the only exam-priority indicator on the card;
 - exam ratio remains in the data layer and must not be shown on the card;
-- card category must follow the Card Label System;
-- exam labels must show only applicable labels; do not render unused placeholders;
+- card category is visible as icon only; do not render category name/code headings on the card face;
+- exam labels must remain visible when applicable and must show only applicable labels;
+- governed evidence text must be rendered deterministically from the data layer, never authored or rewritten by image generation;
 - footer source format is fixed as `指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>`;
 - source footer must be cross-checked against the full data-layer citation/evidence;
+- 小芯 may change pose, expression, outfit, props, and topic-themed role, but her identity must remain unmistakably 小芯;
+- 小芯 follows the rule `主題可變，身份不變；姿態可變，角色鎖定` and must not cover stars, card number, exam labels, main title, or evidence text;
+- final QA requires both `EVIDENCE_TEXT_LOCKED = true` and `MASCOT_IDENTITY_LOCKED = true`;
 - template changes require approval and a new version; do not silently replace historical template evidence.
 
 ## Unit Artifact Contract
