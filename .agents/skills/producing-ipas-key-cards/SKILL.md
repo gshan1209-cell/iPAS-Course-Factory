@@ -14,13 +14,14 @@ Before production, read and follow:
 1. `.agents/skills/producing-exam-key-cards/SKILL.md`
 2. `sources/registry/exam-programs.yaml`
 3. `docs/MULTI_EXAM_FACTORY_ARCHITECTURE.md`
-4. `sources/registry/key-card-template-policy.yaml`
-5. `sources/registry/key-card-weight-policy.yaml`
-6. `sources/registry/key-card-citation-policy.yaml`
-7. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
-8. `production/key-cards/batches.yaml`
-9. `production/key-cards/registry.yaml`
-10. the current governed iPAS Master / atomic-topic record
+4. `docs/KEY_CARD_SUBJECT_ISOLATION_POLICY.md`
+5. `sources/registry/key-card-template-policy.yaml`
+6. `sources/registry/key-card-weight-policy.yaml`
+7. `sources/registry/key-card-citation-policy.yaml`
+8. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+9. `production/key-cards/batches.yaml`
+10. `production/key-cards/registry.yaml`
+11. the current governed iPAS Master / atomic-topic record for the selected subject
 
 Also honor:
 
@@ -39,6 +40,39 @@ When the deterministic-text document conflicts with the older rendering subsecti
 
 Do not read evidence from another exam program when producing an iPAS card.
 
+## Single-Subject Examination Isolation
+
+**重點卡必須以「單科獨立考試」為前提，做到科目獨立、編號獨立、內容獨立、QA 獨立、存放獨立，不得跨科混淆。**
+
+For iPAS, every subject is an independent examination unit.
+
+Before card selection, lock all three dimensions:
+
+- `programCode = IPAS`
+- `levelCode = JR | MID`
+- `subjectCode = S1 | S2 | S3` as applicable to the selected level
+
+Hard rules:
+
+- one formal card belongs to exactly one iPAS subject;
+- a card for one subject must not depend on another subject's card to be exam-complete;
+- subject content must come from that subject's governed Master / atomic-topic record;
+- historical question mapping, star rating, exam labels, source footer and traps must be validated using the current subject only;
+- cross-subject related concepts may be shown only as related references, never as a substitute for current-subject teaching content;
+- batches are subject-scoped and must not mix subjects;
+- registry states, claims and completion counts are subject-scoped;
+- Drive storage is subject-scoped;
+- subject mismatch is a hard QA failure.
+
+Required subject QA gates:
+
+- `SUBJECT_SCOPE_LOCKED = true`
+- `CARD_NUMBER_SCOPE_PER_SUBJECT = true`
+- `CONTENT_SUBJECT_MATCHED = true`
+- `EVIDENCE_SUBJECT_MATCHED = true`
+- `QA_SUBJECT_SCOPED = true`
+- `DRIVE_SUBJECT_MATCHED = true`
+
 ## Production Identity
 
 Existing legacy key:
@@ -49,7 +83,7 @@ Example:
 
 `JR-S1-I1-01-C001`
 
-Global key for cross-program coordination:
+Global key for cross-program and cross-subject coordination:
 
 `IPAS-<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>`
 
@@ -59,6 +93,30 @@ Example:
 
 Existing legacy keys remain aliases. New cross-program duplicate checks use `globalProductionKey`.
 
+### Per-Subject Card Numbering
+
+Visible card numbers are independent for each subject.
+
+- every subject starts from `C-001`;
+- numbering continues only inside the same subject;
+- changing subject resets the visible sequence to `C-001`;
+- the same visible number may exist in different subjects;
+- do not continue `C-031`, `C-041`, or any other visible sequence from another subject;
+- full uniqueness comes from the global production key, which includes level and subject.
+
+Examples:
+
+- `IPAS-JR-S1-I1-01-C001`
+- `IPAS-JR-S2-I2-01-C001`
+
+Both may display `C-001` because they belong to different subjects.
+
+Default filename:
+
+`C-<nnn>_<主題名稱>.png`
+
+The file must be stored under the correct level / subject folder so repeated visible numbers cannot be confused.
+
 ## Hard Rule
 
 **Never call image generation for a production card before a successful one-card registry CLAIM.**
@@ -67,29 +125,31 @@ Chat memory is not a production lock.
 
 ## Card Selection
 
-If the user names a card, use that iPAS card if eligible.
+If the user names a card, use that iPAS card if eligible **inside the locked subject scope**.
 
 If the user says `繼續`, `下一張`, or similar:
 
 1. resolve `programCode = IPAS`;
-2. read the ACTIVE IPAS batch;
-3. read current iPAS Master / atomic-topic data;
-4. read production registry;
-5. exclude IPAS `QA_PASSED` cards;
-6. exclude IPAS cards with active claims;
-7. resume unfinished IPAS work when appropriate;
-8. otherwise choose the next governed iPAS priority card.
+2. resolve and lock the requested iPAS level + subject;
+3. read the ACTIVE IPAS batch for that subject;
+4. read current iPAS Master / atomic-topic data for that subject;
+5. read production registry;
+6. exclude IPAS `QA_PASSED` cards in that subject;
+7. exclude IPAS cards with active claims in that subject;
+8. resume unfinished IPAS work in that subject when appropriate;
+9. otherwise choose the next governed iPAS priority card in that subject.
 
-Never select from another program's batch or data.
+Never select from another program's batch, another iPAS subject, or another subject's Master data.
 
 ## Claim Protocol
 
 1. Fetch the registry and retain current blob SHA.
 2. Confirm the candidate has `programCode: IPAS`.
-3. Confirm the global key is eligible in the current IPAS batch.
-4. Write a one-card CLAIM including `programCode`, `globalProductionKey`, claim token, timestamps and batch ID.
-5. Only after the write succeeds may production begin.
-6. On stale SHA, refetch; do not continue from stale state.
+3. Confirm level + subject match the locked subject scope.
+4. Confirm the global key is eligible in the current subject-scoped IPAS batch.
+5. Write a one-card CLAIM including `programCode`, `globalProductionKey`, level, subject, claim token, timestamps and batch ID.
+6. Only after the write succeeds may production begin.
+7. On stale SHA, refetch; do not continue from stale state.
 
 ## Duplicate Check
 
@@ -98,6 +158,7 @@ Never select from another program's batch or data.
 - `VISUAL_READY` / `RENDERED` -> resume, do not redraw unless the current revision is under explicit visual review
 - `SAMPLE_ONLY` -> does not count as final production
 - `REVISION_REQUIRED` / `STALE_REGEN_REQUIRED` -> redraw allowed with revision reason
+- same visible `C-<nnn>` in another subject -> **not a duplicate**, because numbering is per subject
 
 ## Star / Exam-Frequency Semantics
 
@@ -116,6 +177,7 @@ Production rules:
 - a star rating may be used as a rough exam-frequency reference band, but must never be described as an exact percentage;
 - when announced-exam data changes, use the current governed snapshot and recompute according to `sources/registry/key-card-weight-policy.yaml`;
 - within one snapshot, `computedStar` must not drift;
+- star frequency must never mix questions from another subject;
 - when atomic QMAP is still pending, never claim that a parent frequency or parent star is the atomic topic's exact frequency or computed atomic star. Parent priority may be used only as a governed priority reference when policy allows it.
 
 Current parent-level ratio bands:
@@ -133,6 +195,7 @@ QA must fail when:
 - filled star count does not match the governed effective star value;
 - a precise exam-rate percentage appears on the card face;
 - star meaning is replaced by an auxiliary label;
+- star evidence includes another subject's questions;
 - an atomic topic is presented with an exact frequency/star not supported by atomic QMAP or an explicit governed override.
 
 ## iPAS Rendering Profile
@@ -162,6 +225,8 @@ The following body values still come from the governed data layer and must be vi
 
 Do not programmatically overwrite these body fields with text. Regenerate the image when they are visibly wrong.
 
+A wrong subject label is a hard failure; never repair a cross-subject card merely by renaming the file.
+
 ## iPAS Source Footer Contract
 
 The bottom deterministic footer must use the compact session-only format:
@@ -170,13 +235,14 @@ The bottom deterministic footer must use the compact session-only format:
 
 Rules:
 
-- display only exam sessions that contain at least one mapped question for the current card;
+- display only exam sessions that contain at least one mapped question for the current subject and current card;
 - deduplicate repeated sessions;
 - keep sessions in chronological order;
 - do not display `Q<nn>` question numbers;
 - do not display question counts;
 - do not repeat level / subject after `考題:`;
 - do not display exam-rate percentages;
+- do not import citation sessions from another subject;
 - retain exact question numbers, level / subject and full audit evidence in the data layer only.
 
 Examples:
@@ -186,6 +252,12 @@ Examples:
 
 Final iPAS card QA requires:
 
+- `SUBJECT_SCOPE_LOCKED = true`
+- `CARD_NUMBER_SCOPE_PER_SUBJECT = true`
+- `CONTENT_SUBJECT_MATCHED = true`
+- `EVIDENCE_SUBJECT_MATCHED = true`
+- `QA_SUBJECT_SCOPED = true`
+- `DRIVE_SUBJECT_MATCHED = true`
 - `EVIDENCE_TEXT_LOCKED = true` — exact deterministic bottom source footer
 - `VISUAL_EVIDENCE_MATCHED = true` — body evidence visually matches governed data
 - `MASCOT_IDENTITY_LOCKED = true`
@@ -194,12 +266,14 @@ Final iPAS card QA requires:
 - `SOURCE_FOOTER_SESSION_ONLY = true`
 - canonical sample structure match
 
-QA must fail if the footer contains any question number, question count, duplicate session, unsupported session, or level/subject text after `考題:`.
+QA must fail if the subject scope mismatches, the visible card number continues from another subject, the footer contains another subject's evidence, or the footer contains any question number, question count, duplicate session, unsupported session, or level/subject text after `考題:`.
 
 ## Completion
 
-Upload final images only to the correct iPAS Drive program / subject location.
+Upload final images only to the correct iPAS Drive program / level / subject location.
 
-Write `programCode: IPAS`, `globalProductionKey`, Drive ID, fingerprint, revision and QA state back to the registry.
+Write `programCode: IPAS`, level, subject, `globalProductionKey`, Drive ID, fingerprint, revision and QA state back to the registry.
 
-Only IPAS-scoped `QA_PASSED` counts toward the IPAS batch.
+Only IPAS-and-subject-scoped `QA_PASSED` counts toward that subject's batch.
+
+Do not aggregate subjects until each subject's metrics remain separately identifiable.
