@@ -68,6 +68,13 @@ Canonical Drive master:
 - Drive folder ID: `10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0`
 - standard canvas: `1024 × 1536 px`, portrait
 
+Canonical standard sample:
+- file: `iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.0.png`
+- Drive file ID: `1S55pMXly4Bj5vjCn3QCb-bKSx53D6Git`
+- role: canonical design/content-density sample for KCT-v3.x
+- use the sample for layout proportion, typography scale, visual hierarchy, content density, spacing, icon rhythm, and section balance;
+- do not copy the sample's literal star rating, category, exam labels, or source references into another card; those evidence-driven fields must always come from the governed data layer.
+
 Required card structure:
 1. top header: `iPAS` + visible level-subject label + large star icons + card number;
 2. second row: left-aligned section title + card category + only applicable exam labels;
