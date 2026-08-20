@@ -1,4 +1,4 @@
-policyVersion: CITATION-v1.1
+policyVersion: CITATION-v1.2
 status: ACTIVE
 effectiveFrom: '2026-08-20'
 purpose: auditable-key-card-source-citation
@@ -11,33 +11,33 @@ layers:
     purpose: full-audit-traceability
     retainFullCitation: true
     retainOfficialUrlOrDriveMirror: true
+    retainQuestionNumbers: true
+    retainQuestionCount: true
     examCitation: '<完整梯次><級別><科目> Q<nn>、Q<nn>'
     officialGuideCitation: '官方學習指引：<能力指標或主題>'
     separator: '；'
   cardLayer:
     purpose: compact-readable-source-display
     showExamRate: false
-    format: '指引:「<主題名稱>」；考題:<年份-梯次> <級別科目> Q<nn>、Q<nn>'
+    showQuestionNumbers: false
+    showQuestionCount: false
+    showLevelSubjectInExamList: false
+    format: '指引:「<主題名稱>」；考題:<年份-梯次>、<年份-梯次>…'
     guidePrefix: '指引:'
     examPrefix: '考題:'
     useChineseCornerQuotesForGuide: true
     separator: '；'
+    examSessionSeparator: '、'
     examSessionAbbreviation:
       examples:
         - '114-4'
         - '115-1'
         - '115-2'
-    levelSubjectAbbreviation:
-      examples:
-        - '初級科一'
-        - '初級科二'
-        - '中級科一'
-        - '中級科二'
-        - '中級科三'
 examples:
   card:
-    - '指引:「AI 治理概念」；考題:115-2 初級科一 Q5、Q6'
-    - '指引:「機器學習技術與應用」；考題:114-2 中級科三 Q22、Q23；115-1 中級科三 Q1、Q5'
+    - '指引:「AI 治理概念」；考題:115-2'
+    - '指引:「機器學習技術與應用」；考題:114-2、115-1'
+    - '指引:「機器學習基本原理」；考題:114-4、115-1、115-2'
   data:
     - '官方學習指引：AI 治理概念；115年第二次初級科目一 Q5、Q6'
 rules:
@@ -45,7 +45,12 @@ rules:
   cardCitationExamSecond: true
   cardCitationMustBeConcise: true
   dataCitationMustRemainFull: true
-  requireQuestionPrefixQ: true
+  cardExamListShowsOnlySessionsWithMappedQuestions: true
+  cardExamListDeduplicateSessions: true
+  cardExamListSortChronologically: true
+  cardExamListForbidQuestionNumbers: true
+  cardExamListForbidQuestionCount: true
+  cardExamListForbidLevelSubjectText: true
   allowMultipleSessions: true
   includeOfficialGuideWhenMapped: true
   forbidAmbiguousDataShorthand:
@@ -58,5 +63,8 @@ qa:
   citationRequiredForPublishedCard: true
   cardDisplayMustFollowCompactFormat: true
   crossCheckCardCitationAgainstDataCitation: true
-  crossCheckCitationAgainstTrueQuestionReference: true
+  crossCheckEachDisplayedSessionHasTrueQuestionReference: true
+  cardDisplayMustNotContainQuestionNumber: true
+  cardDisplayMustNotContainQuestionCount: true
+  cardDisplayMustNotContainLevelSubjectAfterExamPrefix: true
   zeroAmbiguousDataShorthandBeforePublish: true
