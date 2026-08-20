@@ -16,10 +16,11 @@ Before production, read and follow:
 3. `docs/MULTI_EXAM_FACTORY_ARCHITECTURE.md`
 4. `sources/registry/key-card-template-policy.yaml`
 5. `sources/registry/key-card-weight-policy.yaml`
-6. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
-7. `production/key-cards/batches.yaml`
-8. `production/key-cards/registry.yaml`
-9. the current governed iPAS Master / atomic-topic record
+6. `sources/registry/key-card-citation-policy.yaml`
+7. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+8. `production/key-cards/batches.yaml`
+9. `production/key-cards/registry.yaml`
+10. the current governed iPAS Master / atomic-topic record
 
 Also honor:
 
@@ -161,6 +162,28 @@ The following body values still come from the governed data layer and must be vi
 
 Do not programmatically overwrite these body fields with text. Regenerate the image when they are visibly wrong.
 
+## iPAS Source Footer Contract
+
+The bottom deterministic footer must use the compact session-only format:
+
+`指引:「<主題名稱>」；考題:<年份-梯次>、<年份-梯次>…`
+
+Rules:
+
+- display only exam sessions that contain at least one mapped question for the current card;
+- deduplicate repeated sessions;
+- keep sessions in chronological order;
+- do not display `Q<nn>` question numbers;
+- do not display question counts;
+- do not repeat level / subject after `考題:`;
+- do not display exam-rate percentages;
+- retain exact question numbers, level / subject and full audit evidence in the data layer only.
+
+Examples:
+
+- `指引:「AI 的定義與分類」；考題:115-1、115-2`
+- `指引:「機器學習基本原理」；考題:114-4、115-1、115-2`
+
 Final iPAS card QA requires:
 
 - `EVIDENCE_TEXT_LOCKED = true` — exact deterministic bottom source footer
@@ -168,7 +191,10 @@ Final iPAS card QA requires:
 - `MASCOT_IDENTITY_LOCKED = true`
 - `STAR_SLOT_COUNT_EXACTLY_FIVE = true`
 - `EXAM_RATE_HIDDEN = true`
+- `SOURCE_FOOTER_SESSION_ONLY = true`
 - canonical sample structure match
+
+QA must fail if the footer contains any question number, question count, duplicate session, unsupported session, or level/subject text after `考題:`.
 
 ## Completion
 
