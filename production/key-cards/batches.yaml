@@ -39,10 +39,12 @@ batches:
       - sample-only-does-not-count-as-complete
       - qa-passed-counts-toward-batch-target
       - program-data-must-not-cross-boundary
+      - header-star-slot-count-must-equal-5
     assignedProductionKeys:
       - IPAS-JR-S1-I1-01-C001
-    qaPassedProductionKeys: []
-    completedCount: 0
+    qaPassedProductionKeys:
+      - IPAS-JR-S1-I1-01-C001
+    completedCount: 1
     createdAt: '2026-08-20T11:06:00+08:00'
     completedAt: null
 plannedPrograms:
