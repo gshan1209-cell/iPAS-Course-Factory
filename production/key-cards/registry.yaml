@@ -173,12 +173,17 @@ records:
     topic: 機器學習基本原理
     cardFocus: 監督式、非監督式、半監督式、強化學習
     plannedBatchId: KC-JR-S1-B001
-    state: REVISION_REQUIRED
+    state: CLAIMED
     productionComplete: false
     sampleOnly: false
-    note: 'Rejected after user clarification: only the bottom source citation may use programmatic/deterministic text. The C-002 body was programmatically composed and therefore is not a valid production card.'
+    note: 'Revision resumed under image-generated-body + deterministic-session-only-footer rules.'
     revisionReason: QA_REJECTED
-    claim: null
+    claim:
+      claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
+      claimedAt: '2026-08-20T14:42:00+08:00'
+      leaseUntil: '2026-08-20T15:42:00+08:00'
+      claimedBy: ChatGPT-04_iPAS-Course-Factory
+      batchId: KC-JR-S1-B001
     claimHistory:
       - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
         claimedAt: '2026-08-20T12:46:41+08:00'
@@ -198,18 +203,15 @@ records:
         action: QA_REJECTED
         revision: 2
         reason: 'Programmatic body text/layout is prohibited. Only the bottom source citation may be deterministic/programmatic text.'
+      - claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
+        claimedAt: '2026-08-20T14:42:00+08:00'
+        leaseUntil: '2026-08-20T15:42:00+08:00'
+        claimedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: CLAIMED
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
-    artifactRevision: 2
-    rejectedArtifact:
-      filename: IPAS_初級_科目一_C-002_I1-06_機器學習基本原理_v2.png
-      driveFileId: 1_G5_lXecD-pX-7boM4lEhZAAAFbF5F-5
-      widthPx: 1024
-      heightPx: 1700
-      sizeVariant: EXTENDED
-      imageSha256: 1dc8e096f15bd304af0951014c40ba1e6631498b9b5d326f6564656e4151be51
-      driveFolderId: 1bCvZQ69bmfPZci7s16qXMMCerSQOwWut
-      qaDisposition: REJECTED
+    artifactRevision: 3
     evidence:
       levelSubject: 初級-科目一
       sectionTitle: '3.3 機器學習概念'
@@ -219,19 +221,18 @@ records:
       categoryCode: COMPARE
       categoryIcon: '⚖️'
       examLabels: [必考, 重複出題]
-      sourceFooter: '指引:「機器學習基本原理」；考題:114-4 初級科一 Q4、Q5、Q11、Q13、Q17、Q18、Q19、Q39、Q40、Q44、Q46；115-1 初級科一 Q3、Q19、Q20、Q30、Q31、Q39、Q40、Q43、Q50；115-2 初級科一 Q2、Q14、Q16、Q19、Q21、Q22、Q23、Q24、Q26、Q36、Q38、Q48'
+      sourceFooter: '指引:「機器學習基本原理」；考題:114-4、115-1、115-2'
     renderingMode:
-      body: PROGRAMMATIC_RASTER_REJECTED
+      body: IMAGE_GENERATED
       footerSourceCitation: DETERMINISTIC_TEXT
     qa:
-      evidenceTextLocked: true
-      sourceFooterDeterministic: true
+      evidenceTextLocked: false
+      sourceFooterDeterministic: false
       visualEvidenceMatched: false
-      mascotIdentityLocked: true
+      mascotIdentityLocked: false
       finalQaPassed: false
       fixedWidthPx: 1024
-      renderedHeightPx: 1700
-      starSlotCountExactlyFive: true
+      starSlotCountExactlyFive: false
       examRateVisible: false
-      failedGate: IMAGE_GENERATED_BODY_REQUIRED
-    updatedAt: '2026-08-20T12:57:00+08:00'
+      sourceFooterSessionOnly: true
+    updatedAt: '2026-08-20T14:42:00+08:00'
