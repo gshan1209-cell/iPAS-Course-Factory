@@ -2,7 +2,7 @@
 
 Status: ACTIVE  
 Effective: 2026-08-20  
-Template policy: `KCT-v3.3`
+Template policy: `KCT-v3.4`
 
 ## Purpose
 
@@ -21,14 +21,15 @@ Use a hybrid pipeline:
 1. Resolve the governed card record from the Master / atomic-topic data layer.
 2. Validate all locked evidence fields before visual composition.
 3. Generate or select only non-evidence visual assets with image generation.
-4. Compose the fixed KCT layout.
-5. Inject locked fields as deterministic text layers.
-6. Render the final card.
-7. Compare rendered locked text with the governed record.
-8. Fail QA if any locked value differs.
+4. Generate or select a theme-aware 小芯 variation under mascot identity lock when needed.
+5. Compose the fixed KCT layout.
+6. Inject locked fields as deterministic text layers.
+7. Render the final card.
+8. Compare rendered locked text with the governed record.
+9. Fail QA if any locked value differs.
 
 Image generation may produce:
-- mascot / character assets;
+- mascot / character assets under the approved identity-lock policy;
 - icons;
 - non-text illustrations;
 - decorative backgrounds;
@@ -91,13 +92,28 @@ The compact footer is display text only. Full URLs, Drive IDs, official PDF refe
 
 ## Mascot Rule
 
-The governed mascot `小芯` is fixed in the upper-right visual area using the approved asset. It must not cover:
+The governed mascot `小芯` remains in the upper-right visual area, but she may vary by theme under identity lock.
+
+Allowed variation includes:
+- pose;
+- facial expression;
+- outfit;
+- props;
+- accessories;
+- topic-themed professional role.
+
+The variation must still be unmistakably 小芯 and must follow `docs/KEY_CARD_MASCOT_POLICY.md`.
+
+She must not cover:
 - stars;
 - card number;
 - exam labels;
-- main title.
+- main title;
+- evidence text.
 
-Do not redraw the mascot into a materially different identity during batch production.
+Core rule:
+
+> 主題可變，身份不變；姿態可變，角色鎖定。
 
 ## Height and Typography
 
@@ -107,9 +123,12 @@ The existing dynamic-height policy remains authoritative:
 
 Width remains 1024 px. Use STANDARD 1024×1536 when content fits; otherwise increase height dynamically. Do not shrink the source footer or evidence text to force-fit the card.
 
-## QA Gate
+## QA Gates
 
-A card cannot pass final QA unless `EVIDENCE_TEXT_LOCKED = true`.
+A card cannot pass final QA unless both are true:
+
+- `EVIDENCE_TEXT_LOCKED = true`
+- `MASCOT_IDENTITY_LOCKED = true`
 
 Fail the card if:
 - any locked field differs from the governed record;
@@ -118,7 +137,8 @@ Fail the card if:
 - the star count or exam labels differ;
 - the card category icon does not match the governed category;
 - the source footer was paraphrased;
-- image-generated text is used for evidence fields.
+- image-generated text is used for evidence fields;
+- the 小芯 variant drifts into a materially different character identity.
 
 ## Relationship to Other Policies
 
@@ -128,3 +148,4 @@ This policy must be applied together with:
 - `sources/registry/key-card-label-policy.yaml`
 - `sources/registry/key-card-weight-policy.yaml`
 - `docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md`
+- `docs/KEY_CARD_MASCOT_POLICY.md`
