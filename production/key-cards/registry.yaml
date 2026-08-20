@@ -88,12 +88,11 @@ records:
     cardNumber: C-001
     topic: AI 的定義與分類
     plannedBatchId: KC-JR-S1-B001
-    state: REVISION_REQUIRED
+    state: RENDERED
     productionComplete: false
     sampleOnly: false
-    note: 'Revision required: v1 used deterministic evidence text but failed KCT-v3.4 canonical sample structure match. User reported format drift.'
-    revisionReason: QA_REJECTED
-    supersedesOnNextRevision: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v1.png
+    note: 'User-approved visual revision: all card-body visuals/text are image-generated from the governed content and canonical sample reference; only the bottom source citation is deterministic text.'
+    revisionReason: USER_APPROVED_REDESIGN
     sampleArtifact:
       title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
       driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
@@ -116,19 +115,27 @@ records:
         batchId: KC-JR-S1-B001
         action: QA_REJECTED
         reason: 'KCT-v3.4 canonical sample structure mismatch: mascot scale/crop, second-row hierarchy, title spacing, section proportions and visual framing drifted from KCS-v1.1.'
+      - renderedAt: '2026-08-20T12:00:00+08:00'
+        renderedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: RENDERED_REVISION
+        revision: 2
+        rule: 'image-generated body; deterministic source footer only'
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
-    renderFingerprint: d3df2c3a2b7690724dbb68b2100ea99ef3f1983d1f3b5d8ca89fce83825b5d3e
-    artifactRevision: 1
-    finalDriveFileId: 1B8KOf35BkqJ1S8BkCcvcdtJP7gX5hx67
-    finalArtifact:
+    artifactRevision: 2
+    previousRejectedArtifact:
       filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v1.png
+      driveFileId: 1B8KOf35BkqJ1S8BkCcvcdtJP7gX5hx67
+      qaDisposition: REJECTED
+    renderedArtifact:
+      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v2.png
+      driveFileId: 13_FumOPqYSkEH5jeuqZOfu99mSBcF32r
       widthPx: 1024
       heightPx: 1536
       sizeVariant: STANDARD
-      imageSha256: aae5fbca23bb830a3e4d9718326236300ce616448fbfef2e1b9b46dffdb3e900
       driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
-      qaDisposition: REJECTED
+      qaDisposition: PENDING_VISUAL_REVIEW
     evidence:
       levelSubject: 初級-科目一
       sectionTitle: '3.1 人工智慧概念'
@@ -139,17 +146,16 @@ records:
       examLabels:
         - 重複出題
       sourceFooter: '指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4'
+    renderingMode:
+      body: IMAGE_GENERATED
+      footerSourceCitation: DETERMINISTIC_TEXT
+      userApprovedAt: '2026-08-20T11:58:00+08:00'
     qa:
-      evidenceTextLocked: true
-      mascotIdentityLocked: true
-      templateStructureMatched: false
+      sourceFooterDeterministic: true
+      bodyTextDeterministic: false
+      mascotImageGenerated: true
       finalQaPassed: false
-      evidenceMethod: deterministic-programmatic-text-layer
-      mascotMethod: governed-XIAOXIN-v1-base-asset-direct
       fixedWidthPx: 1024
       renderedHeightPx: 1536
-      examRateVisible: false
-      categoryTextVisible: false
-      applicableExamLabelsOnly: true
-      failedGate: requireSampleStructureMatch
-    updatedAt: '2026-08-20T11:56:30+08:00'
+      awaitingVisualReview: true
+    updatedAt: '2026-08-20T12:00:00+08:00'
