@@ -2,63 +2,53 @@
 
 Status: ACTIVE  
 Effective: 2026-08-20  
-Template policy: `KCT-v3.4`
+Rendering mode: `IMAGE_BODY + DETERMINISTIC_SOURCE_FOOTER`
 
 ## Purpose
 
-iPAS key-point cards use AI-generated visual assets, but source-bound and evidence-bearing text must never be entrusted to image-generation text rendering. This policy prevents drift in star ratings, card numbers, card categories, exam labels, guide topics, question references, and source footers.
+iPAS key-point cards use image generation for the complete card body so the visual composition, typography, icons, labels, mascot, and teaching content remain visually unified.
+
+The **only deterministic text layer on the card face is the bottom source citation**.
+
+This rule was approved on 2026-08-20 after the first formal production render showed that rebuilding most of the card with programmatic text/layout caused visible template drift.
 
 ## Core Rule
 
-**Evidence text is data, not decoration.**
+**卡身交給圖片生成；最下面的出處交給 deterministic text。**
 
-All governed evidence fields must be read from the current data layer, injected through a deterministic text renderer, and compared back to the same data record after rendering.
+The production pipeline must therefore separate:
+
+- **image-generated card body**: all visible content above the footer;
+- **deterministic source footer**: exact governed citation text overlaid after image generation.
 
 ## Production Architecture
 
-Use a hybrid pipeline:
+1. Resolve the governed card record from the current Master / topic data layer.
+2. Resolve the canonical KCT template / canonical sample.
+3. Provide governed card facts and teaching content to image generation as visual constraints.
+4. Generate the complete card body, including:
+   - level / subject;
+   - section title;
+   - star icons;
+   - card number;
+   - card-category icon;
+   - exam labels;
+   - main title;
+   - teaching content;
+   - examples;
+   - traps / memory content;
+   - related concepts;
+   - 小芯 and other illustration assets.
+5. Reserve the bottom footer zone for deterministic rendering.
+6. Replace / overlay the footer with the exact governed source citation.
+7. Visually compare governed evidence values shown in the generated card body against the data layer.
+8. Fail QA and regenerate when a body evidence value is visibly wrong.
+9. Fail QA when the deterministic footer differs by any character.
 
-1. Resolve the governed card record from the Master / atomic-topic data layer.
-2. Validate all locked evidence fields before visual composition.
-3. Generate or select only non-evidence visual assets with image generation.
-4. Generate or select a theme-aware 小芯 variation under mascot identity lock when needed.
-5. Compose the fixed KCT layout.
-6. Inject locked fields as deterministic text layers.
-7. Render the final card.
-8. Compare rendered locked text with the governed record.
-9. Fail QA if any locked value differs.
+## Deterministic Locked Field
 
-Image generation may produce:
-- mascot / character assets under the approved identity-lock policy;
-- icons;
-- non-text illustrations;
-- decorative backgrounds;
-- visual process elements.
+Only the following visible field is deterministic `EXACT_TEXT`:
 
-Image generation must not author or rewrite:
-- card number;
-- level / subject;
-- section title when it is governed by the card record;
-- star value;
-- card category code or meaning;
-- exam labels;
-- guide topic;
-- exam question references;
-- source footer.
-
-## Locked Fields
-
-The following fields are `EXACT_TEXT` or deterministic-value fields:
-
-- `level-subject`
-- `section-title`
-- `atomic-topic-title`
-- `star-rating`
-- `card-number`
-- `card-category-code-and-icon`
-- `exam-labels`
-- `guide-topic`
-- `exam-question-refs`
 - `source-footer`
 
 Rules:
@@ -66,10 +56,26 @@ Rules:
 - no automatic correction;
 - no inferred question numbers;
 - no source substitution;
-- no borrowing values from a visual sample;
-- no filling missing evidence from model knowledge.
+- no borrowing footer text from a visual sample;
+- no filling missing citation evidence from model knowledge.
 
-If a locked value is missing, the card is blocked instead of guessed.
+If the source footer cannot be resolved from governed data, publication is blocked.
+
+## Image-Generated Evidence Fields
+
+The following fields are generated as part of the image body, but their target values still come from the governed data layer:
+
+- `level-subject`
+- `section-title`
+- `atomic-topic-title`
+- `star-rating`
+- `card-number`
+- `card-category-icon`
+- `exam-labels`
+
+These are **visual constraints**, not deterministic text overlays.
+
+After rendering, QA must visually confirm they match the governed record. Any mismatch requires regeneration or revision.
 
 ## Source Footer
 
@@ -81,20 +87,23 @@ Example for `I1-01`:
 
 `指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4`
 
-The compact footer is display text only. Full URLs, Drive IDs, official PDF references, and audit evidence remain in the data layer.
+The footer must be injected after image generation as a deterministic text layer.
+
+Full URLs, Drive IDs, official PDF references, and audit evidence remain in the data layer.
 
 ## Visual Label Rules
 
-- Card category: icon only on the card face; do not show `卡片類別`, category name, or category code as visible text.
-- Exam labels: must remain visible when applicable; show only applicable labels.
-- Do not display a heading such as `考試標籤`.
-- Star icons remain the only exam-priority signal shown on the card; exam-rate percentages remain data-only.
+- Card category remains icon-only on the card face.
+- Exam labels remain visible when applicable.
+- Star icons remain the only exam-priority signal shown on the card.
+- Exam-rate percentages remain data-only.
+- Card-body text and labels may be image-generated, but QA must compare the rendered result with the governed values.
 
 ## Mascot Rule
 
-The governed mascot `小芯` remains in the upper-right visual area, but she may vary by theme under identity lock.
+The governed mascot `小芯` remains in the upper-right visual area and may be generated together with the card body.
 
-Allowed variation includes:
+She may vary by theme under identity lock, including:
 - pose;
 - facial expression;
 - outfit;
@@ -102,43 +111,43 @@ Allowed variation includes:
 - accessories;
 - topic-themed professional role.
 
-The variation must still be unmistakably 小芯 and must follow `docs/KEY_CARD_MASCOT_POLICY.md`.
+She must remain unmistakably 小芯 and follow `docs/KEY_CARD_MASCOT_POLICY.md`.
 
 She must not cover:
 - stars;
 - card number;
 - exam labels;
 - main title;
-- evidence text.
-
-Core rule:
-
-> 主題可變，身份不變；姿態可變，角色鎖定。
+- footer source citation.
 
 ## Height and Typography
 
-The existing dynamic-height policy remains authoritative:
+Width remains 1024 px.
 
-> 寧可拉高卡片，不可縮小字體。
+Use STANDARD 1024×1536 when content fits. If content density would make the generated card unreadable, use the dynamic-height policy and increase height rather than forcing smaller text.
 
-Width remains 1024 px. Use STANDARD 1024×1536 when content fits; otherwise increase height dynamically. Do not shrink the source footer or evidence text to force-fit the card.
+The deterministic source footer must remain readable at all heights.
 
 ## QA Gates
 
-A card cannot pass final QA unless both are true:
+A card cannot pass final QA unless all are true:
 
-- `EVIDENCE_TEXT_LOCKED = true`
-- `MASCOT_IDENTITY_LOCKED = true`
+- `EVIDENCE_TEXT_LOCKED = true` — meaning the deterministic source footer exactly matches governed data;
+- `VISUAL_EVIDENCE_MATCHED = true` — image-generated star/card-number/labels/title identifiers visually match governed data;
+- `MASCOT_IDENTITY_LOCKED = true`;
+- canonical template/sample structure is acceptably preserved.
 
 Fail the card if:
-- any locked field differs from the governed record;
-- a question number was altered or omitted;
-- the guide topic was replaced;
-- the star count or exam labels differ;
-- the card category icon does not match the governed category;
-- the source footer was paraphrased;
-- image-generated text is used for evidence fields;
-- the 小芯 variant drifts into a materially different character identity.
+- source footer differs by any character;
+- source footer was generated by the image model instead of replaced deterministically;
+- star count is visibly wrong;
+- card number is visibly wrong;
+- required exam label is missing or wrong;
+- card-category icon is wrong;
+- level/subject identity is materially wrong;
+- image-generated teaching content drifts outside the governed exam point;
+- 小芯 identity materially drifts;
+- template structure visibly drifts from the canonical sample.
 
 ## Relationship to Other Policies
 
