@@ -1,23 +1,24 @@
 ---
 name: producing-ipas-key-cards
-description: Use whenever producing, continuing, revising, or batch-generating iPAS key-card images, especially across multiple ChatGPT conversations. Prevents duplicate production through the GitHub registry claim workflow.
+description: iPAS-specific adapter for the generic multi-exam key-card production workflow. Use whenever producing, continuing, revising, or batch-generating iPAS key-card images.
 ---
 
 # Producing iPAS Key-Card Images
 
-## Purpose
+## Program Binding
 
-Produce iPAS key-card images safely across multiple conversations without duplicate generation.
+This skill is the `IPAS` adapter for the shared exam-card production core.
 
-## Mandatory Read Order
+Before production, read and follow:
 
-Before generating any production card, read:
-
-1. `sources/registry/key-card-template-policy.yaml`
-2. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
-3. `production/key-cards/batches.yaml`
-4. `production/key-cards/registry.yaml`
-5. the current governed Master / atomic-topic record for the candidate card
+1. `.agents/skills/producing-exam-key-cards/SKILL.md`
+2. `sources/registry/exam-programs.yaml`
+3. `docs/MULTI_EXAM_FACTORY_ARCHITECTURE.md`
+4. `sources/registry/key-card-template-policy.yaml`
+5. `docs/KEY_CARD_IMAGE_PRODUCTION_PLAN.md`
+6. `production/key-cards/batches.yaml`
+7. `production/key-cards/registry.yaml`
+8. the current governed iPAS Master / atomic-topic record
 
 Also honor:
 
@@ -25,149 +26,98 @@ Also honor:
 - `docs/KEY_CARD_MASCOT_POLICY.md`
 - `docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md`
 
+## Fixed Program Context
+
+- `programCode: IPAS`
+- current visual profile: `KCT-v3.4`
+- current mascot profile: `XIAOXIN-v1`
+- existing Drive root remains the iPAS program root
+
+Do not read evidence from another exam program when producing an iPAS card.
+
+## Production Identity
+
+Existing legacy key:
+
+`<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>`
+
+Example:
+
+`JR-S1-I1-01-C001`
+
+Global key for cross-program coordination:
+
+`IPAS-<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>`
+
+Example:
+
+`IPAS-JR-S1-I1-01-C001`
+
+Existing legacy keys remain aliases. New cross-program duplicate checks use `globalProductionKey`.
+
 ## Hard Rule
 
-**Never call image generation for a production card before a successful registry CLAIM.**
+**Never call image generation for a production card before a successful one-card registry CLAIM.**
 
 Chat memory is not a production lock.
 
 ## Card Selection
 
-If the user names a card, use that card if it is eligible under the current registry state.
+If the user names a card, use that iPAS card if eligible.
 
-If the user says only `繼續`, `下一張`, `產生第一批`, or similar:
+If the user says `繼續`, `下一張`, or similar:
 
-1. read the ACTIVE batch from `production/key-cards/batches.yaml`;
-2. read the current Master / atomic-topic data layer within that batch scope;
-3. read the current production registry;
-4. exclude `QA_PASSED` cards;
-5. exclude cards with an unexpired `CLAIMED` lease;
-6. prefer resuming existing `VISUAL_READY`, `RENDERED`, `REVISION_REQUIRED`, or `STALE_REGEN_REQUIRED` work when appropriate;
-7. otherwise choose the next governed priority card.
+1. resolve `programCode = IPAS`;
+2. read the ACTIVE IPAS batch;
+3. read current iPAS Master / atomic-topic data;
+4. read production registry;
+5. exclude IPAS `QA_PASSED` cards;
+6. exclude IPAS cards with active claims;
+7. resume unfinished IPAS work when appropriate;
+8. otherwise choose the next governed iPAS priority card.
 
-Do not choose the next card from memory alone.
-
-## Production Key
-
-Build exactly one stable key per card:
-
-`<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>`
-
-Example: `JR-S1-I1-01-C001`.
+Never select from another program's batch or data.
 
 ## Claim Protocol
 
-1. Fetch `production/key-cards/registry.yaml` and retain its current blob SHA.
-2. Confirm the card is eligible and belongs to the current ACTIVE batch scope.
-3. Create a claim token such as `20260820T111500+0800_a1b2c3d4`.
-4. Set card state to `CLAIMED` with:
-   - `claimToken`
-   - `claimedAt`
-   - `leaseUntil` (default +60 minutes)
-   - `claimedBy: chatgpt-session`
-   - `batchId`
-5. Update the registry using the fetched SHA.
-6. Only after the update succeeds may image production start.
-7. If the update fails because the SHA is stale, re-fetch the registry. Another conversation may have claimed or completed the card. Never generate from the stale plan.
-
-Claims are one-card-at-a-time. Do not reserve a whole 10-card batch.
+1. Fetch the registry and retain current blob SHA.
+2. Confirm the candidate has `programCode: IPAS`.
+3. Confirm the global key is eligible in the current IPAS batch.
+4. Write a one-card CLAIM including `programCode`, `globalProductionKey`, claim token, timestamps and batch ID.
+5. Only after the write succeeds may production begin.
+6. On stale SHA, refetch; do not continue from stale state.
 
 ## Duplicate Check
 
-Before generating, inspect state and fingerprint:
+- same IPAS global key + same fingerprint + `QA_PASSED` -> SKIP
+- active `CLAIMED` -> SKIP
+- `VISUAL_READY` / `RENDERED` -> resume, do not redraw
+- `SAMPLE_ONLY` -> does not count as final production
+- `REVISION_REQUIRED` / `STALE_REGEN_REQUIRED` -> redraw allowed with revision reason
 
-- `QA_PASSED` + same fingerprint -> SKIP and select another card.
-- active `CLAIMED` -> SKIP; another session owns it.
-- `VISUAL_READY` / `RENDERED` -> resume existing asset/QA instead of redrawing.
-- `SAMPLE_ONLY` -> sample does not count as completed production; final deterministic render may proceed after claim.
-- `REVISION_REQUIRED` / `STALE_REGEN_REQUIRED` -> regeneration is allowed with recorded reason and new artifact revision.
+## iPAS Rendering Profile
 
-## Render Fingerprint
+Continue to enforce:
 
-Compute SHA-256 from canonical sorted-key JSON containing:
+- KCT-v3.4
+- deterministic evidence text
+- category icon only
+- applicable exam labels visible
+- 小芯 identity lock with topic-aware pose / outfit / props
+- upper-right mascot visual zone
+- 1024 px fixed width
+- dynamic height instead of shrinking typography
+- exact source footer from governed iPAS data
 
-- production key
-- current KCT version
-- source / analysis snapshot
-- locked evidence fields
-- governed teaching content
-- life example
-- traps
-- memory phrase
-- related concepts
-- mascot theme role
-- explicit visual revision key, only when a deliberate alternate version was approved
+Final iPAS card QA requires:
 
-Do not include random image seeds.
+- `EVIDENCE_TEXT_LOCKED = true`
+- `MASCOT_IDENTITY_LOCKED = true`
 
-## Rendering Architecture
+## Completion
 
-Use the KCT hybrid pipeline:
+Upload final images only to the correct iPAS Drive program / subject location.
 
-1. generate/select non-text visual assets;
-2. keep 小芯 identity-locked while allowing topic-aware pose/outfit/props;
-3. compose the fixed card layout;
-4. inject evidence fields through deterministic text layers;
-5. do not let image generation author locked evidence text;
-6. use dynamic height rather than shrinking typography.
+Write `programCode: IPAS`, `globalProductionKey`, Drive ID, fingerprint, revision and QA state back to the registry.
 
-## Evidence Locks
-
-Final card must have exact governed values for:
-
-- level/subject
-- section title
-- atomic topic title
-- star rating
-- card number
-- category icon
-- applicable exam labels
-- guide topic
-- question references
-- source footer
-
-If any required locked value is missing, block production instead of guessing.
-
-## Completion Protocol
-
-After rendering:
-
-1. upload the final PNG to the proper Drive `04_重點卡` location;
-2. record exact Drive file ID in the registry;
-3. record `renderFingerprint`, `artifactRevision`, and `batchId`;
-4. run both QA gates:
-   - `EVIDENCE_TEXT_LOCKED`
-   - `MASCOT_IDENTITY_LOCKED`
-5. set `QA_PASSED` only if both pass;
-6. after QA passes, add the production key to the current batch's `qaPassedProductionKeys` and update `completedCount`;
-7. otherwise set `REVISION_REQUIRED` with a reason.
-
-Only `QA_PASSED` counts as production complete.
-
-## Batch Rule
-
-Logical batches default to 10 QA-passed cards.
-
-A batch is not a lock. Never pre-claim all 10 cards.
-
-Current batch selection and completion are controlled by `production/key-cards/batches.yaml`.
-
-When a batch reaches its target, reconcile the latest Master and registry before creating the next batch. Do not create future card lists from memory.
-
-## Revision
-
-A redraw requires one recorded reason:
-
-- SOURCE_CHANGED
-- TEMPLATE_CHANGED
-- CONTENT_CORRECTION
-- QA_REJECTED
-- USER_APPROVED_REDESIGN
-- MASCOT_IDENTITY_FIX
-- EVIDENCE_TEXT_FIX
-
-Increment artifact revision and record `supersedes`.
-
-## Cross-Chat Rule
-
-Every new conversation must re-read both the batch queue and registry immediately before selecting or claiming a card. Never rely on what another conversation was expected to do.
+Only IPAS-scoped `QA_PASSED` counts toward the IPAS batch.
