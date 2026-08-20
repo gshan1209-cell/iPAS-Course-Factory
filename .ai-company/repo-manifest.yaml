@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0",
+  "repository": "gshan1209-cell/iPAS-Course-Factory",
+  "projectionStatus": "active-incomplete-identity",
+  "canonical": false,
+  "identity": {
+    "systemLevel": {
+      "value": null,
+      "status": "missing-current-repository-local-evidence"
+    },
+    "systemCode": {
+      "value": null,
+      "status": "missing"
+    },
+    "systemNameZh": {
+      "value": null,
+      "status": "unresolved-formal-gs004-decision"
+    },
+    "systemNameEn": {
+      "value": null,
+      "status": "unresolved-formal-gs004-decision",
+      "repositoryNameCandidate": "iPAS-Course-Factory"
+    },
+    "systemDisplayLabel": {
+      "value": null,
+      "status": "cannot-derive-with-incomplete-identity"
+    }
+  },
+  "classification": {
+    "repoClass": "product-platform",
+    "platformRole": "multi-exam-course-production-platform"
+  },
+  "management": {
+    "managementPolicy": "optional",
+    "managementStatus": "managed",
+    "portfolioInclusion": "active-product",
+    "managementReason": "Reusable multi-course and multi-exam production platform with governed manifests, workflows, templates and operator surfaces"
+  },
+  "development": {
+    "maturity": "DEV4",
+    "maturityBasis": "README DEV4 Validation; Phase 1 implemented with independent validation pending",
+    "releaseStatus": "not-claimed",
+    "deploymentStatus": "not-claimed",
+    "productionReadiness": "not-claimed"
+  },
+  "humanGates": {
+    "slidesApprovalRequired": true,
+    "voiceApprovalRequired": true,
+    "finalPublicationApprovalRequired": true,
+    "externalOutputAutoApprovalAllowed": false,
+    "autonomousPublicationAllowed": false
+  },
+  "executionPolicy": {
+    "policy": "DS-003@2.1.1",
+    "responsibility": "RESP-DEV-AGENT-001@2.1.1",
+    "validationTaskProcedure": "PROC-VALIDATION-TASK-001@2.1.1",
+    "codexProcedure": "PROC-CODEX-POST-MAIN-VALIDATION-001@1.1.1",
+    "chatgptAuditProcedure": "PROC-CHATGPT-AUDIT-001@2.1.1",
+    "issueClosureProcedure": "PROC-ISSUE-CLOSURE-001@2.1.1",
+    "primaryDevelopmentAgentOwnsImplementationAndRemediation": true,
+    "implementationMayMergeAfterOwnGate": true,
+    "postMainSupplementalValidation": true,
+    "testPullRequest": null,
+    "validatorRepositoryWrite": false,
+    "validatorRemediation": false,
+    "validatorBranchCreation": false,
+    "validatorPullRequestCreation": false,
+    "validatorMerge": false,
+    "validatorSourceIssueClosure": false,
+    "pendingValidationFreezesMain": false
+  },
+  "evidence": {
+    "observedSourceSha": "98f638c0e979383b3583b5a5de7289b18af7f9eb",
+    "identityGate": "gshan1209-cell/iPAS-Course-Factory#7",
+    "managementSource": "gshan1209-cell/iPAS-Course-Factory#8",
+    "productValidationTask": "gshan1209-cell/AI-Workstream#225",
+    "productValidationStatus": "pending",
+    "productImplementationPr": "gshan1209-cell/iPAS-Course-Factory#4",
+    "productImplementationMergeSha": "4e660af2ffada71f0722863a1e538c5696a570d9"
+  },
+  "safety": {
+    "inferSystemLevelFromFactoryName": false,
+    "inferSystemLevelFromControlPlaneRole": false,
+    "gs004IdentityInference": false,
+    "automaticDev5Promotion": false,
+    "humanGateBypass": false,
+    "credentialPersistenceByManagementAdoption": false,
+    "releaseOrDeployByManagementAdoption": false,
+    "crossRepositoryWrite": false
+  }
+}
