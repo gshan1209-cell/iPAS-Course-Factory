@@ -173,10 +173,10 @@ records:
     topic: 機器學習基本原理
     cardFocus: 監督式、非監督式、半監督式、強化學習
     plannedBatchId: KC-JR-S1-B001
-    state: QA_PASSED
-    productionComplete: true
+    state: REVISION_REQUIRED
+    productionComplete: false
     sampleOnly: false
-    note: 'Selected from latest governed Master as the highest current parent priority (5 stars, 21.3%, suggestedCardCount 3). Three image-generation attempts failed template/evidence QA, so the final body uses the approved template-locked raster fallback; the bottom source footer remains deterministic.'
+    note: 'Rejected after user clarification: only the bottom source citation may use programmatic/deterministic text. The C-002 body was programmatically composed and therefore is not a valid production card.'
     revisionReason: QA_REJECTED
     claim: null
     claimHistory:
@@ -192,20 +192,24 @@ records:
         batchId: KC-JR-S1-B001
         action: QA_PASSED
         revision: 2
-        reason: 'Exactly five header star slots; correct C-002, subject, labels, mascot identity and deterministic footer.'
+      - reviewedAt: '2026-08-20T12:57:00+08:00'
+        reviewedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: QA_REJECTED
+        revision: 2
+        reason: 'Programmatic body text/layout is prohibited. Only the bottom source citation may be deterministic/programmatic text.'
     sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
     templateOrVisualProfileVersion: KCT-v3.4
-    renderFingerprint: b164f541536520743567d042b9150f8099db68c3384a4929641c19182e06df90
     artifactRevision: 2
-    finalDriveFileId: 1_G5_lXecD-pX-7boM4lEhZAAAFbF5F-5
-    finalArtifact:
+    rejectedArtifact:
       filename: IPAS_初級_科目一_C-002_I1-06_機器學習基本原理_v2.png
+      driveFileId: 1_G5_lXecD-pX-7boM4lEhZAAAFbF5F-5
       widthPx: 1024
       heightPx: 1700
       sizeVariant: EXTENDED
       imageSha256: 1dc8e096f15bd304af0951014c40ba1e6631498b9b5d326f6564656e4151be51
       driveFolderId: 1bCvZQ69bmfPZci7s16qXMMCerSQOwWut
-      qaDisposition: PASSED
+      qaDisposition: REJECTED
     evidence:
       levelSubject: 初級-科目一
       sectionTitle: '3.3 機器學習概念'
@@ -217,17 +221,17 @@ records:
       examLabels: [必考, 重複出題]
       sourceFooter: '指引:「機器學習基本原理」；考題:114-4 初級科一 Q4、Q5、Q11、Q13、Q17、Q18、Q19、Q39、Q40、Q44、Q46；115-1 初級科一 Q3、Q19、Q20、Q30、Q31、Q39、Q40、Q43、Q50；115-2 初級科一 Q2、Q14、Q16、Q19、Q21、Q22、Q23、Q24、Q26、Q36、Q38、Q48'
     renderingMode:
-      body: TEMPLATE_LOCKED_RASTER
+      body: PROGRAMMATIC_RASTER_REJECTED
       footerSourceCitation: DETERMINISTIC_TEXT
-      fallbackReason: 'IMAGE_MODEL_TEMPLATE_DRIFT_AFTER_3_ATTEMPTS'
     qa:
       evidenceTextLocked: true
       sourceFooterDeterministic: true
-      visualEvidenceMatched: true
+      visualEvidenceMatched: false
       mascotIdentityLocked: true
-      finalQaPassed: true
+      finalQaPassed: false
       fixedWidthPx: 1024
       renderedHeightPx: 1700
       starSlotCountExactlyFive: true
       examRateVisible: false
-    updatedAt: '2026-08-20T12:53:56+08:00'
+      failedGate: IMAGE_GENERATED_BODY_REQUIRED
+    updatedAt: '2026-08-20T12:57:00+08:00'
