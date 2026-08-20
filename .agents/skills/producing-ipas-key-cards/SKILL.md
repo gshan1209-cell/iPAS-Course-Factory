@@ -26,6 +26,8 @@ Also honor:
 - `docs/KEY_CARD_MASCOT_POLICY.md`
 - `docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md`
 
+When the deterministic-text document conflicts with the older rendering subsection inside `KCT-v3.4`, the current `docs/KEY_CARD_DETERMINISTIC_TEXT_POLICY.md` rendering rule takes precedence.
+
 ## Fixed Program Context
 
 - `programCode: IPAS`
@@ -91,7 +93,7 @@ Never select from another program's batch or data.
 
 - same IPAS global key + same fingerprint + `QA_PASSED` -> SKIP
 - active `CLAIMED` -> SKIP
-- `VISUAL_READY` / `RENDERED` -> resume, do not redraw
+- `VISUAL_READY` / `RENDERED` -> resume, do not redraw unless the current revision is under explicit visual review
 - `SAMPLE_ONLY` -> does not count as final production
 - `REVISION_REQUIRED` / `STALE_REGEN_REQUIRED` -> redraw allowed with revision reason
 
@@ -99,20 +101,35 @@ Never select from another program's batch or data.
 
 Continue to enforce:
 
-- KCT-v3.4
-- deterministic evidence text
+- KCT-v3.4 canonical template / sample structure
+- **card body is image-generated** from the governed content and evidence constraints
+- **only the bottom source citation is deterministic text**
 - category icon only
 - applicable exam labels visible
 - 小芯 identity lock with topic-aware pose / outfit / props
 - upper-right mascot visual zone
 - 1024 px fixed width
 - dynamic height instead of shrinking typography
-- exact source footer from governed iPAS data
+- exact source footer from governed iPAS data, overlaid after image generation
+
+The following body values still come from the governed data layer and must be visually checked after generation:
+
+- level / subject
+- section title
+- topic title
+- star count
+- card number
+- category icon
+- applicable exam labels
+
+Do not programmatically overwrite these body fields with text. Regenerate the image when they are visibly wrong.
 
 Final iPAS card QA requires:
 
-- `EVIDENCE_TEXT_LOCKED = true`
+- `EVIDENCE_TEXT_LOCKED = true` — exact deterministic bottom source footer
+- `VISUAL_EVIDENCE_MATCHED = true` — body evidence visually matches governed data
 - `MASCOT_IDENTITY_LOCKED = true`
+- canonical sample structure match
 
 ## Completion
 
