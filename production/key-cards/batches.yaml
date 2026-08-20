@@ -1,43 +1,58 @@
-schemaVersion: KCIB-v1.0
+schemaVersion: KCIB-v1.1
 status: ACTIVE
 effectiveDate: '2026-08-20'
-role: logical-production-batch-queue
+role: logical-cross-program-production-batch-queue
+programRegistryRef: sources/registry/exam-programs.yaml
 batchPolicy:
   defaultTargetCount: 10
   claimGranularity: one-card
   preclaimWholeBatch: false
   completeState: QA_PASSED
   createNextBatchWhenCurrentComplete: true
+  requireProgramCodeForNewBatches: true
   selectionOrder:
-    - effective-star-desc
+    - effective-star-or-program-priority-desc
     - governed-priority-desc
     - card-number-asc
-    - atomic-topic-id-asc
+    - topic-id-asc
   eligibility:
     excludeStates:
       - QA_PASSED
       - SUPERSEDED
     excludeActiveClaims: true
     resumeExistingIncompleteBeforeNew: true
+    requireSameProgramAsBatch: true
 batches:
   - batchId: KC-JR-S1-B001
+    globalBatchId: IPAS-KC-JR-S1-B001
+    programCode: IPAS
+    legacyBatchId: true
     status: ACTIVE
     levelSubject: 初級-科目一
     targetCount: 10
     selectionMode: dynamic-from-governed-master
-    description: '第一批正式重點卡；由最新 Master / 原子考點資料層依星級與正式優先序動態挑選 10 張。'
+    description: 'iPAS 第一批正式重點卡；由最新 Master / 原子考點資料層依星級與正式優先序動態挑選 10 張。'
     rules:
       - do-not-fill-from-chat-memory
       - one-chat-one-card-claim-at-a-time
-      - same-production-key-must-not-appear-twice
+      - same-global-production-key-must-not-appear-twice
       - sample-only-does-not-count-as-complete
       - qa-passed-counts-toward-batch-target
+      - program-data-must-not-cross-boundary
     assignedProductionKeys: []
     qaPassedProductionKeys: []
     completedCount: 0
     createdAt: '2026-08-20T11:06:00+08:00'
     completedAt: null
+plannedPrograms:
+  - programCode: POSTAL
+    status: WAITING_FOR_PROGRAM_PROFILE_READY
+    batchCreationBlockedUntil:
+      - OFFICIAL_SOURCES_REGISTERED
+      - SUBJECT_MODEL_READY
+      - TOPIC_TAXONOMY_READY
+      - STORAGE_READY
 nextBatchTemplate:
-  batchIdFormat: 'KC-<LEVEL>-S<SUBJECT>-B<nnn>'
+  globalBatchIdFormat: '<PROGRAM>-KC-<TRACK_OR_LEVEL>-S<SUBJECT>-B<nnn>'
   targetCount: 10
-  note: 'Create the next batch only after reconciling the current Master and registry. Do not pre-generate empty future card lists from memory.'
+  note: 'Create the next batch only after reconciling the selected program profile, Master and registry. Never infer one program batch structure from another program.'
