@@ -1,0 +1,47 @@
+policyVersion: KCT-v1.0
+effectiveFrom: '2026-08-20'
+status: ACTIVE
+scope:
+  levels: [junior, intermediate]
+  artifact: key-point-card
+canonicalTemplate:
+  title: iPAS_重點卡_標準格式母版_v1.0.png
+  driveFolderId: 10WWj96Yx8jrgv-wRjeFGZq0LML-OftR0
+  driveFileId: 1hkosypExdKsSs0ih_yfItoVm7yzh4etJ
+  widthPx: 875
+  heightPx: 2517
+  orientation: portrait
+  role: master-template
+layout:
+  - header
+  - card-type
+  - title-and-one-line-summary
+  - core-points
+  - life-example
+  - common-traps
+  - memory-phrase
+  - related-concepts
+  - footer-tip
+contentRules:
+  oneCardOneExamPoint: true
+  simplifyContent: true
+  largeTypography: true
+  lifeExampleRequired: true
+  corePointCountMax: 4
+  trapCountMax: 3
+  relatedConceptCountMax: 3
+  memoryPhraseRequired: true
+  examPriorityUsesStarOnly: true
+labelPolicyRef: sources/registry/key-card-label-policy.yaml
+weightPolicyRef: sources/registry/key-card-weight-policy.yaml
+changeControl:
+  templateVersioning: append-only
+  replaceMasterRequiresApproval: true
+  neverOverwriteHistoricalTemplateEvidence: true
+  updateDriveAndPolicyTogether: true
+qa:
+  requireReadableMobileText: true
+  requireVisualHierarchy: true
+  requireLabelConsistency: true
+  requireStarRatioConsistency: true
+  requireLifeExample: true
