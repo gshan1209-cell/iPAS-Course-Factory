@@ -14,7 +14,7 @@ policyRefs:
   dynamicHeight: docs/KEY_CARD_DYNAMIC_HEIGHT_POLICY.md
 namespacePolicy:
   requireProgramCodeForNewRecords: true
-  globalProductionKeyFormat: '<PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>'
+  globalProductionKeyFormat: <PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>
   globallyUniqueKeyField: globalProductionKey
   legacyProductionKeyField: productionKey
   legacyIpasKeysRemainReadable: true
@@ -32,213 +32,257 @@ fingerprintPolicy:
   algorithm: sha256
   canonicalEncoding: utf-8-json-sorted-keys
   include:
-    - programCode
-    - globalProductionKey
-    - templateOrVisualProfileVersion
-    - sourceAnalysisSnapshotId
-    - lockedEvidenceFields
-    - governedTeachingContent
-    - lifeExample
-    - traps
-    - memoryPhrase
-    - relatedConcepts
-    - mascotThemeRole
-    - explicitVisualRevisionKey
+  - programCode
+  - globalProductionKey
+  - templateOrVisualProfileVersion
+  - sourceAnalysisSnapshotId
+  - lockedEvidenceFields
+  - governedTeachingContent
+  - lifeExample
+  - traps
+  - memoryPhrase
+  - relatedConcepts
+  - mascotThemeRole
+  - explicitVisualRevisionKey
   exclude:
-    - randomImageSeed
-    - chatTitle
-    - conversationMemory
+  - randomImageSeed
+  - chatTitle
+  - conversationMemory
 states:
   productionComplete: QA_PASSED
   allowed:
-    - PLANNED
-    - CLAIMED
-    - VISUAL_READY
-    - RENDERED
-    - QA_PASSED
-    - REVISION_REQUIRED
-    - STALE_REGEN_REQUIRED
-    - SUPERSEDED
-    - SAMPLE_ONLY
+  - PLANNED
+  - CLAIMED
+  - VISUAL_READY
+  - RENDERED
+  - QA_PASSED
+  - REVISION_REQUIRED
+  - STALE_REGEN_REQUIRED
+  - SUPERSEDED
+  - SAMPLE_ONLY
 revisionReasons:
-  - SOURCE_CHANGED
-  - TEMPLATE_CHANGED
-  - CONTENT_CORRECTION
-  - QA_REJECTED
-  - USER_APPROVED_REDESIGN
-  - MASCOT_IDENTITY_FIX
-  - EVIDENCE_TEXT_FIX
-  - PROGRAM_PROFILE_CHANGED
-legacyProductionKeyFormat: '<LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>'
-globalProductionKeyFormat: '<PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>'
+- SOURCE_CHANGED
+- TEMPLATE_CHANGED
+- CONTENT_CORRECTION
+- QA_REJECTED
+- USER_APPROVED_REDESIGN
+- MASCOT_IDENTITY_FIX
+- EVIDENCE_TEXT_FIX
+- PROGRAM_PROFILE_CHANGED
+legacyProductionKeyFormat: <LEVEL>-<SUBJECT>-<ATOMIC_TOPIC_ID>-<CARD_NO>
+globalProductionKeyFormat: <PROGRAM>-<TRACK_OR_LEVEL>-<SUBJECT>-<TOPIC_ID>-<CARD_NO>
 examples:
-  - IPAS-JR-S1-I1-01-C001
-  - IPAS-MID-S3-M3-06-C023
-  - POSTAL-<TRACK>-<SUBJECT>-<TOPIC>-C001
+- IPAS-JR-S1-I1-01-C001
+- IPAS-MID-S3-M3-06-C023
+- POSTAL-<TRACK>-<SUBJECT>-<TOPIC>-C001
 artifactNamePolicy:
-  globalRecommendedFormat: '<PROGRAM>_<級別或類組>_<科目>_<CARD_NO>_<TOPIC_ID>_<短主題>_v<artifactRevision>.png'
-  ipasLegacyCompatibleFormat: '<級別>_<科目>_<CARD_NO>_<ATOMIC_TOPIC_ID>_<短主題>_v<artifactRevision>.png'
+  globalRecommendedFormat: <PROGRAM>_<級別或類組>_<科目>_<CARD_NO>_<TOPIC_ID>_<短主題>_v<artifactRevision>.png
+  ipasLegacyCompatibleFormat: <級別>_<科目>_<CARD_NO>_<ATOMIC_TOPIC_ID>_<短主題>_v<artifactRevision>.png
 records:
-  - programCode: IPAS
-    globalProductionKey: IPAS-JR-S1-I1-01-C001
-    productionKey: JR-S1-I1-01-C001
-    legacyAlias: true
+- programCode: IPAS
+  globalProductionKey: IPAS-JR-S1-I1-01-C001
+  productionKey: JR-S1-I1-01-C001
+  legacyAlias: true
+  levelSubject: 初級-科目一
+  atomicTopicId: I1-01
+  cardNumber: C-001
+  topic: AI 的定義與分類
+  plannedBatchId: KC-JR-S1-B001
+  state: QA_PASSED
+  productionComplete: true
+  sampleOnly: false
+  revisionReason: USER_APPROVED_REDESIGN
+  claim: null
+  claimHistory:
+  - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
+    claimedAt: '2026-08-20T11:48:16+08:00'
+    leaseUntil: '2026-08-20T12:48:16+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: CLAIMED
+  - reviewedAt: '2026-08-20T12:45:28+08:00'
+    reviewedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: QA_PASSED
+    revision: 4
+  sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
+  templateOrVisualProfileVersion: KCT-v3.4
+  renderFingerprint: e44223749a36535edd3aa1ef3b1f6a410fffc68978835a58051a0ceb8efd16fa
+  artifactRevision: 4
+  finalDriveFileId: 1r-AnJFK4FSzIKIRW-Kw3Bg0wUX2VFl1x
+  finalArtifact:
+    filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v4.png
+    widthPx: 1024
+    heightPx: 1536
+    sizeVariant: STANDARD
+    imageSha256: cae1e4b8e94a0619e3bded4a06fedc2873a81c007d4af4d6b8ba45799b686083
+    driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
+    qaDisposition: PASSED
+  evidence:
     levelSubject: 初級-科目一
-    atomicTopicId: I1-01
+    sectionTitle: 3.1 人工智慧概念
+    starRating: 2
+    starSlotCount: 5
     cardNumber: C-001
-    topic: AI 的定義與分類
-    plannedBatchId: KC-JR-S1-B001
-    state: QA_PASSED
-    productionComplete: true
-    sampleOnly: false
-    note: 'User-approved formal card using the approved image-body format, five fixed star slots, no repeated upper guide topic, and deterministic bottom source footer.'
-    revisionReason: USER_APPROVED_REDESIGN
-    sampleArtifact:
-      title: iPAS_重點卡_標準樣本_初級科目一_C-001_AI的定義與分類_v1.1.png
-      driveFileId: 184Kk1871jtZSiuU1u8ohRc_R9TK0WN-u
-      sampleVersion: KCS-v1.1
-    claim: null
-    claimHistory:
-      - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
-        claimedAt: '2026-08-20T11:48:16+08:00'
-        leaseUntil: '2026-08-20T12:48:16+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: CLAIMED
-      - claimToken: IPAS-KC-JR-S1-B001-4025288a-5dec-4429-a0b0-330381538d37
-        completedAt: '2026-08-20T11:52:17+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: QA_PASSED
-      - reviewedAt: '2026-08-20T11:56:30+08:00'
-        reviewedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: QA_REJECTED
-        reason: 'KCT-v3.4 canonical sample structure mismatch.'
-      - renderedAt: '2026-08-20T12:00:00+08:00'
-        renderedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: RENDERED_REVISION
-        revision: 2
-      - reviewedAt: '2026-08-20T12:45:28+08:00'
-        reviewedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: QA_PASSED
-        revision: 4
-    sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
-    templateOrVisualProfileVersion: KCT-v3.4
-    renderFingerprint: e44223749a36535edd3aa1ef3b1f6a410fffc68978835a58051a0ceb8efd16fa
-    artifactRevision: 4
-    finalDriveFileId: 1r-AnJFK4FSzIKIRW-Kw3Bg0wUX2VFl1x
-    finalArtifact:
-      filename: IPAS_初級_科目一_C-001_I1-01_AI的定義與分類_v4.png
-      widthPx: 1024
-      heightPx: 1536
-      sizeVariant: STANDARD
-      imageSha256: cae1e4b8e94a0619e3bded4a06fedc2873a81c007d4af4d6b8ba45799b686083
-      driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
-      qaDisposition: PASSED
-    evidence:
-      levelSubject: 初級-科目一
-      sectionTitle: '3.1 人工智慧概念'
-      starRating: 2
-      starSlotCount: 5
-      cardNumber: C-001
-      categoryCode: CONCEPT
-      categoryIcon: '💡'
-      examLabels: [重複出題]
-      sourceFooter: '指引:「AI 的定義與分類」；考題:115-1 初級科一 Q14、Q34、Q36、Q38；115-2 初級科一 Q1、Q3、Q4'
-    renderingMode:
-      body: IMAGE_GENERATED
-      footerSourceCitation: DETERMINISTIC_TEXT
-    qa:
-      evidenceTextLocked: true
-      sourceFooterDeterministic: true
-      visualEvidenceMatched: true
-      mascotIdentityLocked: true
-      finalQaPassed: true
-      fixedWidthPx: 1024
-      renderedHeightPx: 1536
-      starSlotCountExactlyFive: true
-      examRateVisible: false
-    updatedAt: '2026-08-20T12:45:28+08:00'
-
-  - programCode: IPAS
-    globalProductionKey: IPAS-JR-S1-I1-06-C002
-    productionKey: JR-S1-I1-06-C002
-    legacyAlias: true
+    categoryCode: CONCEPT
+    categoryIcon: 💡
+    examLabels:
+    - 重複出題
+    sourceFooter: 指引:「AI 的定義與分類」；考題:115-1、115-2
+  renderingMode:
+    body: IMAGE_GENERATED
+    footerSourceCitation: DETERMINISTIC_TEXT
+  qa:
+    evidenceTextLocked: true
+    sourceFooterDeterministic: true
+    visualEvidenceMatched: true
+    mascotIdentityLocked: true
+    finalQaPassed: true
+    fixedWidthPx: 1024
+    renderedHeightPx: 1536
+    starSlotCountExactlyFive: true
+    examRateVisible: false
+    sourceFooterSessionOnly: true
+  updatedAt: '2026-08-20T12:45:28+08:00'
+- programCode: IPAS
+  globalProductionKey: IPAS-JR-S1-I1-06-C002
+  productionKey: JR-S1-I1-06-C002
+  legacyAlias: true
+  levelSubject: 初級-科目一
+  atomicTopicId: I1-06
+  cardNumber: C-002
+  topic: 機器學習基本原理
+  cardFocus: 監督式、非監督式、半監督式、強化學習
+  plannedBatchId: KC-JR-S1-B001
+  state: QA_PASSED
+  productionComplete: true
+  sampleOnly: false
+  revisionReason: QA_REJECTED
+  claim: null
+  claimHistory:
+  - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
+    claimedAt: '2026-08-20T12:46:41+08:00'
+    leaseUntil: '2026-08-20T13:46:41+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: CLAIMED
+  - reviewedAt: '2026-08-20T12:57:00+08:00'
+    reviewedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: QA_REJECTED
+    revision: 2
+    reason: Programmatic body text/layout is prohibited. Only the bottom source citation may be deterministic/programmatic text.
+  - claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
+    claimedAt: '2026-08-20T14:42:00+08:00'
+    leaseUntil: '2026-08-20T15:42:00+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: CLAIMED
+  - claimToken: IPAS-KC-JR-S1-B001-7af68287-40d2-4bdf-9d36-5ecd6c02d30f
+    claimedAt: '2026-08-21T21:36:21+08:00'
+    leaseUntil: '2026-08-21T22:36:21+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: CLAIMED
+  - reviewedAt: '2026-08-21T22:14:30+08:00'
+    reviewedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: QA_PASSED
+    revision: 3
+  sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
+  templateOrVisualProfileVersion: KCT-v3.4
+  renderFingerprint: b49d477b08bfb8334f72565a3d5e2a1edab6c1933165a09e34b8d60809d62fcd
+  artifactRevision: 3
+  finalDriveFileId: 1rUmy5_HmWvMsK-neS3ZOI1RvVsrWFKdr
+  finalArtifact:
+    filename: IPAS_初級_科目一_C-002_I1-06_機器學習基本原理_v3.png
+    widthPx: 1024
+    heightPx: 1536
+    sizeVariant: STANDARD
+    imageSha256: 2bc19dc92ed8c35f11df80348531e3943f7b94df35676bbeed7b0565ad2b972b
+    driveFolderId: 1peARsDZh83g-1R_AUSVz1W4I7BLfogT-
+    qaDisposition: PASSED
+  evidence:
     levelSubject: 初級-科目一
-    atomicTopicId: I1-06
+    sectionTitle: 3.3 機器學習概念
+    starRating: 5
+    starSlotCount: 5
     cardNumber: C-002
-    topic: 機器學習基本原理
-    cardFocus: 監督式、非監督式、半監督式、強化學習
-    plannedBatchId: KC-JR-S1-B001
-    state: CLAIMED
-    productionComplete: false
-    sampleOnly: false
-    note: 'Revision resumed under image-generated-body + deterministic-session-only-footer rules.'
-    revisionReason: QA_REJECTED
-    claim:
-      claimToken: IPAS-KC-JR-S1-B001-7af68287-40d2-4bdf-9d36-5ecd6c02d30f
-      claimedAt: '2026-08-21T21:36:21+08:00'
-      leaseUntil: '2026-08-21T22:36:21+08:00'
-      claimedBy: ChatGPT-04_iPAS-Course-Factory
-      batchId: KC-JR-S1-B001
-    claimHistory:
-      - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
-        claimedAt: '2026-08-20T12:46:41+08:00'
-        leaseUntil: '2026-08-20T13:46:41+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: CLAIMED
-      - claimToken: IPAS-KC-JR-S1-B001-c8eb64c6-6ffc-437a-9d43-05317f28cf4c
-        completedAt: '2026-08-20T12:53:56+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: QA_PASSED
-        revision: 2
-      - reviewedAt: '2026-08-20T12:57:00+08:00'
-        reviewedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: QA_REJECTED
-        revision: 2
-        reason: 'Programmatic body text/layout is prohibited. Only the bottom source citation may be deterministic/programmatic text.'
-      - claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
-        claimedAt: '2026-08-20T14:42:00+08:00'
-        leaseUntil: '2026-08-20T15:42:00+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: CLAIMED
-      - claimToken: IPAS-KC-JR-S1-B001-7af68287-40d2-4bdf-9d36-5ecd6c02d30f
-        claimedAt: '2026-08-21T21:36:21+08:00'
-        leaseUntil: '2026-08-21T22:36:21+08:00'
-        claimedBy: ChatGPT-04_iPAS-Course-Factory
-        batchId: KC-JR-S1-B001
-        action: CLAIMED
-    sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
-    templateOrVisualProfileVersion: KCT-v3.4
-    artifactRevision: 3
-    evidence:
-      levelSubject: 初級-科目一
-      sectionTitle: '3.3 機器學習概念'
-      starRating: 5
-      starSlotCount: 5
-      cardNumber: C-002
-      categoryCode: COMPARE
-      categoryIcon: '⚖️'
-      examLabels: [必考, 重複出題]
-      sourceFooter: '指引:「機器學習基本原理」；考題:114-4、115-1、115-2'
-    renderingMode:
-      body: IMAGE_GENERATED
-      footerSourceCitation: DETERMINISTIC_TEXT
-    qa:
-      evidenceTextLocked: false
-      sourceFooterDeterministic: false
-      visualEvidenceMatched: false
-      mascotIdentityLocked: false
-      finalQaPassed: false
-      fixedWidthPx: 1024
-      starSlotCountExactlyFive: false
-      examRateVisible: false
-      sourceFooterSessionOnly: true
-    updatedAt: '2026-08-21T21:36:21+08:00'
+    categoryCode: COMPARE
+    categoryIcon: ⚖️
+    examLabels:
+    - 必考
+    - 重複出題
+    sourceFooter: 指引:「機器學習基本原理」；考題:114-4、115-1、115-2
+  renderingMode:
+    body: IMAGE_GENERATED
+    footerSourceCitation: DETERMINISTIC_TEXT
+  qa:
+    evidenceTextLocked: true
+    sourceFooterDeterministic: true
+    visualEvidenceMatched: true
+    mascotIdentityLocked: true
+    finalQaPassed: true
+    fixedWidthPx: 1024
+    renderedHeightPx: 1536
+    starSlotCountExactlyFive: true
+    examRateVisible: false
+    sourceFooterSessionOnly: true
+  updatedAt: '2026-08-21T22:14:30+08:00'
+- programCode: IPAS
+  globalProductionKey: IPAS-JR-S1-I1-06-C003
+  productionKey: JR-S1-I1-06-C003
+  legacyAlias: true
+  levelSubject: 初級-科目一
+  atomicTopicId: I1-06
+  cardNumber: C-003
+  topic: 機器學習基本原理
+  cardFocus: 過擬合與泛化
+  plannedBatchId: KC-JR-S1-B001
+  state: CLAIMED
+  productionComplete: false
+  sampleOnly: false
+  priorityBasis: PARENT_GOVERNED_PRIORITY_REFERENCE
+  claim:
+    claimToken: IPAS-KC-JR-S1-B001-f18c5b37-799f-4f6c-882e-b501af8d437d
+    claimedAt: '2026-08-21T22:14:14+08:00'
+    leaseUntil: '2026-08-21T23:14:14+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+  claimHistory:
+  - claimToken: IPAS-KC-JR-S1-B001-f18c5b37-799f-4f6c-882e-b501af8d437d
+    claimedAt: '2026-08-21T22:14:14+08:00'
+    leaseUntil: '2026-08-21T23:14:14+08:00'
+    claimedBy: ChatGPT-04_iPAS-Course-Factory
+    batchId: KC-JR-S1-B001
+    action: CLAIMED
+  sourceAnalysisSnapshotId: 2026-08-20_OFFICIAL-LATEST_v1
+  templateOrVisualProfileVersion: KCT-v3.4
+  artifactRevision: 1
+  evidence:
+    levelSubject: 初級-科目一
+    sectionTitle: 3.3 機器學習概念
+    starRating: 5
+    starSlotCount: 5
+    cardNumber: C-003
+    categoryCode: TRAP
+    categoryIcon: ⚠️
+    examLabels:
+    - 必考
+    - 易錯
+    - 重複出題
+    sourceFooter: 指引:「機器學習基本原理」；考題:114-4、115-1、115-2
+  renderingMode:
+    body: IMAGE_GENERATED
+    footerSourceCitation: DETERMINISTIC_TEXT
+  qa:
+    evidenceTextLocked: false
+    sourceFooterDeterministic: false
+    visualEvidenceMatched: false
+    mascotIdentityLocked: false
+    finalQaPassed: false
+    fixedWidthPx: 1024
+    starSlotCountExactlyFive: false
+    examRateVisible: false
+    sourceFooterSessionOnly: true
+  updatedAt: '2026-08-21T22:14:14+08:00'
