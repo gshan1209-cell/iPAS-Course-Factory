@@ -179,9 +179,9 @@ records:
     note: 'Revision resumed under image-generated-body + deterministic-session-only-footer rules.'
     revisionReason: QA_REJECTED
     claim:
-      claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
-      claimedAt: '2026-08-20T14:42:00+08:00'
-      leaseUntil: '2026-08-20T15:42:00+08:00'
+      claimToken: IPAS-KC-JR-S1-B001-7af68287-40d2-4bdf-9d36-5ecd6c02d30f
+      claimedAt: '2026-08-21T21:36:21+08:00'
+      leaseUntil: '2026-08-21T22:36:21+08:00'
       claimedBy: ChatGPT-04_iPAS-Course-Factory
       batchId: KC-JR-S1-B001
     claimHistory:
@@ -206,6 +206,12 @@ records:
       - claimToken: IPAS-KC-JR-S1-B001-9735d0a0-3ced-4fe2-b5b2-3c87d060310c
         claimedAt: '2026-08-20T14:42:00+08:00'
         leaseUntil: '2026-08-20T15:42:00+08:00'
+        claimedBy: ChatGPT-04_iPAS-Course-Factory
+        batchId: KC-JR-S1-B001
+        action: CLAIMED
+      - claimToken: IPAS-KC-JR-S1-B001-7af68287-40d2-4bdf-9d36-5ecd6c02d30f
+        claimedAt: '2026-08-21T21:36:21+08:00'
+        leaseUntil: '2026-08-21T22:36:21+08:00'
         claimedBy: ChatGPT-04_iPAS-Course-Factory
         batchId: KC-JR-S1-B001
         action: CLAIMED
@@ -235,4 +241,4 @@ records:
       starSlotCountExactlyFive: false
       examRateVisible: false
       sourceFooterSessionOnly: true
-    updatedAt: '2026-08-20T14:42:00+08:00'
+    updatedAt: '2026-08-21T21:36:21+08:00'
