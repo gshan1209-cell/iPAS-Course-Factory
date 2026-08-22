@@ -1,6 +1,6 @@
 # Regression Test Cases
 
-These cases verify that the chapter intro/outro skill does not drift back to fixed-length decks or all-page video treatment.
+These cases verify that the chapter intro/outro skill does not drift back to fixed-length decks, all-page video treatment, or repeated opener templates.
 
 ## Case 1 — Middle pages must stay static
 
@@ -51,3 +51,19 @@ These cases verify that the chapter intro/outro skill does not drift back to fix
 **Expected:** bottom 10% contains no informational content except the bottom-right image code.
 
 **Fail if:** key text, charts, logos, or labels enter the subtitle-safe area.
+
+## Case 7 — Intro must match chapter theme
+
+**Input:** Two chapters in the same course have different core problems and learning goals.
+
+**Expected:** both openers preserve the same course-level visual system, but each uses a distinct chapter-specific visual metaphor, scene, composition, mood, and guiding line derived from that chapter's content.
+
+**Fail if:** the second opener reuses the first opener's scene/layout and only swaps the chapter title or text.
+
+## Case 8 — Course consistency without template cloning
+
+**Input:** A course has 10 chapters.
+
+**Expected:** all 10 openers share typography, palette family, whitespace discipline, image-code placement, and overall art direction, while each chapter remains visually recognizable as its own theme.
+
+**Fail if:** chapters look like unrelated courses, or if all openers look like one cloned template.
