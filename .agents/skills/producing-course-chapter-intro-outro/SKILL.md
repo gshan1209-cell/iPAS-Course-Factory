@@ -27,8 +27,28 @@ Read the latest governed chapter copy and current presentation policy. Resolve:
 - main teaching points
 - final 1–3 conclusions
 - next chapter title, if any
+- chapter emotion / learning tension
+- chapter-specific visual metaphor
 
 Choose the final page number from content completeness, not a quota.
+
+## Intro Theme Lock
+
+Every chapter opener must be designed from the chapter's actual subject matter.
+
+Before generating `00`, explicitly define:
+
+1. `chapterTheme` — what this chapter is really about;
+2. `coreQuestion` — the tension or question the learner enters with;
+3. `chapterMood` — e.g. reflective, urgent, clarifying, investigative, collaborative;
+4. `visualMetaphor` — a concrete visual idea derived from the chapter, not from another chapter's opener;
+5. `guidingLine` — one concise sentence that pulls the learner into the chapter.
+
+Course-level consistency must remain stable: typography system, palette family, whitespace discipline, subtitle-safe zone, image-code position, and overall art direction.
+
+Chapter-level distinctiveness must change when appropriate: main scene, metaphor, composition, props, focal object, mood, lighting emphasis, and visual storytelling.
+
+**Hard rule:** Do not reuse the same opener scene/layout and merely replace the title. A cloned opener is a QA failure.
 
 ## Intro Image `00`
 
@@ -40,13 +60,18 @@ Required:
 - short chapter title
 - one concise guiding line
 - strong visual focus + generous whitespace
+- visible connection to the chapter's core problem or metaphor
 - 16:9 composition suitable for subtle 8-second motion
 
-FLOW motion should be restrained: slow push-in, subtle light/shadow or environmental motion, stable text, no flashy effects.
+FLOW motion should be restrained and derived from the scene: slow push-in, subtle light/shadow or environmental motion, stable text, no flashy effects. The movement must support the chapter mood instead of becoming a generic animation preset.
 
 ## Summary Image `01`
 
 Static only. Show the core problem, 2–3 learning outcomes, and one-line summary. Do not design it as a video scene.
+
+## Middle Teaching Images `02..N-1`
+
+Static only. Optimize for teaching completeness and visual clarity. Use diagrams, comparisons, cases, process maps, cards, or other governed layouts as needed. Do not reduce information merely to make these pages animation-friendly.
 
 ## Outro Image `N`
 
@@ -88,6 +113,10 @@ Before delivery, require:
 
 - `DYNAMIC_PAGE_COUNT_LOCKED`
 - `INTRO_VIDEO_ONLY_00`
+- `INTRO_THEME_MATCHED`
+- `INTRO_NOT_TEMPLATE_CLONED`
+- `COURSE_VISUAL_SYSTEM_MATCHED`
+- `CHAPTER_VISUAL_DISTINCTIVENESS_OK`
 - `SUMMARY_STATIC_01`
 - `MIDDLE_PAGES_STATIC_ONLY`
 - `OUTRO_VIDEO_ONLY_FINAL_PAGE`
