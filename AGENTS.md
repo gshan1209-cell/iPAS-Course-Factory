@@ -202,6 +202,28 @@ A production-ready unit tracks these ten artifact groups:
 
 An artifact group may contain multiple sub-artifacts. A group can be intentionally not-applicable only when the manifest records the reason and QA accepts it.
 
+## Course Text Asset Centralization Contract
+
+All course-level text assets must follow:
+
+- `docs/COURSE_TEXT_ASSET_CENTRALIZATION_POLICY.md`
+
+Core rule:
+
+**同一教材用途的文字資產，必須跨章集中到同一個課程層級資料夾管理；不得再分散存放於各章節資料夾。**
+
+Rules:
+- organize governed text assets by asset type, not by chapter folder;
+- preserve chapter identity in filenames such as `CH00`, `CH01`, and so on;
+- reuse one canonical course-level folder for each text asset type;
+- move authoritative files instead of keeping duplicated chapter-level copies;
+- existing approved folder meanings must not be silently repurposed;
+- new text categories such as video copy, video prompts, handout copy, or social copy must inherit the same centralized pattern;
+- chapter folders remain for chapter-local generated assets, sources, images, audio, video, and other approved non-centralized artifacts;
+- Google Drive is the asset plane, while GitHub remains canonical for the policy and workflow contract.
+
+Current approved pattern includes `01_簡報文案`, `02_簡報Prompt`, `03_語音文案`, and `04_語音Prompt`.
+
 ## State Machine
 
 Normal flow:
